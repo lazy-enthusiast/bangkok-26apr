@@ -3,151 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>曼谷 2026 - 暹羅古韻獨旅</title>
+    <title>曼谷 2026 - 暹羅古韻全功能版</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Noto+Sans+Thai:wght@300;400;500&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-color: #1A1A2E;       
-            --card-color: #F5F5F0;     
-            --accent-color: #D4AF37;   
-            --text-on-dark: #FFFFFF;   
-            --text-on-light: #161625;  
-            --menu-bg: #131320;        
+            --bg-color: #1A1A2E; --card-color: #F5F5F0; --accent-color: #D4AF37;
+            --text-on-dark: #FFFFFF; --text-on-light: #161625; --menu-bg: #131320;
             --weather-gradient: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
         }
-
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
         body {
-            font-family: "Noto Serif TC", serif;
-            background-color: var(--bg-color);
-            color: var(--text-on-dark);
-            margin: 0; padding: 0;
-            height: 100vh;
+            font-family: "Noto Serif TC", serif; background-color: var(--bg-color);
+            color: var(--text-on-dark); margin: 0; padding: 0; height: 100vh;
             display: flex; flex-direction: column; overflow: hidden;
         }
-
         header {
-            padding: 15px 20px;
-            background-color: rgba(26, 26, 46, 0.98);
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-            position: sticky; top: 0; z-index: 100;
-            display: flex; justify-content: space-between; align-items: center;
-            height: 60px;
+            padding: 15px 20px; background-color: rgba(26, 26, 46, 0.98);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2); position: sticky; top: 0; z-index: 100;
+            display: flex; justify-content: space-between; align-items: center; height: 60px;
         }
-        header h1 { margin: 0; font-size: 1.2rem; font-family: "Playfair Display", serif; letter-spacing: 1px; color: var(--accent-color); }
-        
+        header h1 { margin: 0; font-size: 1.1rem; font-family: "Playfair Display", serif; color: var(--accent-color); }
         .header-icons { display: flex; gap: 18px; align-items: center; }
         .header-btn { color: var(--text-on-dark); font-size: 1.1rem; cursor: pointer; text-decoration: none; }
-        .fan-btn i { color: var(--accent-color); }
-
-        .date-selector-container {
-            background: var(--bg-color); 
-            padding: 10px 15px; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
-        }
-        .date-selector { display: flex; justify-content: space-between; gap: 8px; width: 100%; }
         
+        .date-selector-container { background: var(--bg-color); padding: 10px 15px; border-bottom: 1px solid rgba(212, 175, 55, 0.1); }
+        .date-selector { display: flex; justify-content: space-between; gap: 8px; width: 100%; }
         .date-chip {
             flex: 1; background: rgba(255,255,255,0.05); padding: 10px 5px; border-radius: 4px;
-            font-size: 0.8rem; cursor: pointer; color: #aaa;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            font-size: 0.8rem; cursor: pointer; color: #aaa; display: flex; flex-direction: column; align-items: center;
         }
-        .date-chip.active {
-            background: var(--accent-color); color: #1A1A2E; font-weight: bold;
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3); transform: translateY(-2px);
-        }
-        .date-chip .day-num { font-family: "Playfair Display", serif; font-weight: 700; }
+        .date-chip.active { background: var(--accent-color); color: #1A1A2E; font-weight: bold; }
 
         main { flex: 1; overflow-y: hidden; position: relative; }
         .page {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            overflow-y: auto; padding: 10px 0 90px 0;
-            display: none; opacity: 0; transition: opacity 0.3s ease;
-            -webkit-overflow-scrolling: touch;
+            overflow-y: auto; padding: 10px 0 90px 0; display: none; opacity: 0; transition: opacity 0.3s;
         }
         .page.active { display: block; opacity: 1; z-index: 10; }
         
         #map-container { width: 100%; height: 100%; }
-
         .timeline-container { padding: 0 20px; }
-        .timeline-item {
-            position: relative; padding-left: 25px; padding-bottom: 30px;
-            border-left: 1px solid rgba(212, 175, 55, 0.3);
-        }
-        .timeline-item::before {
-            content: ''; position: absolute; left: -5px; top: 18px;
-            width: 8px; height: 8px; background: var(--bg-color);
-            border: 2px solid var(--accent-color); transform: rotate(45deg);
-        }
+        .timeline-item { position: relative; padding-left: 25px; padding-bottom: 30px; border-left: 1px solid rgba(212, 175, 55, 0.3); }
+        .timeline-item::before { content: ''; position: absolute; left: -5px; top: 18px; width: 8px; height: 8px; background: var(--bg-color); border: 2px solid var(--accent-color); transform: rotate(45deg); }
 
-        .card {
-            background-color: var(--card-color); color: var(--text-on-light);
-            border-radius: 4px; padding: 16px; margin-bottom: 5px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2); cursor: pointer; border-left: 3px solid var(--accent-color);
-        }
-        .card-time { font-size: 0.85rem; color: #888; font-weight: 600; display: block; margin-bottom: 6px; }
-        .card-title { font-size: 1.1rem; font-weight: 700; margin: 0; font-family: "Playfair Display", serif; color: #000;}
+        .card { background-color: var(--card-color); color: var(--text-on-light); border-radius: 4px; padding: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); cursor: pointer; border-left: 4px solid var(--accent-color); }
+        .card-time { font-size: 0.8rem; color: #888; font-weight: 600; display: block; margin-bottom: 4px; }
+        .card-title { font-size: 1.05rem; font-weight: 700; color: #000; line-height: 1.3; margin: 0; font-family: "Playfair Display", serif; }
+        .card-tag { font-size: 0.65rem; background: #e0e0e0; padding: 2px 6px; border-radius: 2px; margin-right: 4px; color: #666; }
 
-        .weather-card {
-            background: var(--weather-gradient); border-radius: 8px; padding: 25px; margin: 20px;
-            text-align: center; color: #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-        }
-        .weather-main { display: flex; justify-content: space-around; align-items: center; margin: 20px 0; }
-
-        .modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); z-index: 3000; justify-content: center; align-items: end; backdrop-filter: blur(5px);
-        }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 3000; justify-content: center; align-items: end; backdrop-filter: blur(5px); }
         .modal.open { display: flex; }
-        .modal-content {
-            background: var(--card-color); color: var(--text-on-light);
-            width: 100%; max-width: 600px; max-height: 85vh;
-            border-radius: 12px 12px 0 0; padding: 25px; overflow-y: auto;
-        }
+        .modal-content { background: var(--card-color); color: var(--text-on-light); width: 100%; max-width: 600px; max-height: 85vh; border-radius: 12px 12px 0 0; padding: 25px; overflow-y: auto; position: relative; }
         .close-modal { position: absolute; top: 15px; right: 20px; font-size: 1.8rem; color: #888; cursor: pointer; }
 
-        .taxi-card {
-            background: #fff; color: #000; padding: 15px; border: 3px solid var(--accent-color);
-            margin: 15px 0; text-align: center; border-radius: 4px; display: none;
-        }
+        .taxi-card { background: #fff; color: #000; padding: 15px; border: 3px solid var(--accent-color); margin: 15px 0; text-align: center; border-radius: 4px; display: none; }
         .thai-font { font-family: "Noto Sans Thai", sans-serif; font-weight: 500; }
+        .note-box { background: #fdfdfd; border-left: 4px solid var(--accent-color); padding: 15px; margin: 15px 0; font-size: 0.95rem; color: #333; line-height: 1.6; }
 
-        .note-box {
-            background: #fdfdfd; border-left: 4px solid var(--accent-color);
-            padding: 15px; margin: 20px 0; font-size: 0.95rem; color: #333; line-height: 1.6;
-        }
-
-        .checklist-item {
-            background: rgba(255,255,255,0.05); padding: 15px; margin-bottom: 12px;
-            border-radius: 4px; display: flex; align-items: center; gap: 15px;
-        }
-
-        nav.bottom-nav {
-            position: fixed; bottom: 0; width: 100%; background-color: var(--menu-bg);
-            display: flex; justify-content: space-around; padding: 10px 0 25px 0;
-            border-top: 1px solid rgba(212, 175, 55, 0.2); z-index: 100;
-        }
-        .nav-item { color: #666; text-align: center; font-size: 0.75rem; width: 25%; }
+        nav.bottom-nav { position: fixed; bottom: 0; width: 100%; background-color: var(--menu-bg); display: flex; justify-content: space-around; padding: 10px 0 25px 0; border-top: 1px solid rgba(212, 175, 55, 0.2); z-index: 100; }
+        .nav-item { color: #666; text-align: center; font-size: 0.75rem; width: 25%; cursor: pointer; }
         .nav-item.active { color: var(--accent-color); }
-
-        .sub-page {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: var(--bg-color); z-index: 2000; display: flex; flex-direction: column;
-            transform: translateX(100%); transition: transform 0.3s ease;
-        }
+        
+        .sub-page { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--bg-color); z-index: 2000; display: flex; flex-direction: column; transform: translateX(100%); transition: transform 0.3s; }
         .sub-page.open { transform: translateX(0); }
         .sub-header { padding: 15px 20px; background: var(--menu-bg); border-bottom: 1px solid rgba(212,175,55,0.2); display: flex; align-items: center; gap: 15px; }
 
-        .action-btn {
-            display: flex; justify-content: center; align-items: center; gap: 8px;
-            width: 100%; padding: 14px; margin-top: 10px; background: #1A1A2E;
-            color: var(--accent-color); border-radius: 4px; font-weight: bold; border: 1px solid var(--accent-color);
-        }
+        .action-btn { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; padding: 14px; margin-top: 10px; background: #1A1A2E; color: var(--accent-color); border-radius: 4px; font-weight: bold; border: 1px solid var(--accent-color); }
+        .checklist-item { background: rgba(255,255,255,0.05); padding: 15px; margin-bottom: 10px; border-radius: 4px; display: flex; align-items: center; gap: 12px; }
     </style>
 </head>
 <body>
@@ -157,7 +82,7 @@
         <div class="header-icons">
             <a href="https://translate.google.com" target="_blank" class="header-btn"><i class="fa-solid fa-language"></i></a>
             <a href="#" class="header-btn" onclick="openTipsModal()"><i class="fa-solid fa-map-signs"></i></a>
-            <a href="#" class="header-btn fan-btn" onclick="switchMainPage('tools', this)"><i class="fa-solid fa-spa fa-spin"></i></a>
+            <a href="#" class="header-btn" onclick="switchMainPage('tools', this)"><i class="fa-solid fa-spa fa-spin"></i></a>
         </div>
     </header>
 
@@ -166,60 +91,57 @@
     </div>
 
     <main>
-        <div id="page-itinerary" class="page active">
-            <div class="timeline-container" id="timeline-container"></div>
-        </div>
-
-        <div id="page-map" class="page">
-            <div id="map-container"></div>
-        </div>
-
+        <div id="page-itinerary" class="page active"><div class="timeline-container" id="timeline-container"></div></div>
+        <div id="page-map" class="page"><div id="map-container"></div></div>
         <div id="page-weather" class="page">
             <div style="padding: 20px;">
                 <h2 style="font-family:'Playfair Display',serif; text-align:center;">Bangkok Weather</h2>
-                <div id="weather-content"></div>
-                <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:8px; display:flex; justify-content:space-between; align-items:center;">
-                    <span>Hydration Check (已喝水次數)</span>
-                    <div style="display:flex; align-items:center; gap:15px;">
-                        <button onclick="addWater()" style="background:var(--accent-color); border:none; width:40px; height:40px; border-radius:50%;"><i class="fa-solid fa-plus"></i></button>
-                        <span id="water-count" style="font-size:1.5rem;">0</span>
-                    </div>
+                <div class="note-box" style="text-align:center; color:#000; background:var(--weather-gradient); color:#fff; border:none;">
+                    <i class="fa-solid fa-sun" style="font-size:3rem; margin-bottom:10px;"></i><br>
+                    <span style="font-size:2.5rem;">39°C</span><br>復活節酷暑期
+                </div>
+                <div class="checklist-item">
+                    <span>每日補水計數器 (建議 8 杯)</span>
+                    <button onclick="addWater()" style="margin-left:auto; background:var(--accent-color); border:none; width:45px; height:45px; border-radius:50%; font-size:1.2rem;"><i class="fa-solid fa-plus"></i></button>
+                    <span id="water-count" style="margin-left:15px; font-size:1.5rem;">0</span>
                 </div>
             </div>
         </div>
-
         <div id="page-tools" class="page">
             <div style="padding: 20px;">
-                <h2 style="font-family:'Playfair Display',serif; text-align:center; color:var(--accent-color);">Travel Tools</h2>
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-top:20px;">
-                    <div class="checklist-item" onclick="openSubPage('hotel')"><i class="fa-solid fa-hotel"></i> 飯店資訊</div>
-                    <div class="checklist-item" onclick="openSubPage('packing')"><i class="fa-solid fa-suitcase"></i> 行李清單</div>
-                    <div class="checklist-item" onclick="openSubPage('rate')"><i class="fa-solid fa-coins"></i> 匯率換算</div>
-                    <div class="checklist-item" onclick="sendSafety()"><i class="fa-brands fa-whatsapp"></i> 報平安</div>
-                </div>
+                <div class="checklist-item" onclick="openSubPage('hotel')"><i class="fa-solid fa-hotel"></i> 飯店資訊 & 泰文地址</div>
+                <div class="checklist-item" onclick="openSubPage('packing')"><i class="fa-solid fa-suitcase"></i> 行李 Check-list</div>
+                <div class="checklist-item" onclick="openSubPage('rate')"><i class="fa-solid fa-coins"></i> 匯率換算 (THB/HKD)</div>
+                <div class="checklist-item" onclick="sendSafety()"><i class="fa-brands fa-whatsapp"></i> WhatsApp 報平安</div>
             </div>
         </div>
 
         <div id="subpage-hotel" class="sub-page">
-            <div class="sub-header"><button onclick="closeSubPage('hotel')" style="background:none; border:none; color:var(--accent-color); font-size:1.2rem;"><i class="fa-solid fa-arrow-left"></i></button><h2>飯店資訊</h2></div>
-            <div class="sub-content" style="padding:20px;">
-                <h3>IR-ON Hotel (Thong Lo)</h3>
-                <div class="note-box thai-font" style="background:#fff; border:2px solid var(--accent-color);">โรงแรม IR-ON, ซอยสุขุมวิท 36 (ใกล้ BTS ทองหล่อ)</div>
-                <p>地址：10/10 Sukhumvit Soi 36, Bangkok</p>
-                <p>指引：BTS Thong Lo 站 2 號出口下樓後迴轉，步行 3-5 分鐘。</p>
+            <div class="sub-header"><button onclick="closeSubPage('hotel')" style="background:none; border:none; color:var(--accent-color); font-size:1.2rem;"><i class="fa-solid fa-arrow-left"></i></button><h2>飯店詳細資訊</h2></div>
+            <div style="padding:20px;">
+                <h3 style="color:var(--accent-color);">IR-ON Hotel (Thong Lo)</h3>
+                <div class="note-box thai-font" style="background:#fff; border:2px solid var(--accent-color); color:#000; font-size:1.2rem;">โรงแรม ไอออน, ซอยสุขุมวิท 36 (ใกล้ BTS ทองหล่อ)</div>
+                <p><b>地址：</b>10/10 Sukhumvit Soi 36, Bangkok</p>
+                <div class="note-box">
+                    <b>無腦指引：</b><br>
+                    1. 搭 BTS 到 Thong Lo 站。<br>
+                    2. 找 2 號出口下樓。<br>
+                    3. 下樓後「立即迴轉」走進 Soi 36 巷口。<br>
+                    4. 步行約 3 分鐘，飯店在右手邊黑色建築。
+                </div>
             </div>
         </div>
-
+        
         <div id="subpage-packing" class="sub-page">
             <div class="sub-header"><button onclick="closeSubPage('packing')" style="background:none; border:none; color:var(--accent-color); font-size:1.2rem;"><i class="fa-solid fa-arrow-left"></i></button><h2>行李清單</h2></div>
             <div id="packing-list-container" style="padding:20px;"></div>
         </div>
 
         <div id="subpage-rate" class="sub-page">
-            <div class="sub-header"><button onclick="closeSubPage('rate')" style="background:none; border:none; color:var(--accent-color); font-size:1.2rem;"><i class="fa-solid fa-arrow-left"></i></button><h2>匯率換算</h2></div>
-            <div class="sub-content" style="padding:20px;">
-                <label>泰銖 (THB)</label><input type="number" id="thb-input" oninput="calcRate('thb')" style="width:100%; padding:15px; margin:10px 0; background:#333; color:#fff; border:none; border-radius:8px;">
-                <label>港幣 (HKD)</label><input type="number" id="hkd-input" oninput="calcRate('hkd')" style="width:100%; padding:15px; margin:10px 0; background:#333; color:#fff; border:none; border-radius:8px;">
+            <div class="sub-header"><button onclick="closeSubPage('rate')" style="background:none; border:none; color:var(--accent-color); font-size:1.2rem;"><i class="fa-solid fa-arrow-left"></i></button><h2>即時匯率換算</h2></div>
+            <div style="padding:20px;">
+                <label>泰銖 (THB)</label><input type="number" id="thb-input" oninput="calcRate('thb')" style="width:100%; padding:15px; margin:10px 0; background:#333; color:#fff; border:none; border-radius:8px; font-size:1.2rem;">
+                <label>港幣 (HKD)</label><input type="number" id="hkd-input" oninput="calcRate('hkd')" style="width:100%; padding:15px; margin:10px 0; background:#333; color:#fff; border:none; border-radius:8px; font-size:1.2rem;">
             </div>
         </div>
     </main>
@@ -234,22 +156,19 @@
     <div id="detail-modal" class="modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal()">×</span>
-            <h2 id="modal-title" style="font-family:'Playfair Display',serif; color:#000; margin-bottom:15px;"></h2>
-            
+            <h2 id="modal-title" style="font-family:'Playfair Display',serif; color:#000; margin-bottom:15px; padding-right:30px;"></h2>
             <div id="taxi-card-box" class="taxi-card">
-                <p style="font-size:0.8rem; color:#888;">目的地泰文地址 (給司機)：</p>
-                <div id="modal-thai-address" class="thai-font" style="font-size:1.2rem;"></div>
+                <p style="font-size:0.8rem; color:#888; margin-bottom:5px;">給司機看的地址 (Thai Address):</p>
+                <div id="modal-thai-address" class="thai-font" style="font-size:1.3rem; line-height:1.4;"></div>
             </div>
-
-            <div class="info-row"><i class="fa-regular fa-clock"></i> <span><b>我的逗留：</b> <span id="modal-stay"></span></span></div>
-            <div class="info-row"><i class="fa-solid fa-door-open"></i> <span><b>開放時間：</b> <span id="modal-open" style="color:#B71C1C; font-weight:600;"></span></span></div>
-            <div class="info-row"><i class="fa-solid fa-location-dot"></i> <span id="modal-address"></span></div>
-            
+            <div style="font-size:0.9rem; margin-bottom:15px;">
+                <div style="margin-bottom:5px;"><i class="fa-regular fa-clock" style="color:var(--accent-color)"></i> <b>行程時間：</b> <span id="modal-stay"></span></div>
+                <div style="color:#B71C1C;"><i class="fa-solid fa-door-open"></i> <b>營業時間：</b> <span id="modal-open"></span></div>
+            </div>
             <div class="note-box" id="modal-note"></div>
-            
             <div style="display:flex; gap:10px;">
                 <button class="action-btn" id="modal-map-btn" style="flex:1;"><i class="fa-solid fa-location-arrow"></i> 導航</button>
-                <button class="action-btn" onclick="toggleTaxi()" style="flex:1; background:#fff; color:#000;"><i class="fa-solid fa-taxi"></i> 給司機看</button>
+                <button class="action-btn" onclick="toggleTaxi()" style="flex:1; background:#fff; color:#000;"><i class="fa-solid fa-taxi"></i> 計程車卡</button>
             </div>
         </div>
     </div>
@@ -258,57 +177,57 @@
     <script>
         const scheduleData = {
             "day1": { "date": "4/3 (五)", "events": [
-                { time: "10:30", title: "抵達機場 & 飯店寄放行李", stay: "10:30 - 12:30", open: "24 小時", address: "IR-ON Hotel", thai: "โรงแรม IR-ON, ซอยสุขุมวิท 36 (ใกล้ BTS ทองหล่อ)", coords: [13.7252, 100.5783], note: "ARL 到 Phaya Thai 轉 BTS 到 Thong Lo。2號出口下樓迴轉。", tags: ["抵達"] },
-                { time: "13:00", title: "午餐：Supanniga Eating Room", stay: "13:00 - 14:30", open: "10:00 - 22:00", address: "Soi Sukhumvit 55", thai: "สุพรรณิการ์ อีทติ้ง รูม ทองหล่อ (ซอย 55)", coords: [13.7314, 100.5815], note: "米其林推薦。必點蟹肉烘蛋與馬撒曼咖哩。", tags: ["米其林", "美食"] },
-                { time: "15:00", title: "金湯普森博物館", stay: "15:00 - 16:30", open: "10:00 - 18:00 (最後 17:00)", address: "Soi Kasemsan 2", thai: "พิพิธภัณฑ์บ้านจิม ทอมป์สัน (ซอยเกษมสันต์ 2)", coords: [13.7495, 100.5283], note: "泰絲大王故居，花園幽靜。建議參加導覽。", tags: ["景點", "文化"] },
-                { time: "16:30", title: "小眾香氛：Journal & Copenn.", stay: "16:30 - 18:00", open: "Journal (10-22) / Copenn (10-21)", address: "Siam Square One", thai: "สยามสแควร์วัน (Siam Square One)", coords: [13.7445, 100.5342], note: "Journal 招牌是 Galanga；Copenn. 則走工業風極簡美學。", tags: ["香氛", "購物"] },
-                { time: "18:30", title: "晚餐：Sra Bua by Kiin Kiin", stay: "18:30 - 20:30", open: "18:00 - 24:00", address: "Siam Kempinski Hotel", thai: "โรงแรมสยามเคมพินสกี้ (ห้องอาหารสระบัว)", coords: [13.7473, 100.5342], note: "米其林一星分子泰菜。需預約並穿著休閒端莊。", tags: ["米其林", "奢華"] },
-                { time: "21:00", title: "按摩：Asia Herb Association", stay: "21:00 - 22:30", open: "09:00 - 02:00", address: "Thong Lo", thai: "เอเชีย เฮิร์บ แอสโซซิเอชั่น ทองหล่อ", coords: [13.7255, 100.5785], note: "招牌草藥球按摩。就在飯店附近，按摩完直接回飯店。", tags: ["Spa", "放鬆"] }
+                { time: "10:30", title: "抵達機場 & 飯店寄放行李", stay: "10:30 - 12:30", open: "24 小時", address: "IR-ON Hotel", thai: "โรงแรม ไอออน, ซอยสุขุมวิท 36", coords: [13.7252, 100.5783], note: "ARL 機場線到終點 Phaya Thai 轉 BTS 到 Thong Lo。2號出口下樓迴轉。", tags: ["抵達"] },
+                { time: "13:00", title: "午餐：Supanniga Eating Room", stay: "13:00 - 14:30", open: "10:00 - 22:00", address: "Thong Lo Soi 55", thai: "สุพรรณิการ์ อีทติ้ง รูม ทองหล่อ", coords: [13.7314, 100.5815], note: "米其林推薦。推薦蟹肉烘蛋 (Khai Jiew Pu)、馬撒曼咖哩。", tags: ["米其林", "泰菜"] },
+                { time: "15:00", title: "金湯普森博物館 (Jim Thompson)", stay: "15:00 - 16:30", open: "10:00 - 18:00", address: "Soi Kasemsan 2", thai: "พิพิธภัณฑ์บ้านจิม ทอมป์สัน", coords: [13.7495, 100.5283], note: "最後導覽 17:00。泰絲大王故居，花園柚木建築。", tags: ["景點", "文化"] },
+                { time: "16:30", title: "Siam 香氛巡禮 (Journal & Copenn)", stay: "16:30 - 18:00", open: "10:00 - 21:00", address: "Siam Square One", thai: "สยามสแควร์วัน (Journal & Copenn)", coords: [13.7445, 100.5342], note: "Journal: 以泰國古法香膏為底。<br>Copenn: 極簡工業風，木質調與土質調非常出色。", tags: ["購物", "香氛"] },
+                { time: "18:30", title: "晚餐：Sra Bua by Kiin Kiin", stay: "18:30 - 20:30", open: "18:00 - 24:00", address: "Siam Kempinski", thai: "สระบัว บาย กิน กิน", coords: [13.7473, 100.5342], note: "米其林一星分子泰菜。請著端莊服裝。", tags: ["米其林", "Fine Dining"] },
+                { time: "21:00", title: "按摩 1：Asia Herb Association", stay: "21:00 - 22:30", open: "09:00 - 02:00", address: "Thong Lo", thai: "เอเชีย เฮิร์บ แอสโซซิเอชั่น", coords: [13.7255, 100.5785], note: "首日舒壓：100% 純精油按摩，滋潤機艙乾燥皮膚。", tags: ["Spa", "必做"] }
             ]},
             "day2": { "date": "4/4 (六)", "events": [
-                { time: "10:00", title: "Chatuchak 週末市集", stay: "10:00 - 12:00", open: "09:00 - 18:00", address: "Mo Chit", thai: "ตลาดนัดจตุจักร (Kamphaeng Phet 2 Rd)", coords: [13.8015, 100.5524], note: "專攻 Section 26 古物區。Hem Aroma 也在此區。", tags: ["市集", "購物"] },
-                { time: "12:30", title: "Copper Beyond Buffet", stay: "12:30 - 14:30", open: "10:00 - 20:00", address: "Gaysorn Amarin", thai: "อาคารเกษรอัมรินทร์ ชั้น 3 (Copper)", coords: [13.7445, 100.5410], note: "必點和牛船麵、松露濃湯。需透過 Hungry Hub 預訂。", tags: ["必吃", "Buffet"] },
-                { time: "15:00", title: "飯店午休避暑", stay: "15:00 - 16:30", open: "24 小時", address: "IR-ON Hotel", note: "避開下午 2-4 點曼谷極高溫烈日。", tags: ["休息"] },
-                { time: "19:30", title: "Paper Plane Project", stay: "19:30 - 21:30", open: "09:00 - 01:30", address: "T-One Building 40F", thai: "ตึก ที-วัน ชั้น 40 (สุขุมวิท)", note: "40樓高空吧，俯瞰通羅夜景。喝完散步 5 分鐘回飯店。", tags: ["高空吧", "夜景"] }
+                { time: "10:00", title: "Chatuchak 週末市集 (Section 26)", stay: "10:00 - 12:00", open: "09:00 - 18:00", address: "Kamphaeng Phet 2 Rd", thai: "ตลาดนัดจตุจักร", coords: [13.8015, 100.5524], note: "專攻 Section 26 古物區與 Hem Aroma (市集內香氛)。", tags: ["市集", "購物"] },
+                { time: "12:30", title: "Copper Beyond Buffet", stay: "12:30 - 14:30", open: "10:00 - 20:00", address: "Gaysorn Amarin 3F", thai: "คอปเปอร์ บียอนด์ บุฟเฟต์", coords: [13.7445, 100.5410], note: "預約制自助餐。必吃澳洲和牛船麵、松露濃湯。", tags: ["必吃", "Buffet"] },
+                { time: "15:00", title: "午休避暑 (回飯店休息)", stay: "15:00 - 16:30", note: "曼谷下午 2-4 點極端高溫，回飯店充電避暑。", tags: ["避暑"] },
+                { time: "16:30", title: "按摩 2：Asia Herb (草藥球)", stay: "16:30 - 18:00", open: "09:00 - 02:00", note: "針對市集腿部疲勞：泰式按摩 + 草藥球熱敷。", tags: ["Spa"] },
+                { time: "19:30", title: "Paper Plane Project (40F)", stay: "19:30 - 21:30", open: "09:00 - 01:30", address: "T-One Building", thai: "ตึก ที-วัน ชั้น 40", note: "高空生啤與高空夜景。吃完芒果糯米飯宵夜正好。", tags: ["酒吧", "夜景"] }
             ]},
             "day3": { "date": "4/5 (日)", "events": [
-                { time: "09:30", title: "蘇泰寺 (Wat Suthat)", stay: "09:30 - 11:00", open: "08:00 - 20:00", address: "Sao Chingcha", thai: "วัดสุทัศนเทพวราราม (เสาชิงช้า)", coords: [13.7510, 100.5011], note: "皇家寺廟，門外有大鞦韆。適合晨間靜心。", tags: ["景點", "寺廟"] },
-                { time: "12:00", title: "The Mustang Blu", stay: "12:00 - 14:00", open: "11:00 - 21:00", address: "Hua Lamphong", thai: "เดอะ มัสแตง บลู (ถนนไมตรีจิตต์)", coords: [13.7395, 100.5160], note: "百年銀行改建標本餐廳。推薦焦糖檸檬塔。", tags: ["特色", "網美"] },
-                { time: "14:30", title: "River City Bangkok", stay: "14:30 - 16:30", open: "10:00 - 20:00", address: "Charoen Krung 24", thai: "ริเวอร์ ซิตี้ แบงค็อก (เจริญกรุง 24)", coords: [13.7302, 100.5140], note: "古董與藝術中心，冷氣強。建議搭 Tuk-tuk 前往。", tags: ["藝術", "冷氣"] },
-                { time: "18:30", title: "晚餐：Paste Bangkok", stay: "18:30 - 20:30", open: "18:00 - 23:00", address: "Gaysorn Village", thai: "เกษรวิลเลจ ชั้น 3 (ห้องอาหารเพสต์)", coords: [13.7444, 100.5405], note: "米其林一星，極致宮廷料理。必點皇家咖哩蟹。", tags: ["米其林", "皇室"] }
+                { time: "09:30", title: "蘇泰寺 & 大鞦韆", stay: "09:30 - 11:00", open: "08:00 - 20:00", address: "Old City", thai: "วัดสุทัศนเทพวราราม", coords: [13.7510, 100.5011], note: "一級皇家寺廟，莊嚴靜心，適合晨間祈福。", tags: ["寺廟", "景點"] },
+                { time: "12:00", title: "午餐：The Mustang Blu", stay: "12:00 - 14:00", open: "11:00 - 21:00", address: "Hua Lamphong", thai: "เดอะ มัสแตง บลู", coords: [13.7395, 100.5160], note: "百年銀行改建，黑松露義大利麵、焦糖檸檬塔。", tags: ["特色餐廳"] },
+                { time: "14:30", title: "River City Bangkok (藝術巡禮)", stay: "14:30 - 16:30", open: "10:00 - 20:00", address: "Pier Charoen Krung", thai: "ริเวอร์ ซิตี้ แบงค็อก", note: "3-4 樓古董拍賣行，冷氣強，避暑藝術首選。", tags: ["藝術", "古董"] },
+                { time: "18:30", title: "晚餐：Paste Bangkok", stay: "18:30 - 20:30", open: "18:00 - 23:00", address: "Gaysorn Village", thai: "เพสต์ แบงค็อก (เกษรวิลเลจ)", note: "皇室泰菜，推薦皇家咖哩蟹、西瓜鮭魚鬆。", tags: ["米其林", "皇室"] },
+                { time: "21:00", title: "按摩 3：Asia Herb (肩頸背)", stay: "21:00 - 22:30", note: "針對今日行程：肩、頸、背部加強按摩。", tags: ["Spa"] }
             ]},
             "day4": { "date": "4/6 (一)", "events": [
-                { time: "10:30", title: "Erb Bespoke 調香體驗", stay: "10:30 - 12:00", open: "10:00 - 20:00", address: "Gaysorn Village 2F", thai: "เกษรวิลเลจ ชั้น 2 (เอิบ เบสโปค)", coords: [13.7444, 100.5405], note: "泰國皇室御用品牌。調製專屬你的名字香水。", tags: ["香氛", "體驗"] },
-                { time: "15:00", title: "Gourmet Market", stay: "15:00 - 16:30", open: "10:00 - 22:00", address: "EmQuartier", thai: "เอ็มควอเทียร์ (กูร์เมต์ มาร์เก็ต)", coords: [13.7313, 100.5696], note: "最後超市衝刺：料理包、皇室蜂蜜、手標茶。", tags: ["購物", "伴手禮"] },
-                { time: "19:00", title: "The Commons Thong Lo", stay: "19:00 - 21:00", open: "08:00 - 01:00", address: "Soi 17", thai: "เดอะ คอมมอนส์ ทองหล่อ (ซอย 17)", coords: [13.7352, 100.5822], note: "文青社區。推薦 Beer Cap 的精釀啤酒與階梯氣氛。", tags: ["精釀", "悠閒"] }
+                { time: "10:30", title: "Erb Bespoke 調香體驗", stay: "10:30 - 12:00", open: "10:00 - 20:00", address: "Gaysorn Village 2F", thai: "เอิบ เบสโปค (เกษรวิลเลจ)", note: "皇室御用品牌。調製專屬你的名字香水。", tags: ["調香", "訂製"] },
+                { time: "15:00", title: "Gourmet Market 超市採購", stay: "15:00 - 16:30", open: "10:00 - 22:00", address: "EmQuartier", thai: "กูร์เมต์ มาร์เก็ต (เอ็มควอเทียร์)", note: "必買：藍象料理包、手標茶、皇室蜂蜜。", tags: ["購物", "伴手禮"] },
+                { time: "16:30", title: "按摩 4：Asia Herb (全身大保養)", stay: "16:30 - 18:30", note: "全身草藥球 120 分鐘，旅程最後大排毒。", tags: ["Spa", "極致"] },
+                { time: "19:00", title: "The Commons Thong Lo", stay: "19:00 - 21:00", open: "08:00 - 01:00", address: "Soi Thong Lo 17", thai: "เดอะ คอมมอนส์ ทองหล่อ", note: "文青社區。去 1F Beer Cap 點杯 Chalawan 精釀。", tags: ["文青", "夜生活"] }
             ]},
             "day5": { "date": "4/7 (二)", "events": [
-                { time: "09:30", title: "Central World 祈福", stay: "09:30 - 10:30", open: "24 小時", address: "Central World", thai: "พระตรีมูรติ เซ็นทรัลเวิลด์ (ลานหน้าห้าง)", coords: [13.7443, 100.5403], note: "愛神求人緣緣分，象神求事業財運順利。", tags: ["祈福"] },
-                { time: "11:30", title: "Saneh Jaan", stay: "11:30 - 13:30", open: "11:30 - 14:00", address: "Sindhorn Building", thai: "เสน่ห์จันทน์ (อาคารสินธร ถนนวิทยุ)", coords: [13.7370, 100.5458], note: "米其林一星，優雅宮廷菜，完美句點。", tags: ["米其林", "最後餐"] },
-                { time: "13:30", title: "前往機場 (BKK)", stay: "13:30 - 15:00", open: "24 小時", address: "BKK Airport", note: "帶著滿滿回憶與香氣啟程。", tags: ["回程"] }
+                { time: "09:30", title: "Central World 祈福 (愛神/象神)", stay: "09:30 - 10:30", open: "24 小時", address: "Central World", thai: "พระตรีมูรติ เซ็นทรัลเวิลด์", note: "紅玫瑰求緣分，黃花求象神保佑事業順利。", tags: ["祈福"] },
+                { time: "11:30", title: "午餐：Saneh Jaan", stay: "11:30 - 13:30", open: "11:30 - 14:00", address: "Sindhorn Building", thai: "เสน่ห์จันทน์ (อาคารสินธร)", note: "宮廷泰菜，米其林一星，為旅程完美收尾。", tags: ["米其林", "最終回"] },
+                { time: "14:30", title: "前往機場 (BKK)", stay: "14:30 - 15:30", address: "Airport", note: "帶著香氣與回憶回家。", tags: ["回程"] }
             ]}
         };
 
-        const packingItems = ["護照/簽證", "網卡/E-SIM", "行動電源", "薄披肩 (寺廟)", "防蚊液", "止瀉藥", "防曬乳", "Rabbit Card"];
+        const packingListItems = ["護照", "網卡/E-SIM", "防蚊液", "薄披肩", "防曬乳", "Rabbit Card", "止瀉藥", "行動電源"];
         let map, markers = [], waterCount = 0;
 
         function init() {
             renderDateSelector();
             selectDay('day1', document.querySelector('.date-chip'));
-            renderWeather();
             renderPacking();
             initMap();
         }
 
         function renderDateSelector() {
             const container = document.getElementById('date-selector');
-            container.innerHTML = '';
             Object.keys(scheduleData).forEach(dayKey => {
-                const dayNum = dayKey.replace('day', '');
                 const chip = document.createElement('div');
                 chip.className = `date-chip ${dayKey === 'day1' ? 'active' : ''}`;
                 chip.onclick = () => selectDay(dayKey, chip);
-                chip.innerHTML = `<span class="day-num">D${dayNum}</span><span style="font-size:0.7rem;">${scheduleData[dayKey].date.split(' ')[0]}</span>`;
+                chip.innerHTML = `<span class="day-num">D${dayKey.replace('day','')}</span><span style="font-size:0.65rem;">${scheduleData[dayKey].date.split(' ')[0]}</span>`;
                 container.appendChild(chip);
             });
         }
@@ -322,30 +241,28 @@
 
         function renderTimeline(dayKey) {
             const container = document.getElementById('timeline-container');
-            container.innerHTML = `<h3 style="color:var(--accent-color);">${scheduleData[dayKey].date}</h3>`;
+            container.innerHTML = `<h3 style="color:var(--accent-color); margin-bottom:15px;">${scheduleData[dayKey].date}</h3>`;
             scheduleData[dayKey].events.forEach(ev => {
-                const item = document.createElement('div');
-                item.className = 'timeline-item';
-                item.innerHTML = `
-                    <div class="card" onclick='openEventModal(${JSON.stringify(ev)})'>
-                        <span class="card-time">${ev.time}</span>
-                        <h3 class="card-title">${ev.title}</h3>
-                        <div class="tags">${ev.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}</div>
+                container.innerHTML += `
+                    <div class="timeline-item">
+                        <div class="card" onclick='openEventModal(${JSON.stringify(ev)})'>
+                            <span class="card-time">${ev.time}</span>
+                            <h3 class="card-title">${ev.title}</h3>
+                            <div class="tags">${ev.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}</div>
+                        </div>
                     </div>`;
-                container.appendChild(item);
             });
         }
 
         function openEventModal(ev) {
             document.getElementById('modal-title').innerText = ev.title;
             document.getElementById('modal-stay').innerText = ev.stay;
-            document.getElementById('modal-open').innerText = ev.open;
-            document.getElementById('modal-address').innerText = ev.address;
-            document.getElementById('modal-thai-address').innerText = ev.thai || ev.address;
+            document.getElementById('modal-open').innerText = ev.open || "見備註";
+            document.getElementById('modal-thai-address').innerText = ev.thai || ev.address || "IR-ON Hotel";
             document.getElementById('modal-note').innerHTML = ev.note;
             document.getElementById('taxi-card-box').style.display = 'none';
             document.getElementById('detail-modal').classList.add('open');
-            document.getElementById('modal-map-btn').onclick = () => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ev.address)}`);
+            document.getElementById('modal-map-btn').onclick = () => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ev.address || ev.title)}`);
         }
 
         function toggleTaxi() {
@@ -355,23 +272,9 @@
 
         function closeModal() { document.getElementById('detail-modal').classList.remove('open'); }
 
-        function renderWeather() {
-            document.getElementById('weather-content').innerHTML = `
-                <div class="weather-card">
-                    <div class="weather-main">
-                        <i class="fa-solid fa-sun" style="font-size:3rem; color:var(--accent-color);"></i>
-                        <span style="font-size:2.5rem; font-family:'Playfair Display';">39°C</span>
-                    </div>
-                    <p>曼谷酷暑期：請隨時待在冷氣房或遮蔭處</p>
-                </div>`;
-        }
-
         function renderPacking() {
-            const container = document.getElementById('packing-list-container');
-            container.innerHTML = '';
-            packingItems.forEach(item => {
-                container.innerHTML += `<div class="checklist-item"><input type="checkbox"> <span>${item}</span></div>`;
-            });
+            const c = document.getElementById('packing-list-container'); c.innerHTML = '';
+            packingListItems.forEach(item => c.innerHTML += `<div class="checklist-item"><input type="checkbox"> <span>${item}</span></div>`);
         }
 
         function initMap() {
@@ -380,8 +283,7 @@
         }
 
         function updateMapMarkers(dayKey) {
-            markers.forEach(m => map.removeLayer(m));
-            markers = [];
+            markers.forEach(m => map.removeLayer(m)); markers = [];
             const group = new L.featureGroup();
             scheduleData[dayKey].events.forEach(ev => {
                 if(ev.coords) {
@@ -400,30 +302,21 @@
             if(id === 'map') setTimeout(() => map.invalidateSize(), 300);
         }
 
-        function openSubPage(id) { document.getElementById('subpage-' + id).classList.add('open'); }
-        function closeSubPage(id) { document.getElementById('subpage-' + id).classList.remove('open'); }
-
         function calcRate(type) {
-            const rate = 0.23;
-            const thb = document.getElementById('thb-input');
-            const hkd = document.getElementById('hkd-input');
-            if(type==='thb') hkd.value = (thb.value * rate).toFixed(2);
-            else thb.value = (hkd.value / rate).toFixed(0);
+            const rate = 0.23; const thb = document.getElementById('thb-input'); const hkd = document.getElementById('hkd-input');
+            if(type==='thb') hkd.value = (thb.value * rate).toFixed(2); else thb.value = (hkd.value / rate).toFixed(0);
         }
 
         function addWater() { waterCount++; document.getElementById('water-count').innerText = waterCount; }
 
         function openTipsModal() {
-            openEventModal({
-                title: "路痴救星 (Thong Lo 攻略)", stay: "隨時", open: "24H", address: "飯店周邊",
-                note: "1. <b>回飯店：</b>BTS Thong Lo 站 2 號出口迴轉進入 Soi 36。<br>2. <b>叫車：</b>下載 Grab/Bolt，地點設為 IR-ON Hotel。<br>3. <b>紅色小巴：</b>Soi 55 大路上有小巴可到 The Commons，一趟 ฿8。",
-                tags: ["教學"]
-            });
+            openEventModal({ title: "路痴救星", stay: "隨時", open: "24H", address: "飯店迴轉指引", 
+                note: "1. <b>回飯店：</b>BTS Thong Lo 2號出口下樓後「立即迴轉」走進 Soi 36。<br>2. <b>紅色小巴：</b>Soi 55 大路上隨招隨停，車資 ฿8。", tags: ["教學"] });
         }
 
-        function sendSafety() {
-            window.open(`https://wa.me/?text=${encodeURIComponent("我已抵達曼谷安全位置，一切順利！")}`);
-        }
+        function openSubPage(id) { document.getElementById('subpage-' + id).classList.add('open'); }
+        function closeSubPage(id) { document.getElementById('subpage-' + id).classList.remove('open'); }
+        function sendSafety() { window.open(`https://wa.me/?text=${encodeURIComponent("我已抵達曼谷安全位置，一切平安！")}`); }
 
         init();
     </script>
