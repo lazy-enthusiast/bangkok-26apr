@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>曼谷 2026 - 暹羅古韻全功能版</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>曼谷 2026 - 復活節香氛避暑之旅</title>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Noto+Sans+Thai:wght@300;400;500&display=swap" rel="stylesheet">
@@ -73,6 +76,9 @@
 
         .action-btn { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; padding: 14px; margin-top: 10px; background: #1A1A2E; color: var(--accent-color); border-radius: 4px; font-weight: bold; border: 1px solid var(--accent-color); }
         .checklist-item { background: rgba(255,255,255,0.05); padding: 15px; margin-bottom: 10px; border-radius: 4px; display: flex; align-items: center; gap: 12px; }
+
+        .budget-card { background: var(--weather-gradient); padding: 20px; border-radius: 12px; text-align: center; margin-bottom: 20px; }
+        .budget-amount { font-size: 2rem; font-weight: bold; color: var(--accent-color); }
     </style>
 </head>
 <body>
@@ -82,7 +88,7 @@
         <div class="header-icons">
             <a href="https://translate.google.com" target="_blank" class="header-btn"><i class="fa-solid fa-language"></i></a>
             <a href="#" class="header-btn" onclick="openTipsModal()"><i class="fa-solid fa-map-signs"></i></a>
-            <a href="#" class="header-btn" onclick="switchMainPage('tools', this)"><i class="fa-solid fa-spa fa-spin"></i></a>
+            <a href="#" class="header-btn" onclick="switchMainPage('tools', this)"><i class="fa-solid fa-toolbox"></i></a>
         </div>
     </header>
 
@@ -98,17 +104,23 @@
                 <h2 style="font-family:'Playfair Display',serif; text-align:center;">Bangkok Weather</h2>
                 <div class="note-box" style="text-align:center; color:#000; background:var(--weather-gradient); color:#fff; border:none;">
                     <i class="fa-solid fa-sun" style="font-size:3rem; margin-bottom:10px;"></i><br>
-                    <span style="font-size:2.5rem;">39°C</span><br>復活節酷暑期
+                    <span style="font-size:2.5rem;">39°C</span><br>復活節酷暑期 (避暑建議 14-16:00)
                 </div>
                 <div class="checklist-item">
                     <span>每日補水計數器 (建議 8 杯)</span>
-                    <button onclick="addWater()" style="margin-left:auto; background:var(--accent-color); border:none; width:45px; height:45px; border-radius:50%; font-size:1.2rem;"><i class="fa-solid fa-plus"></i></button>
+                    <button onclick="updateCounter('water', 1)" style="margin-left:auto; background:var(--accent-color); border:none; width:45px; height:45px; border-radius:50%; font-size:1.2rem;"><i class="fa-solid fa-plus"></i></button>
                     <span id="water-count" style="margin-left:15px; font-size:1.5rem;">0</span>
                 </div>
             </div>
         </div>
         <div id="page-tools" class="page">
             <div style="padding: 20px;">
+                <div class="budget-card">
+                    <p style="margin:0; font-size:0.9rem;">行程總花費預算 (THB)</p>
+                    <div class="budget-amount" id="budget-display">0</div>
+                    <p style="font-size:0.7rem; color:rgba(255,255,255,0.6)">預估建議：฿30,000+</p>
+                    <button onclick="addExpense()" style="margin-top:10px; background:none; border:1px solid #fff; color:#fff; padding:5px 15px; border-radius:20px;">+ 記錄支出</button>
+                </div>
                 <div class="checklist-item" onclick="openSubPage('hotel')"><i class="fa-solid fa-hotel"></i> 飯店資訊 & 泰文地址</div>
                 <div class="checklist-item" onclick="openSubPage('packing')"><i class="fa-solid fa-suitcase"></i> 行李 Check-list</div>
                 <div class="checklist-item" onclick="openSubPage('rate')"><i class="fa-solid fa-coins"></i> 匯率換算 (THB/HKD)</div>
@@ -120,14 +132,15 @@
             <div class="sub-header"><button onclick="closeSubPage('hotel')" style="background:none; border:none; color:var(--accent-color); font-size:1.2rem;"><i class="fa-solid fa-arrow-left"></i></button><h2>飯店詳細資訊</h2></div>
             <div style="padding:20px;">
                 <h3 style="color:var(--accent-color);">IR-ON Hotel (Thong Lo)</h3>
-                <div class="note-box thai-font" style="background:#fff; border:2px solid var(--accent-color); color:#000; font-size:1.2rem;">โรงแรม ไอออน, ซอยสุขุมวิท 36 (ใกล้ BTS ทองหล่อ)</div>
-                <p><b>地址：</b>10/10 Sukhumvit Soi 36, Bangkok</p>
+                <div class="note-box thai-font" style="background:#fff; border:2px solid var(--accent-color); color:#000; font-size:1.1rem;">โรงแรม ไอออน, 10/10 ซอยสุขุมวิท 36, กรงเทพฯ</div>
+                <p><b>入住：</b>14:00 | <b>退房：</b>12:00</p>
                 <div class="note-box">
-                    <b>無腦指引：</b><br>
-                    1. 搭 BTS 到 Thong Lo 站。<br>
-                    2. 找 2 號出口下樓。<br>
-                    3. 下樓後「立即迴轉」走進 Soi 36 巷口。<br>
-                    4. 步行約 3 分鐘，飯店在右手邊黑色建築。
+                    <b>🏠 防迷路回程指引：</b><br>
+                    1. 抵達 <b>BTS Thong Lo (E6)</b>。<br>
+                    2. 走 <b>2 號出口</b> 下樓。<br>
+                    3. 下樓後立刻「180 度大迴轉」往 Asok 方向走。<br>
+                    4. 步行 30m 轉進左手邊 <b>Soi 36</b>。<br>
+                    5. 直行約 350m (約 4 分鐘)，飯店在右側黑色工業風建築。
                 </div>
             </div>
         </div>
@@ -138,10 +151,11 @@
         </div>
 
         <div id="subpage-rate" class="sub-page">
-            <div class="sub-header"><button onclick="closeSubPage('rate')" style="background:none; border:none; color:var(--accent-color); font-size:1.2rem;"><i class="fa-solid fa-arrow-left"></i></button><h2>即時匯率換算</h2></div>
+            <div class="sub-header"><button onclick="closeSubPage('rate')" style="background:none; border:none; color:var(--accent-color); font-size:1.2rem;"><i class="fa-solid fa-arrow-left"></i></button><h2>匯率換算</h2></div>
             <div style="padding:20px;">
                 <label>泰銖 (THB)</label><input type="number" id="thb-input" oninput="calcRate('thb')" style="width:100%; padding:15px; margin:10px 0; background:#333; color:#fff; border:none; border-radius:8px; font-size:1.2rem;">
                 <label>港幣 (HKD)</label><input type="number" id="hkd-input" oninput="calcRate('hkd')" style="width:100%; padding:15px; margin:10px 0; background:#333; color:#fff; border:none; border-radius:8px; font-size:1.2rem;">
+                <p style="font-size:0.8rem; color:#888;">預設匯率: 1 THB = 0.23 HKD</p>
             </div>
         </div>
     </main>
@@ -158,17 +172,17 @@
             <span class="close-modal" onclick="closeModal()">×</span>
             <h2 id="modal-title" style="font-family:'Playfair Display',serif; color:#000; margin-bottom:15px; padding-right:30px;"></h2>
             <div id="taxi-card-box" class="taxi-card">
-                <p style="font-size:0.8rem; color:#888; margin-bottom:5px;">給司機看的地址 (Thai Address):</p>
-                <div id="modal-thai-address" class="thai-font" style="font-size:1.3rem; line-height:1.4;"></div>
+                <p style="font-size:0.8rem; color:#888; margin-bottom:5px;">給司機看 (Thai Address):</p>
+                <div id="modal-thai-address" class="thai-font" style="font-size:1.1rem; line-height:1.4;"></div>
             </div>
             <div style="font-size:0.9rem; margin-bottom:15px;">
-                <div style="margin-bottom:5px;"><i class="fa-regular fa-clock" style="color:var(--accent-color)"></i> <b>行程時間：</b> <span id="modal-stay"></span></div>
-                <div style="color:#B71C1C;"><i class="fa-solid fa-door-open"></i> <b>營業時間：</b> <span id="modal-open"></span></div>
+                <div><i class="fa-regular fa-clock" style="color:var(--accent-color)"></i> <span id="modal-stay"></span></div>
+                <div style="color:#B71C1C; margin-top:5px;"><i class="fa-solid fa-door-open"></i> <b>營業：</b> <span id="modal-open"></span></div>
             </div>
             <div class="note-box" id="modal-note"></div>
             <div style="display:flex; gap:10px;">
                 <button class="action-btn" id="modal-map-btn" style="flex:1;"><i class="fa-solid fa-location-arrow"></i> 導航</button>
-                <button class="action-btn" onclick="toggleTaxi()" style="flex:1; background:#fff; color:#000;"><i class="fa-solid fa-taxi"></i> 計程車卡</button>
+                <button class="action-btn" onclick="toggleTaxi()" style="flex:1; background:#fff; color:#000;"><i class="fa-solid fa-taxi"></i> 地址</button>
             </div>
         </div>
     </div>
@@ -177,48 +191,54 @@
     <script>
         const scheduleData = {
             "day1": { "date": "4/3 (五)", "events": [
-                { time: "10:30", title: "抵達機場 & 飯店寄放行李", stay: "10:30 - 12:30", open: "24 小時", address: "IR-ON Hotel", thai: "โรงแรม ไอออน, ซอยสุขุมวิท 36", coords: [13.7252, 100.5783], note: "ARL 機場線到終點 Phaya Thai 轉 BTS 到 Thong Lo。2號出口下樓迴轉。", tags: ["抵達"] },
-                { time: "13:00", title: "午餐：Supanniga Eating Room", stay: "13:00 - 14:30", open: "10:00 - 22:00", address: "Thong Lo Soi 55", thai: "สุพรรณิการ์ อีทติ้ง รูม ทองหล่อ", coords: [13.7314, 100.5815], note: "米其林推薦。推薦蟹肉烘蛋 (Khai Jiew Pu)、馬撒曼咖哩。", tags: ["米其林", "泰菜"] },
-                { time: "15:00", title: "金湯普森博物館 (Jim Thompson)", stay: "15:00 - 16:30", open: "10:00 - 18:00", address: "Soi Kasemsan 2", thai: "พิพิธภัณฑ์บ้านจิม ทอมป์สัน", coords: [13.7495, 100.5283], note: "最後導覽 17:00。泰絲大王故居，花園柚木建築。", tags: ["景點", "文化"] },
-                { time: "16:30", title: "Siam 香氛巡禮 (Journal & Copenn)", stay: "16:30 - 18:00", open: "10:00 - 21:00", address: "Siam Square One", thai: "สยามสแควร์วัน (Journal & Copenn)", coords: [13.7445, 100.5342], note: "Journal: 以泰國古法香膏為底。<br>Copenn: 極簡工業風，木質調與土質調非常出色。", tags: ["購物", "香氛"] },
-                { time: "18:30", title: "晚餐：Sra Bua by Kiin Kiin", stay: "18:30 - 20:30", open: "18:00 - 24:00", address: "Siam Kempinski", thai: "สระบัว บาย กิน กิน", coords: [13.7473, 100.5342], note: "米其林一星分子泰菜。請著端莊服裝。", tags: ["米其林", "Fine Dining"] },
-                { time: "21:00", title: "按摩 1：Asia Herb Association", stay: "21:00 - 22:30", open: "09:00 - 02:00", address: "Thong Lo", thai: "เอเชีย เฮิร์บ แอสโซซิเอชั่น", coords: [13.7255, 100.5785], note: "首日舒壓：100% 純精油按摩，滋潤機艙乾燥皮膚。", tags: ["Spa", "必做"] }
+                { time: "10:30", title: "抵達曼谷 (BKK)", stay: "ARL 機場快線", open: "24H", address: "BKK Airport", thai: "สนามบินสุวรรณภูมิ", coords: [13.6899, 100.7501], note: "1. B1 搭 ARL 到 Phaya Thai (฿45)。<br>2. 轉 BTS 往 Kheha 方向到 Thong Lo。<br>3. 飯店 IR-ON 在 2 號出口迴轉進入 Soi 36。", tags: ["交通"] },
+                { time: "13:00", title: "午餐：Supanniga Eating Room", stay: "13:00 - 14:30", open: "10:00 - 22:00", address: "Thong Lo Soi 55", thai: "สุพรรณิการ์ อีทติ้ง รูม ทองหล่อ", coords: [13.7314, 100.5815], note: "<b>米其林推薦</b>。推薦：蟹肉烘蛋 (Khai Jiew Pu)、馬撒曼咖哩牛。預算約 ฿1,500。", tags: ["米其林", "泰菜"] },
+                { time: "15:00", title: "Jim Thompson House", stay: "15:00 - 16:30", open: "10:00 - 18:00", address: "Soi Kasemsan 2", thai: "พิพิธภัณฑ์บ้านจิม ทอมป์สัน", coords: [13.7495, 100.5283], note: "BTS National Stadium 站 1 號出口。泰絲大王柚木建築。門票 ฿200。", tags: ["景點", "文化"] },
+                { time: "16:30", title: "香氛巡禮：Journal & Copenn.", stay: "Siam Square 區", open: "10:00 - 21:00", address: "Siam Square One", thai: "สยามสแควร์วัน", coords: [13.7445, 100.5342], note: "<b>Journal:</b> LG 層，必試沉香、芒果糯米香水。<br><b>Copenn:</b> Firster 內，極簡風護手霜推薦。", tags: ["購物", "香氛"] },
+                { time: "18:30", title: "晚餐：Sra Bua by Kiin Kiin", stay: "18:30 - 20:30", open: "18:00 - 24:00", address: "Siam Kempinski", thai: "สระบัว บาย กิน กิน", coords: [13.7473, 100.5342], note: "<b>米其林一星</b>。分子泰菜。需預約。<b>服裝：Smart Casual (禁拖鞋背心)</b>。預算 ฿3,500+。", tags: ["米其林", "Fine Dining"] },
+                { time: "21:00", title: "按摩：Asia Herb (Thong Lo)", stay: "21:00 - 22:30", open: "09:00 - 02:00", address: "Thong Lo Exit 3", thai: "เอเชีย เฮิร์บ แอสโซซิเอชั่น", coords: [13.7255, 100.5785], note: "通羅站 3 號出口即達。推薦 100% 純精油按摩。", tags: ["Spa", "必做"] }
             ]},
             "day2": { "date": "4/4 (六)", "events": [
-                { time: "10:00", title: "Chatuchak 週末市集 (Section 26)", stay: "10:00 - 12:00", open: "09:00 - 18:00", address: "Kamphaeng Phet 2 Rd", thai: "ตลาดนัดจตุจักร", coords: [13.8015, 100.5524], note: "專攻 Section 26 古物區與 Hem Aroma (市集內香氛)。", tags: ["市集", "購物"] },
-                { time: "12:30", title: "Copper Beyond Buffet", stay: "12:30 - 14:30", open: "10:00 - 20:00", address: "Gaysorn Amarin 3F", thai: "คอปเปอร์ บียอนด์ บุฟเฟต์", coords: [13.7445, 100.5410], note: "預約制自助餐。必吃澳洲和牛船麵、松露濃湯。", tags: ["必吃", "Buffet"] },
-                { time: "15:00", title: "午休避暑 (回飯店休息)", stay: "15:00 - 16:30", note: "曼谷下午 2-4 點極端高溫，回飯店充電避暑。", tags: ["避暑"] },
-                { time: "16:30", title: "按摩 2：Asia Herb (草藥球)", stay: "16:30 - 18:00", open: "09:00 - 02:00", note: "針對市集腿部疲勞：泰式按摩 + 草藥球熱敷。", tags: ["Spa"] },
-                { time: "19:30", title: "Paper Plane Project (40F)", stay: "19:30 - 21:30", open: "09:00 - 01:30", address: "T-One Building", thai: "ตึก ที-วัน ชั้น 40", note: "高空生啤與高空夜景。吃完芒果糯米飯宵夜正好。", tags: ["酒吧", "夜景"] }
+                { time: "10:00", title: "Chatuchak 週末市集", stay: "古董 & Hem Aroma", open: "09:00 - 18:00", address: "Section 26", thai: "ตลาดนัดจตุจักร", coords: [13.8015, 100.5524], note: "直衝 Section 26 尋古物。<b>Hem Aroma</b> 亦在 Section 26，必買香氛木。", tags: ["市集", "購物"] },
+                { time: "12:30", title: "Copper Beyond Buffet (R1)", stay: "和牛船麵 & 黑松露", open: "10:00 - 20:00", address: "Gaysorn Amarin 3F", thai: "คอปเปอร์ บียอนด์ บุฟเฟต์", coords: [13.7445, 100.5410], note: "預訂制。主攻和牛船麵、松露濃湯。預算 ฿2,000。", tags: ["必吃", "Buffet"] },
+                { time: "15:00", title: "飯店避暑午休", stay: "15:00 - 16:30", note: "復活節酷暑期，全天最熱時段回 IR-ON 休息整理戰利品。", tags: ["避暑"] },
+                { time: "16:30", title: "按摩：Asia Herb (草藥球)", stay: "16:30 - 18:00", open: "09:00 - 02:00", note: "推薦：泰式按摩+生草藥球熱敷。消除逛市集疲勞。", tags: ["Spa"] },
+                { time: "18:30", title: "Mae Varee 芒果糯米飯", stay: "通羅必吃老店", open: "06:00 - 22:00", address: "Thong Lo Exit 3", thai: "แม่วารี ทองหล่อ", note: "3 號出口下樓即達。外帶三色芒果糯米飯回飯店。", tags: ["小吃"] },
+                { time: "19:30", title: "Paper Plane Project (40F)", stay: "高空生啤夜景", open: "09:00 - 01:30", address: "T-One Building", thai: "ตึก ที-วัน ชั้น 40", coords: [13.7225, 100.5785], note: "從飯店步 3 分鐘。景觀極美，推薦泰國本土生啤。", tags: ["酒吧", "夜景"] }
             ]},
             "day3": { "date": "4/5 (日)", "events": [
-                { time: "09:30", title: "蘇泰寺 & 大鞦韆", stay: "09:30 - 11:00", open: "08:00 - 20:00", address: "Old City", thai: "วัดสุทัศนเทพวราราม", coords: [13.7510, 100.5011], note: "一級皇家寺廟，莊嚴靜心，適合晨間祈福。", tags: ["寺廟", "景點"] },
-                { time: "12:00", title: "午餐：The Mustang Blu", stay: "12:00 - 14:00", open: "11:00 - 21:00", address: "Hua Lamphong", thai: "เดอะ มัสแตง บลู", coords: [13.7395, 100.5160], note: "百年銀行改建，黑松露義大利麵、焦糖檸檬塔。", tags: ["特色餐廳"] },
-                { time: "14:30", title: "River City Bangkok (藝術巡禮)", stay: "14:30 - 16:30", open: "10:00 - 20:00", address: "Pier Charoen Krung", thai: "ริเวอร์ ซิตี้ แบงค็อก", note: "3-4 樓古董拍賣行，冷氣強，避暑藝術首選。", tags: ["藝術", "古董"] },
-                { time: "18:30", title: "晚餐：Paste Bangkok", stay: "18:30 - 20:30", open: "18:00 - 23:00", address: "Gaysorn Village", thai: "เพสต์ แบงค็อก (เกษรวิลเลจ)", note: "皇室泰菜，推薦皇家咖哩蟹、西瓜鮭魚鬆。", tags: ["米其林", "皇室"] },
-                { time: "21:00", title: "按摩 3：Asia Herb (肩頸背)", stay: "21:00 - 22:30", note: "針對今日行程：肩、頸、背部加強按摩。", tags: ["Spa"] }
+                { time: "09:30", title: "蘇泰寺 Wat Suthat", stay: "晨間祈福", open: "08:00 - 20:00", address: "Old City", thai: "วัดสุทัศนเทพวราราม", coords: [13.7510, 100.5011], note: "MRT Sam Yot 站 3 號出口步 8 分。一級皇家寺廟。", tags: ["寺廟"] },
+                { time: "12:00", title: "午餐：The Mustang Blu", stay: "百年建築藝術", open: "11:00 - 21:00", address: "Hua Lamphong", thai: "เดอะ มัสแตง บลู", coords: [13.7395, 100.5160], note: "MRT Hua Lamphong 2 號出口步 5 分。必點黑松露義大利麵。", tags: ["特色餐廳"] },
+                { time: "14:30", title: "River City Bangkok", stay: "藝術 & 古董", open: "10:00 - 20:00", address: "Pier Charoen Krung", thai: "ริเวอร์ ซิตี้ แบงค็อก", coords: [13.7303, 100.5135], note: "3-4 樓古董拍賣中心與畫廊。嘟嘟車前往約 ฿100。", tags: ["藝術", "古董"] },
+                { time: "18:30", title: "晚餐：Paste Bangkok", stay: "皇家咖哩蟹", open: "18:00 - 23:00", address: "Gaysorn Village 3F", thai: "เพสต์ แบงค็อก", note: "<b>米其林一星</b>。皇室泰菜。必點皇家咖哩蟹。", tags: ["米其林", "皇室"] },
+                { time: "21:00", title: "按摩：Asia Herb (肩頸)", stay: "放鬆今日腳程", note: "針對今日舊城區步行：推薦頭、肩、背按摩。", tags: ["Spa"] }
             ]},
             "day4": { "date": "4/6 (一)", "events": [
-                { time: "10:30", title: "Erb Bespoke 調香體驗", stay: "10:30 - 12:00", open: "10:00 - 20:00", address: "Gaysorn Village 2F", thai: "เอิบ เบสโปค (เกษรวิลเลจ)", note: "皇室御用品牌。調製專屬你的名字香水。", tags: ["調香", "訂製"] },
-                { time: "15:00", title: "Gourmet Market 超市採購", stay: "15:00 - 16:30", open: "10:00 - 22:00", address: "EmQuartier", thai: "กูร์เมต์ มาร์เก็ต (เอ็มควอเทียร์)", note: "必買：藍象料理包、手標茶、皇室蜂蜜。", tags: ["購物", "伴手禮"] },
-                { time: "16:30", title: "按摩 4：Asia Herb (全身大保養)", stay: "16:30 - 18:30", note: "全身草藥球 120 分鐘，旅程最後大排毒。", tags: ["Spa", "極致"] },
-                { time: "19:00", title: "The Commons Thong Lo", stay: "19:00 - 21:00", open: "08:00 - 01:00", address: "Soi Thong Lo 17", thai: "เดอะ คอมมอนส์ ทองหล่อ", note: "文青社區。去 1F Beer Cap 點杯 Chalawan 精釀。", tags: ["文青", "夜生活"] }
+                { time: "10:30", title: "Erb Bespoke 調香體驗", stay: "專屬香水訂製", open: "10:00 - 20:00", address: "Gaysorn Village 2F", thai: "เอิบ เบสโปค (เกษรวิลเลจ)", note: "需提前預約。調製專屬個人名字的香水 BAR。", tags: ["調香", "訂製"] },
+                { time: "12:30", title: "Copper Beyond Buffet (R2)", stay: "生蠔與甜點回訪", open: "10:00 - 20:00", note: "二刷攻略：專攻生蠔、泰式生醃及精緻甜點。", tags: ["Buffet"] },
+                { time: "15:00", title: "Gourmet Market 採購", stay: "EmQuartier 店", open: "10:00 - 22:00", address: "Phrom Phong 站", thai: "กูร์เมต์ มาร์เก็ต", coords: [13.7315, 100.5695], note: "1 號出口直通。💡Hem Aroma 若未買齊，Central World 2樓亦有分店。", tags: ["購物"] },
+                { time: "16:30", title: "按摩：Asia Herb (大保養)", stay: "最後一晚深度放鬆", note: "全身精油+草藥球 (120分鐘)。旅程最後大舒壓。", tags: ["Spa"] },
+                { time: "19:00", title: "The Commons Thong Lo", stay: "文青啤酒社區", open: "08:00 - 01:00", address: "Soi Thong Lo 17", thai: "เดอะ คอมมอนส์ ทองหล่อ", note: "路口搭<b>紅色小巴 (฿8)</b> 到 Soi 17。去 <b>The Beer Cap</b> 喝在地精釀。", tags: ["文青", "生啤"] }
             ]},
             "day5": { "date": "4/7 (二)", "events": [
-                { time: "09:30", title: "Central World 祈福 (愛神/象神)", stay: "09:30 - 10:30", open: "24 小時", address: "Central World", thai: "พระตรีมูรติ เซ็นทรัลเวิลด์", note: "紅玫瑰求緣分，黃花求象神保佑事業順利。", tags: ["祈福"] },
-                { time: "11:30", title: "午餐：Saneh Jaan", stay: "11:30 - 13:30", open: "11:30 - 14:00", address: "Sindhorn Building", thai: "เสน่ห์จันทน์ (อาคารสินธร)", note: "宮廷泰菜，米其林一星，為旅程完美收尾。", tags: ["米其林", "最終回"] },
-                { time: "14:30", title: "前往機場 (BKK)", stay: "14:30 - 15:30", address: "Airport", note: "帶著香氣與回憶回家。", tags: ["回程"] }
+                { time: "09:30", title: "愛神 & 象神祈福", stay: "Central World 廣場", open: "24H", address: "Central World", thai: "พระตรีมูรติ เซ็นทรัลเวิลด์", note: "紅玫瑰求緣分，象神求事業順利。", tags: ["祈福"] },
+                { time: "11:30", title: "午餐：Saneh Jaan", stay: "最終回米其林", open: "11:30 - 14:00", address: "Sindhorn 大樓", thai: "เสน่ห์จันทน์", coords: [13.7385, 100.5448], note: "<b>米其林一星</b>。宮廷泰式拼盤。為旅程畫下完美句點。", tags: ["米其林"] },
+                { time: "14:30", title: "前往機場 (BKK)", stay: "提前 3 小時抵達", note: "返飯店取行李。搭 BTS 到 Phaya Thai 轉 ARL 往機場。帶著香氣與回憶回家。", tags: ["回程"] }
             ]}
         };
 
-        const packingListItems = ["護照", "網卡/E-SIM", "防蚊液", "薄披肩", "防曬乳", "Rabbit Card", "止瀉藥", "行動電源"];
-        let map, markers = [], waterCount = 0;
+        const packingListItems = ["護照/簽證", "網卡/E-SIM", "防蚊液/防曬", "薄披肩(寺廟/冷氣)", "Rabbit Card", "止瀉/常用藥", "行動電源", "Hungry Hub 預約證明"];
+        let map, markers = [], waterCount = 0, expenseTotal = 0;
 
         function init() {
             renderDateSelector();
             selectDay('day1', document.querySelector('.date-chip'));
             renderPacking();
             initMap();
+            waterCount = parseInt(localStorage.getItem('waterCount')) || 0;
+            expenseTotal = parseInt(localStorage.getItem('expenseTotal')) || 0;
+            document.getElementById('water-count').innerText = waterCount;
+            document.getElementById('budget-display').innerText = expenseTotal.toLocaleString();
         }
 
         function renderDateSelector() {
@@ -243,9 +263,10 @@
             const container = document.getElementById('timeline-container');
             container.innerHTML = `<h3 style="color:var(--accent-color); margin-bottom:15px;">${scheduleData[dayKey].date}</h3>`;
             scheduleData[dayKey].events.forEach(ev => {
+                const evString = JSON.stringify(ev).replace(/'/g, "\\'");
                 container.innerHTML += `
                     <div class="timeline-item">
-                        <div class="card" onclick='openEventModal(${JSON.stringify(ev)})'>
+                        <div class="card" onclick='openEventModal(${evString})'>
                             <span class="card-time">${ev.time}</span>
                             <h3 class="card-title">${ev.title}</h3>
                             <div class="tags">${ev.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}</div>
@@ -258,11 +279,12 @@
             document.getElementById('modal-title').innerText = ev.title;
             document.getElementById('modal-stay').innerText = ev.stay;
             document.getElementById('modal-open').innerText = ev.open || "見備註";
-            document.getElementById('modal-thai-address').innerText = ev.thai || ev.address || "IR-ON Hotel";
+            document.getElementById('modal-thai-address').innerText = ev.thai || ev.address || "IR-ON Hotel Thong Lo";
             document.getElementById('modal-note').innerHTML = ev.note;
             document.getElementById('taxi-card-box').style.display = 'none';
             document.getElementById('detail-modal').classList.add('open');
-            document.getElementById('modal-map-btn').onclick = () => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ev.address || ev.title)}`);
+            const query = encodeURIComponent(ev.address || ev.title);
+            document.getElementById('modal-map-btn').onclick = () => window.open(`https://www.google.com/maps/search/?api=1&query=${query}`);
         }
 
         function toggleTaxi() {
@@ -303,15 +325,31 @@
         }
 
         function calcRate(type) {
-            const rate = 0.23; const thb = document.getElementById('thb-input'); const hkd = document.getElementById('hkd-input');
+            const rate = 0.23;
+            const thb = document.getElementById('thb-input'); const hkd = document.getElementById('hkd-input');
             if(type==='thb') hkd.value = (thb.value * rate).toFixed(2); else thb.value = (hkd.value / rate).toFixed(0);
         }
 
-        function addWater() { waterCount++; document.getElementById('water-count').innerText = waterCount; }
+        function updateCounter(type, val) {
+            if(type === 'water') {
+                waterCount += val;
+                document.getElementById('water-count').innerText = waterCount;
+                localStorage.setItem('waterCount', waterCount);
+            }
+        }
+
+        function addExpense() {
+            const amount = prompt("輸入支出金額 (THB):");
+            if (amount && !isNaN(amount)) {
+                expenseTotal += parseInt(amount);
+                document.getElementById('budget-display').innerText = expenseTotal.toLocaleString();
+                localStorage.setItem('expenseTotal', expenseTotal);
+            }
+        }
 
         function openTipsModal() {
-            openEventModal({ title: "路痴救星", stay: "隨時", open: "24H", address: "飯店迴轉指引", 
-                note: "1. <b>回飯店：</b>BTS Thong Lo 2號出口下樓後「立即迴轉」走進 Soi 36。<br>2. <b>紅色小巴：</b>Soi 55 大路上隨招隨停，車資 ฿8。", tags: ["教學"] });
+            openEventModal({ title: "飯店回程指引", stay: "防迷路專用", open: "24H", address: "IR-ON Hotel", thai: "โรงแรม ไอออน, ซอยสุขุมวิท 36", 
+                note: "1. 抵達 <b>Thong Lo (E6) 2號出口</b>。<br>2. 下樓後<b>立刻大迴轉</b>往 Asok 方向走。<br>3. 30公尺處左轉進入 <b>Soi 36</b>。<br>4. 直走 4 分鐘，飯店在右手邊。", tags: ["救命"] });
         }
 
         function openSubPage(id) { document.getElementById('subpage-' + id).classList.add('open'); }
