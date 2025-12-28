@@ -38,10 +38,10 @@
             display: flex; justify-content: space-between; align-items: center;
             height: 60px;
         }
-        header h1 { margin: 0; font-size: 1.3rem; font-family: "Playfair Display", serif; letter-spacing: 1px; color: var(--accent-color); }
+        header h1 { margin: 0; font-size: 1.2rem; font-family: "Playfair Display", serif; letter-spacing: 1px; color: var(--accent-color); }
         
-        .header-icons { display: flex; gap: 20px; align-items: center; }
-        .header-btn { color: var(--text-on-dark); font-size: 1.2rem; cursor: pointer; text-decoration: none; }
+        .header-icons { display: flex; gap: 18px; align-items: center; }
+        .header-btn { color: var(--text-on-dark); font-size: 1.1rem; cursor: pointer; text-decoration: none; }
         .fan-btn i { color: var(--accent-color); }
 
         .date-selector-container {
@@ -126,7 +126,6 @@
             background: rgba(255,255,255,0.05); padding: 15px; margin-bottom: 12px;
             border-radius: 4px; display: flex; align-items: center; gap: 15px;
         }
-        .checklist-item input { width: 20px; height: 20px; accent-color: var(--accent-color); }
 
         nav.bottom-nav {
             position: fixed; bottom: 0; width: 100%; background-color: var(--menu-bg);
@@ -156,6 +155,7 @@
     <header>
         <h1>BANGKOK 2026</h1>
         <div class="header-icons">
+            <a href="https://translate.google.com" target="_blank" class="header-btn"><i class="fa-solid fa-language"></i></a>
             <a href="#" class="header-btn" onclick="openTipsModal()"><i class="fa-solid fa-map-signs"></i></a>
             <a href="#" class="header-btn fan-btn" onclick="switchMainPage('tools', this)"><i class="fa-solid fa-spa fa-spin"></i></a>
         </div>
@@ -212,7 +212,7 @@
 
         <div id="subpage-packing" class="sub-page">
             <div class="sub-header"><button onclick="closeSubPage('packing')" style="background:none; border:none; color:var(--accent-color); font-size:1.2rem;"><i class="fa-solid fa-arrow-left"></i></button><h2>行李清單</h2></div>
-            <div class="sub-content" id="packing-list-container" style="padding:20px;"></div>
+            <div id="packing-list-container" style="padding:20px;"></div>
         </div>
 
         <div id="subpage-rate" class="sub-page">
@@ -237,7 +237,7 @@
             <h2 id="modal-title" style="font-family:'Playfair Display',serif; color:#000; margin-bottom:15px;"></h2>
             
             <div id="taxi-card-box" class="taxi-card">
-                <p style="font-size:0.8rem; color:#888;">目的地泰文地址：</p>
+                <p style="font-size:0.8rem; color:#888;">目的地泰文地址 (給司機)：</p>
                 <div id="modal-thai-address" class="thai-font" style="font-size:1.2rem;"></div>
             </div>
 
@@ -249,7 +249,7 @@
             
             <div style="display:flex; gap:10px;">
                 <button class="action-btn" id="modal-map-btn" style="flex:1;"><i class="fa-solid fa-location-arrow"></i> 導航</button>
-                <button class="action-btn" onclick="toggleTaxi()" style="flex:1; background:#fff; color:#000;"><i class="fa-solid fa-taxi"></i> 計程車卡</button>
+                <button class="action-btn" onclick="toggleTaxi()" style="flex:1; background:#fff; color:#000;"><i class="fa-solid fa-taxi"></i> 給司機看</button>
             </div>
         </div>
     </div>
@@ -258,37 +258,38 @@
     <script>
         const scheduleData = {
             "day1": { "date": "4/3 (五)", "events": [
-                { time: "10:30", title: "抵達機場 & 寄放行李", stay: "10:30 - 12:30", open: "24 小時", address: "IR-ON Hotel", thai: "โรงแรม IR-ON, ซอยสุขุมวิท 36", coords: [13.7252, 100.5783], note: "ARL 到 Phaya Thai 轉 BTS 到 Thong Lo。2號出口下樓迴轉。", tags: ["抵達"] },
-                { time: "13:00", title: "Supanniga Eating Room", stay: "13:00 - 14:30", open: "10:00 - 22:00", address: "Thong Lo Soi 55", thai: "สุพรรณิการ์ อีทติ้ง รูม ทองหล่อ", coords: [13.7314, 100.5815], note: "米其林推薦。必點蟹肉烘蛋。", tags: ["米其林", "美食"] },
-                { time: "15:00", title: "金湯普森博物館", stay: "15:00 - 16:30", open: "10:00 - 18:00", address: "Soi Kasemsan 2", thai: "พิพิธภัณฑ์บ้านจิม ทอมป์สัน", coords: [13.7495, 100.5283], note: "最後導覽 17:00。泰絲大王故居。", tags: ["文化", "必去"] },
-                { time: "16:30", title: "Siam 香氛巡禮", stay: "16:30 - 18:00", open: "10:00 - 21:00", address: "Siam Square One", thai: "สยามสแควร์วัน", coords: [13.7445, 100.5342], note: "Journal (招牌 Galanga) & Copenn。泰國特色調香。", tags: ["購物", "香氛"] },
-                { time: "18:30", title: "Sra Bua by Kiin Kiin", stay: "18:30 - 20:30", open: "18:00 - 24:00", address: "Siam Kempinski", thai: "สระบัว บาย กิน กิน", coords: [13.7473, 100.5342], note: "米其林一星分子泰菜。請著端莊便裝。", tags: ["米其林", "奢華"] },
-                { time: "21:00", title: "Asia Herb Association", stay: "21:00 - 22:30", open: "09:00 - 02:00", address: "Thong Lo", thai: "เอเชีย เฮิร์บ แอสโซซิเอชั่น ทองหล่อ", coords: [13.7255, 100.5785], note: "凌晨結業，回飯店前放鬆首選。", tags: ["Spa", "晚間"] }
+                { time: "10:30", title: "抵達機場 & 飯店寄放行李", stay: "10:30 - 12:30", open: "24 小時", address: "IR-ON Hotel", thai: "โรงแรม IR-ON, ซอยสุขุมวิท 36 (ใกล้ BTS ทองหล่อ)", coords: [13.7252, 100.5783], note: "ARL 到 Phaya Thai 轉 BTS 到 Thong Lo。2號出口下樓迴轉。", tags: ["抵達"] },
+                { time: "13:00", title: "午餐：Supanniga Eating Room", stay: "13:00 - 14:30", open: "10:00 - 22:00", address: "Soi Sukhumvit 55", thai: "สุพรรณิการ์ อีทติ้ง รูม ทองหล่อ (ซอย 55)", coords: [13.7314, 100.5815], note: "米其林推薦。必點蟹肉烘蛋與馬撒曼咖哩。", tags: ["米其林", "美食"] },
+                { time: "15:00", title: "金湯普森博物館", stay: "15:00 - 16:30", open: "10:00 - 18:00 (最後 17:00)", address: "Soi Kasemsan 2", thai: "พิพิธภัณฑ์บ้านจิม ทอมป์สัน (ซอยเกษมสันต์ 2)", coords: [13.7495, 100.5283], note: "泰絲大王故居，花園幽靜。建議參加導覽。", tags: ["景點", "文化"] },
+                { time: "16:30", title: "小眾香氛：Journal & Copenn.", stay: "16:30 - 18:00", open: "Journal (10-22) / Copenn (10-21)", address: "Siam Square One", thai: "สยามสแควร์วัน (Siam Square One)", coords: [13.7445, 100.5342], note: "Journal 招牌是 Galanga；Copenn. 則走工業風極簡美學。", tags: ["香氛", "購物"] },
+                { time: "18:30", title: "晚餐：Sra Bua by Kiin Kiin", stay: "18:30 - 20:30", open: "18:00 - 24:00", address: "Siam Kempinski Hotel", thai: "โรงแรมสยามเคมพินสกี้ (ห้องอาหารสระบัว)", coords: [13.7473, 100.5342], note: "米其林一星分子泰菜。需預約並穿著休閒端莊。", tags: ["米其林", "奢華"] },
+                { time: "21:00", title: "按摩：Asia Herb Association", stay: "21:00 - 22:30", open: "09:00 - 02:00", address: "Thong Lo", thai: "เอเชีย เฮิร์บ แอสโซซิเอชั่น ทองหล่อ", coords: [13.7255, 100.5785], note: "招牌草藥球按摩。就在飯店附近，按摩完直接回飯店。", tags: ["Spa", "放鬆"] }
             ]},
             "day2": { "date": "4/4 (六)", "events": [
-                { time: "10:00", title: "Chatuchak 週末市集", stay: "10:00 - 12:00", open: "09:00 - 18:00", address: "Mo Chit", thai: "ตลาดนัดจตุจักร", coords: [13.8015, 100.5524], note: "Section 26 古物區與 Hem Aroma。", tags: ["市集"] },
-                { time: "12:30", title: "Copper Beyond Buffet", stay: "12:30 - 14:30", open: "10:00 - 20:00", address: "Gaysorn Amarin", thai: "คอปเปอร์ บียอนด์ บุฟเฟต์", coords: [13.7445, 100.5410], note: "預約制自助餐。和牛船麵與松露濃湯必吃。", tags: ["必吃"] },
-                { time: "19:30", title: "Paper Plane Project", stay: "19:30 - 21:30", open: "09:00 - 01:30", address: "T-One 40F", thai: "อาคาร ที-วัน ชั้น 40", note: "高空生啤與高空美景。", tags: ["酒吧", "高空"] }
+                { time: "10:00", title: "Chatuchak 週末市集", stay: "10:00 - 12:00", open: "09:00 - 18:00", address: "Mo Chit", thai: "ตลาดนัดจตุจักร (Kamphaeng Phet 2 Rd)", coords: [13.8015, 100.5524], note: "專攻 Section 26 古物區。Hem Aroma 也在此區。", tags: ["市集", "購物"] },
+                { time: "12:30", title: "Copper Beyond Buffet", stay: "12:30 - 14:30", open: "10:00 - 20:00", address: "Gaysorn Amarin", thai: "อาคารเกษรอัมรินทร์ ชั้น 3 (Copper)", coords: [13.7445, 100.5410], note: "必點和牛船麵、松露濃湯。需透過 Hungry Hub 預訂。", tags: ["必吃", "Buffet"] },
+                { time: "15:00", title: "飯店午休避暑", stay: "15:00 - 16:30", open: "24 小時", address: "IR-ON Hotel", note: "避開下午 2-4 點曼谷極高溫烈日。", tags: ["休息"] },
+                { time: "19:30", title: "Paper Plane Project", stay: "19:30 - 21:30", open: "09:00 - 01:30", address: "T-One Building 40F", thai: "ตึก ที-วัน ชั้น 40 (สุขุมวิท)", note: "40樓高空吧，俯瞰通羅夜景。喝完散步 5 分鐘回飯店。", tags: ["高空吧", "夜景"] }
             ]},
             "day3": { "date": "4/5 (日)", "events": [
-                { time: "09:30", title: "蘇泰寺 (Wat Suthat)", stay: "09:30 - 11:00", open: "08:00 - 20:00", address: "Old City", thai: "วัดสุทัศนเทพวราราม", coords: [13.7510, 100.5011], note: "莊嚴靜心，門口有著名大鞦韆。", tags: ["寺廟"] },
-                { time: "12:00", title: "The Mustang Blu", stay: "12:00 - 14:00", open: "11:00 - 21:00", address: "Hua Lamphong", thai: "เดอะ มัสแตง บลู", coords: [13.7395, 100.5160], note: "百年銀行改造餐廳，拍照極美。", tags: ["特色"] },
-                { time: "14:30", title: "River City Bangkok", stay: "14:30 - 16:30", open: "10:00 - 20:00", address: "Pier Siphraya", thai: "ริเวอร์ ซิตี้ แบงค็อก", coords: [13.7302, 100.5140], note: "古董拍賣中心，避暑藝術首選。", tags: ["藝術"] },
-                { time: "18:30", title: "Paste Bangkok", stay: "18:30 - 20:30", open: "18:00 - 23:00", address: "Gaysorn Village", thai: "เพสต์ แบงค็อก", coords: [13.7444, 100.5405], note: "皇家泰菜，米其林一星。", tags: ["米其林"] }
+                { time: "09:30", title: "蘇泰寺 (Wat Suthat)", stay: "09:30 - 11:00", open: "08:00 - 20:00", address: "Sao Chingcha", thai: "วัดสุทัศนเทพวราราม (เสาชิงช้า)", coords: [13.7510, 100.5011], note: "皇家寺廟，門外有大鞦韆。適合晨間靜心。", tags: ["景點", "寺廟"] },
+                { time: "12:00", title: "The Mustang Blu", stay: "12:00 - 14:00", open: "11:00 - 21:00", address: "Hua Lamphong", thai: "เดอะ มัสแตง บลู (ถนนไมตรีจิตต์)", coords: [13.7395, 100.5160], note: "百年銀行改建標本餐廳。推薦焦糖檸檬塔。", tags: ["特色", "網美"] },
+                { time: "14:30", title: "River City Bangkok", stay: "14:30 - 16:30", open: "10:00 - 20:00", address: "Charoen Krung 24", thai: "ริเวอร์ ซิตี้ แบงค็อก (เจริญกรุง 24)", coords: [13.7302, 100.5140], note: "古董與藝術中心，冷氣強。建議搭 Tuk-tuk 前往。", tags: ["藝術", "冷氣"] },
+                { time: "18:30", title: "晚餐：Paste Bangkok", stay: "18:30 - 20:30", open: "18:00 - 23:00", address: "Gaysorn Village", thai: "เกษรวิลเลจ ชั้น 3 (ห้องอาหารเพสต์)", coords: [13.7444, 100.5405], note: "米其林一星，極致宮廷料理。必點皇家咖哩蟹。", tags: ["米其林", "皇室"] }
             ]},
             "day4": { "date": "4/6 (一)", "events": [
-                { time: "10:30", title: "Erb Bespoke 調香", stay: "10:30 - 12:00", open: "10:00 - 20:00", address: "Gaysorn Village", thai: "เอิบ เบสโปค", coords: [13.7444, 100.5405], note: "調製專屬香水，皇室等級氣息。", tags: ["體驗"] },
-                { time: "15:00", title: "Gourmet Market", stay: "15:00 - 16:30", open: "10:00 - 22:00", address: "EmQuartier", thai: "กูร์เมต์ มาร์เก็ต", coords: [13.7313, 100.5696], note: "超市掃貨：藍象料理包、皇室蜂蜜。", tags: ["手信"] },
-                { time: "19:00", title: "The Commons", stay: "19:00 - 21:00", open: "08:00 - 01:00", address: "Thong Lo 17", thai: "เดอะ คอมมอนส์ ทองหล่อ", coords: [13.7352, 100.5822], note: "文青聚集地，放鬆享受啤酒與音樂。", tags: ["文青"] }
+                { time: "10:30", title: "Erb Bespoke 調香體驗", stay: "10:30 - 12:00", open: "10:00 - 20:00", address: "Gaysorn Village 2F", thai: "เกษรวิลเลจ ชั้น 2 (เอิบ เบสโปค)", coords: [13.7444, 100.5405], note: "泰國皇室御用品牌。調製專屬你的名字香水。", tags: ["香氛", "體驗"] },
+                { time: "15:00", title: "Gourmet Market", stay: "15:00 - 16:30", open: "10:00 - 22:00", address: "EmQuartier", thai: "เอ็มควอเทียร์ (กูร์เมต์ มาร์เก็ต)", coords: [13.7313, 100.5696], note: "最後超市衝刺：料理包、皇室蜂蜜、手標茶。", tags: ["購物", "伴手禮"] },
+                { time: "19:00", title: "The Commons Thong Lo", stay: "19:00 - 21:00", open: "08:00 - 01:00", address: "Soi 17", thai: "เดอะ คอมมอนส์ ทองหล่อ (ซอย 17)", coords: [13.7352, 100.5822], note: "文青社區。推薦 Beer Cap 的精釀啤酒與階梯氣氛。", tags: ["精釀", "悠閒"] }
             ]},
             "day5": { "date": "4/7 (二)", "events": [
-                { time: "09:30", title: "Central World 祈福", stay: "09:30 - 10:30", open: "24 小時", address: "Central World Plaza", thai: "พระตรีมูรติ เซ็นทรัลเวิลด์", coords: [13.7443, 100.5403], note: "愛神求緣，象神求財與順利。", tags: ["祈福"] },
-                { time: "11:30", title: "Saneh Jaan", stay: "11:30 - 13:30", open: "11:30 - 14:00", address: "Sindhorn", thai: "เสน่ห์จันทน์", coords: [13.7370, 100.5458], note: "最終回米其林皇室菜色。", tags: ["米其林"] },
-                { time: "13:30", title: "前往機場 (BKK)", stay: "13:30 - 15:00", open: "24 小時", address: "Airport", note: "帶著香氣與回憶回家。", tags: ["結束"] }
+                { time: "09:30", title: "Central World 祈福", stay: "09:30 - 10:30", open: "24 小時", address: "Central World", thai: "พระตรีมูรติ เซ็นทรัลเวิลด์ (ลานหน้าห้าง)", coords: [13.7443, 100.5403], note: "愛神求人緣緣分，象神求事業財運順利。", tags: ["祈福"] },
+                { time: "11:30", title: "Saneh Jaan", stay: "11:30 - 13:30", open: "11:30 - 14:00", address: "Sindhorn Building", thai: "เสน่ห์จันทน์ (อาคารสินธร ถนนวิทยุ)", coords: [13.7370, 100.5458], note: "米其林一星，優雅宮廷菜，完美句點。", tags: ["米其林", "最後餐"] },
+                { time: "13:30", title: "前往機場 (BKK)", stay: "13:30 - 15:00", open: "24 小時", address: "BKK Airport", note: "帶著滿滿回憶與香氣啟程。", tags: ["回程"] }
             ]}
         };
 
-        const packingList = ["護照", "網卡", "薄披肩 (寺廟用)", "防蚊液", "止瀉藥", "Rabbit Card", "防曬乳"];
+        const packingItems = ["護照/簽證", "網卡/E-SIM", "行動電源", "薄披肩 (寺廟)", "防蚊液", "止瀉藥", "防曬乳", "Rabbit Card"];
         let map, markers = [], waterCount = 0;
 
         function init() {
@@ -321,7 +322,7 @@
 
         function renderTimeline(dayKey) {
             const container = document.getElementById('timeline-container');
-            container.innerHTML = `<h3 style="color:var(--accent-color);">${scheduleData[dayKey].date} 行程</h3>`;
+            container.innerHTML = `<h3 style="color:var(--accent-color);">${scheduleData[dayKey].date}</h3>`;
             scheduleData[dayKey].events.forEach(ev => {
                 const item = document.createElement('div');
                 item.className = 'timeline-item';
@@ -359,16 +360,17 @@
                 <div class="weather-card">
                     <div class="weather-main">
                         <i class="fa-solid fa-sun" style="font-size:3rem; color:var(--accent-color);"></i>
-                        <span style="font-size:2.5rem; font-family:'Playfair Display';">38°C</span>
+                        <span style="font-size:2.5rem; font-family:'Playfair Display';">39°C</span>
                     </div>
-                    <p>曼谷 4 月：極度酷熱，午後可能偶有陣雨</p>
+                    <p>曼谷酷暑期：請隨時待在冷氣房或遮蔭處</p>
                 </div>`;
         }
 
         function renderPacking() {
-            const c = document.getElementById('packing-list-container');
-            packingList.forEach(item => {
-                c.innerHTML += `<div class="checklist-item"><input type="checkbox"> <span>${item}</span></div>`;
+            const container = document.getElementById('packing-list-container');
+            container.innerHTML = '';
+            packingItems.forEach(item => {
+                container.innerHTML += `<div class="checklist-item"><input type="checkbox"> <span>${item}</span></div>`;
             });
         }
 
@@ -413,15 +415,14 @@
 
         function openTipsModal() {
             openEventModal({
-                title: "路痴救星", stay: "隨時", open: "24H", address: "曼谷全區",
-                note: "1. <b>BTS/MRT：</b>買票要排隊，建議辦 Rabbit Card。<br>2. <b>方向感：</b>曼谷商場巨大，善用 Google Live View。<br>3. <b>叫車：</b>下載 Grab 或 Bolt，選車時看清楚車牌。<br>4. <b>飯店：</b>Thong Lo 2號出口迴轉就是 Soi 36。",
+                title: "路痴救星 (Thong Lo 攻略)", stay: "隨時", open: "24H", address: "飯店周邊",
+                note: "1. <b>回飯店：</b>BTS Thong Lo 站 2 號出口迴轉進入 Soi 36。<br>2. <b>叫車：</b>下載 Grab/Bolt，地點設為 IR-ON Hotel。<br>3. <b>紅色小巴：</b>Soi 55 大路上有小巴可到 The Commons，一趟 ฿8。",
                 tags: ["教學"]
             });
         }
 
         function sendSafety() {
-            const link = "https://www.google.com/maps?q=13.725,100.578";
-            window.open(`https://wa.me/?text=我已抵達曼谷安全位置：${link}`);
+            window.open(`https://wa.me/?text=${encodeURIComponent("我已抵達曼谷安全位置，一切順利！")}`);
         }
 
         init();
