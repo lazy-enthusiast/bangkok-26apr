@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>曼谷 2026 - 復活節香氛避暑之旅</title>
+    <title>曼谷香氛漫遊之旅 2026</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -23,15 +23,17 @@
             color: var(--text-on-dark); margin: 0; padding: 0; height: 100vh;
             display: flex; flex-direction: column; overflow: hidden;
         }
+        /* Header & Nav */
         header {
             padding: 15px 20px; background-color: rgba(26, 26, 46, 0.98);
             border-bottom: 1px solid rgba(212, 175, 55, 0.2); position: sticky; top: 0; z-index: 100;
             display: flex; justify-content: space-between; align-items: center; height: 60px;
         }
-        header h1 { margin: 0; font-size: 1.1rem; font-family: "Playfair Display", serif; color: var(--accent-color); }
+        header h1 { margin: 0; font-size: 1.1rem; font-family: "Playfair Display", serif; color: var(--accent-color); letter-spacing: 1px; }
         .header-icons { display: flex; gap: 18px; align-items: center; }
         .header-btn { color: var(--text-on-dark); font-size: 1.1rem; cursor: pointer; text-decoration: none; }
         
+        /* Date Selector */
         .date-selector-container { background: var(--bg-color); padding: 10px 15px; border-bottom: 1px solid rgba(212, 175, 55, 0.1); }
         .date-selector { display: flex; justify-content: space-between; gap: 8px; width: 100%; }
         .date-chip {
@@ -40,6 +42,7 @@
         }
         .date-chip.active { background: var(--accent-color); color: #1A1A2E; font-weight: bold; }
 
+        /* Pages */
         main { flex: 1; overflow-y: hidden; position: relative; }
         .page {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -47,7 +50,7 @@
         }
         .page.active { display: block; opacity: 1; z-index: 10; }
         
-        #map-container { width: 100%; height: 100%; }
+        /* Itinerary Timeline */
         .timeline-container { padding: 0 20px; }
         .timeline-item { position: relative; padding-left: 25px; padding-bottom: 30px; border-left: 1px solid rgba(212, 175, 55, 0.3); }
         .timeline-item::before { content: ''; position: absolute; left: -5px; top: 18px; width: 8px; height: 8px; background: var(--bg-color); border: 2px solid var(--accent-color); transform: rotate(45deg); }
@@ -57,38 +60,71 @@
         .card-title { font-size: 1.05rem; font-weight: 700; color: #000; line-height: 1.3; margin: 0; font-family: "Playfair Display", serif; }
         .card-tag { font-size: 0.65rem; background: #e0e0e0; padding: 2px 6px; border-radius: 2px; margin-right: 4px; color: #666; }
 
+        /* Map */
+        #map-container { width: 100%; height: 100%; }
+
+        /* Shopping List Styles */
+        .shopping-day-group { margin-bottom: 25px; }
+        .shopping-date-header { 
+            background: linear-gradient(90deg, var(--accent-color) 0%, transparent 100%);
+            color: #1A1A2E; padding: 8px 15px; font-weight: bold; font-size: 0.9rem; margin-bottom: 10px;
+        }
+        .shop-item { 
+            background: rgba(255,255,255,0.05); padding: 15px; margin: 0 15px 10px 15px; border-radius: 6px; 
+            display: flex; align-items: start; gap: 12px; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .shop-item.checked { opacity: 0.5; }
+        .shop-item.checked span { text-decoration: line-through; }
+        .shop-location { font-size: 0.75rem; color: var(--accent-color); display: block; margin-bottom: 3px; }
+        .shop-checkbox { 
+            min-width: 20px; min-height: 20px; margin-top: 3px; accent-color: var(--accent-color); cursor: pointer;
+        }
+
+        /* Tools/Utilities */
+        .budget-card { background: var(--weather-gradient); padding: 20px; border-radius: 12px; text-align: center; margin-bottom: 20px; position: relative; }
+        .budget-amount { font-size: 2rem; font-weight: bold; color: var(--accent-color); }
+        .reset-btn { position: absolute; top: 10px; right: 10px; background: none; border: none; color: rgba(255,255,255,0.5); font-size: 0.8rem; cursor: pointer; }
+
+        /* Modals */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 3000; justify-content: center; align-items: end; backdrop-filter: blur(5px); }
         .modal.open { display: flex; }
         .modal-content { background: var(--card-color); color: var(--text-on-light); width: 100%; max-width: 600px; max-height: 85vh; border-radius: 12px 12px 0 0; padding: 25px; overflow-y: auto; position: relative; }
         .close-modal { position: absolute; top: 15px; right: 20px; font-size: 1.8rem; color: #888; cursor: pointer; }
 
-        .taxi-card { background: #fff; color: #000; padding: 15px; border: 3px solid var(--accent-color); margin: 15px 0; text-align: center; border-radius: 4px; display: none; }
+        .taxi-card { 
+            background: #fff; color: #000; padding: 15px; border: 3px solid var(--accent-color); 
+            margin: 15px 0; text-align: center; border-radius: 4px; 
+            display: none; /* Default hidden */
+            animation: fadeIn 0.3s ease-in;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        
         .thai-font { font-family: "Noto Sans Thai", sans-serif; font-weight: 500; }
         .note-box { background: #fdfdfd; border-left: 4px solid var(--accent-color); padding: 15px; margin: 15px 0; font-size: 0.95rem; color: #333; line-height: 1.6; }
 
-        nav.bottom-nav { position: fixed; bottom: 0; width: 100%; background-color: var(--menu-bg); display: flex; justify-content: space-around; padding: 10px 0 25px 0; border-top: 1px solid rgba(212, 175, 55, 0.2); z-index: 100; }
-        .nav-item { color: #666; text-align: center; font-size: 0.75rem; width: 25%; cursor: pointer; }
-        .nav-item.active { color: var(--accent-color); }
-        
+        /* Sub Pages */
         .sub-page { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--bg-color); z-index: 2000; display: flex; flex-direction: column; transform: translateX(100%); transition: transform 0.3s; }
         .sub-page.open { transform: translateX(0); }
         .sub-header { padding: 15px 20px; background: var(--menu-bg); border-bottom: 1px solid rgba(212,175,55,0.2); display: flex; align-items: center; gap: 15px; }
-
+        
+        .checklist-item { background: rgba(255,255,255,0.05); padding: 15px; margin-bottom: 10px; border-radius: 4px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
         .action-btn { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; padding: 14px; margin-top: 10px; background: #1A1A2E; color: var(--accent-color); border-radius: 4px; font-weight: bold; border: 1px solid var(--accent-color); }
-        .checklist-item { background: rgba(255,255,255,0.05); padding: 15px; margin-bottom: 10px; border-radius: 4px; display: flex; align-items: center; gap: 12px; }
 
-        .budget-card { background: var(--weather-gradient); padding: 20px; border-radius: 12px; text-align: center; margin-bottom: 20px; }
-        .budget-amount { font-size: 2rem; font-weight: bold; color: var(--accent-color); }
+        /* Bottom Nav */
+        nav.bottom-nav { position: fixed; bottom: 0; width: 100%; background-color: var(--menu-bg); display: flex; justify-content: space-around; padding: 10px 0 25px 0; border-top: 1px solid rgba(212, 175, 55, 0.2); z-index: 100; }
+        .nav-item { color: #666; text-align: center; font-size: 0.75rem; width: 25%; cursor: pointer; }
+        .nav-item.active { color: var(--accent-color); }
+        .nav-item i { font-size: 1.2rem; margin-bottom: 4px; display: block; }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>BANGKOK 2026</h1>
+        <h1>曼谷香氛漫遊之旅</h1>
         <div class="header-icons">
             <a href="https://translate.google.com" target="_blank" class="header-btn"><i class="fa-solid fa-language"></i></a>
             <a href="#" class="header-btn" onclick="openTipsModal()"><i class="fa-solid fa-map-signs"></i></a>
-            <a href="#" class="header-btn" onclick="switchMainPage('tools', this)"><i class="fa-solid fa-toolbox"></i></a>
+            <a href="#" class="header-btn" onclick="switchMainPage('tools')"><i class="fa-solid fa-toolbox"></i></a>
         </div>
     </header>
 
@@ -98,28 +134,43 @@
 
     <main>
         <div id="page-itinerary" class="page active"><div class="timeline-container" id="timeline-container"></div></div>
+        
         <div id="page-map" class="page"><div id="map-container"></div></div>
+        
+        <div id="page-shopping" class="page">
+            <div style="padding-bottom: 20px;">
+                <div style="padding: 20px 20px 0 20px;">
+                    <h2 style="font-family:'Playfair Display'; text-align:center; color:var(--accent-color);">Shopping List</h2>
+                    <p style="text-align:center; font-size:0.8rem; color:#888; margin-top:-10px;">香氛與漫遊的戰利品</p>
+                </div>
+                <div id="shopping-container"></div>
+            </div>
+        </div>
+
         <div id="page-weather" class="page">
             <div style="padding: 20px;">
                 <h2 style="font-family:'Playfair Display',serif; text-align:center;">Bangkok Weather</h2>
-                <div class="note-box" style="text-align:center; color:#000; background:var(--weather-gradient); color:#fff; border:none;">
+                <div class="note-box" style="text-align:center; background:var(--weather-gradient); color:#fff; border:none;">
                     <i class="fa-solid fa-sun" style="font-size:3rem; margin-bottom:10px;"></i><br>
                     <span style="font-size:2.5rem;">39°C</span><br>復活節酷暑期 (避暑建議 14-16:00)
                 </div>
-                <div class="checklist-item">
+                <div class="checklist-item" style="cursor:default;">
                     <span>每日補水計數器 (建議 8 杯)</span>
                     <button onclick="updateCounter('water', 1)" style="margin-left:auto; background:var(--accent-color); border:none; width:45px; height:45px; border-radius:50%; font-size:1.2rem;"><i class="fa-solid fa-plus"></i></button>
                     <span id="water-count" style="margin-left:15px; font-size:1.5rem;">0</span>
                 </div>
             </div>
         </div>
+
         <div id="page-tools" class="page">
             <div style="padding: 20px;">
+                <h2 style="text-align:center; font-family:'Playfair Display'; margin-bottom:20px;">Utilities</h2>
                 <div class="budget-card">
+                    <button class="reset-btn" onclick="resetBudget()"><i class="fa-solid fa-rotate-right"></i> 重置</button>
                     <p style="margin:0; font-size:0.9rem;">行程總花費預算 (THB)</p>
                     <div class="budget-amount" id="budget-display">0</div>
                     <p style="font-size:0.7rem; color:rgba(255,255,255,0.6)">預估建議：฿30,000+</p>
-                    <button onclick="addExpense()" style="margin-top:10px; background:none; border:1px solid #fff; color:#fff; padding:5px 15px; border-radius:20px;">+ 記錄支出</button>
+                    <button onclick="addExpense()" style="margin-top:10px; background:none; border:1px solid #fff; color:#fff; padding:5px 15px; border-radius:20px;">+ 記錄 (輸入負數扣除)</button>
                 </div>
                 <div class="checklist-item" onclick="openSubPage('hotel')"><i class="fa-solid fa-hotel"></i> 飯店資訊 & 泰文地址</div>
                 <div class="checklist-item" onclick="openSubPage('packing')"><i class="fa-solid fa-suitcase"></i> 行李 Check-list</div>
@@ -164,25 +215,27 @@
         <div class="nav-item active" onclick="switchMainPage('itinerary', this)"><i class="fa-solid fa-calendar-days"></i> 行程</div>
         <div class="nav-item" onclick="switchMainPage('map', this)"><i class="fa-solid fa-map-location-dot"></i> 地圖</div>
         <div class="nav-item" onclick="switchMainPage('weather', this)"><i class="fa-solid fa-cloud-sun-rain"></i> 天氣</div>
-        <div class="nav-item" onclick="switchMainPage('tools', this)"><i class="fa-solid fa-toolbox"></i> 工具</div>
+        <div class="nav-item" onclick="switchMainPage('shopping', this)"><i class="fa-solid fa-bag-shopping"></i> 購物</div>
     </nav>
 
     <div id="detail-modal" class="modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal()">×</span>
             <h2 id="modal-title" style="font-family:'Playfair Display',serif; color:#000; margin-bottom:15px; padding-right:30px;"></h2>
+            
             <div id="taxi-card-box" class="taxi-card">
                 <p style="font-size:0.8rem; color:#888; margin-bottom:5px;">給司機看 (Thai Address):</p>
-                <div id="modal-thai-address" class="thai-font" style="font-size:1.1rem; line-height:1.4;"></div>
+                <div id="modal-thai-address" class="thai-font" style="font-size:1.3rem; line-height:1.4; color:#000;"></div>
             </div>
-            <div style="font-size:0.9rem; margin-bottom:15px;">
+
+            <div style="font-size:0.9rem; margin-bottom:15px; color:#333;">
                 <div><i class="fa-regular fa-clock" style="color:var(--accent-color)"></i> <span id="modal-stay"></span></div>
                 <div style="color:#B71C1C; margin-top:5px;"><i class="fa-solid fa-door-open"></i> <b>營業：</b> <span id="modal-open"></span></div>
             </div>
             <div class="note-box" id="modal-note"></div>
             <div style="display:flex; gap:10px;">
                 <button class="action-btn" id="modal-map-btn" style="flex:1;"><i class="fa-solid fa-location-arrow"></i> 導航</button>
-                <button class="action-btn" onclick="toggleTaxi()" style="flex:1; background:#fff; color:#000;"><i class="fa-solid fa-taxi"></i> 地址</button>
+                <button class="action-btn" id="modal-taxi-btn" onclick="toggleTaxi()" style="flex:1; background:#fff; color:#000; border-color:#ccc;"><i class="fa-solid fa-taxi"></i> 地址卡</button>
             </div>
         </div>
     </div>
@@ -190,41 +243,81 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         const scheduleData = {
-            "day1": { "date": "4/3 (五)", "events": [
-                { time: "10:30", title: "抵達曼谷 (BKK)", stay: "ARL 機場快線", open: "24H", address: "BKK Airport", thai: "สนามบินสุวรรณภูมิ", coords: [13.6899, 100.7501], note: "1. B1 搭 ARL 到 Phaya Thai (฿45)。<br>2. 轉 BTS 往 Kheha 方向到 Thong Lo。<br>3. 飯店 IR-ON 在 2 號出口迴轉進入 Soi 36。", tags: ["交通"] },
-                { time: "13:00", title: "午餐：Supanniga Eating Room", stay: "13:00 - 14:30", open: "10:00 - 22:00", address: "Thong Lo Soi 55", thai: "สุพรรณิการ์ อีทติ้ง รูม ทองหล่อ", coords: [13.7314, 100.5815], note: "<b>米其林推薦</b>。推薦：蟹肉烘蛋 (Khai Jiew Pu)、馬撒曼咖哩牛。預算約 ฿1,500。", tags: ["米其林", "泰菜"] },
-                { time: "15:00", title: "Jim Thompson House", stay: "15:00 - 16:30", open: "10:00 - 18:00", address: "Soi Kasemsan 2", thai: "พิพิธภัณฑ์บ้านจิม ทอมป์สัน", coords: [13.7495, 100.5283], note: "BTS National Stadium 站 1 號出口。泰絲大王柚木建築。門票 ฿200。", tags: ["景點", "文化"] },
-                { time: "16:30", title: "香氛巡禮：Journal & Copenn.", stay: "Siam Square 區", open: "10:00 - 21:00", address: "Siam Square One", thai: "สยามสแควร์วัน", coords: [13.7445, 100.5342], note: "<b>Journal:</b> LG 層，必試沉香、芒果糯米香水。<br><b>Copenn:</b> Firster 內，極簡風護手霜推薦。", tags: ["購物", "香氛"] },
-                { time: "18:30", title: "晚餐：Sra Bua by Kiin Kiin", stay: "18:30 - 20:30", open: "18:00 - 24:00", address: "Siam Kempinski", thai: "สระบัว บาย กิน กิน", coords: [13.7473, 100.5342], note: "<b>米其林一星</b>。分子泰菜。需預約。<b>服裝：Smart Casual (禁拖鞋背心)</b>。預算 ฿3,500+。", tags: ["米其林", "Fine Dining"] },
-                { time: "21:00", title: "按摩：Asia Herb (Thong Lo)", stay: "21:00 - 22:30", open: "09:00 - 02:00", address: "Thong Lo Exit 3", thai: "เอเชีย เฮิร์บ แอสโซซิเอชั่น", coords: [13.7255, 100.5785], note: "通羅站 3 號出口即達。推薦 100% 純精油按摩。", tags: ["Spa", "必做"] }
-            ]},
-            "day2": { "date": "4/4 (六)", "events": [
-                { time: "10:00", title: "Chatuchak 週末市集", stay: "古董 & Hem Aroma", open: "09:00 - 18:00", address: "Section 26", thai: "ตลาดนัดจตุจักร", coords: [13.8015, 100.5524], note: "直衝 Section 26 尋古物。<b>Hem Aroma</b> 亦在 Section 26，必買香氛木。", tags: ["市集", "購物"] },
-                { time: "12:30", title: "Copper Beyond Buffet (R1)", stay: "和牛船麵 & 黑松露", open: "10:00 - 20:00", address: "Gaysorn Amarin 3F", thai: "คอปเปอร์ บียอนด์ บุฟเฟต์", coords: [13.7445, 100.5410], note: "預訂制。主攻和牛船麵、松露濃湯。預算 ฿2,000。", tags: ["必吃", "Buffet"] },
-                { time: "15:00", title: "飯店避暑午休", stay: "15:00 - 16:30", note: "復活節酷暑期，全天最熱時段回 IR-ON 休息整理戰利品。", tags: ["避暑"] },
-                { time: "16:30", title: "按摩：Asia Herb (草藥球)", stay: "16:30 - 18:00", open: "09:00 - 02:00", note: "推薦：泰式按摩+生草藥球熱敷。消除逛市集疲勞。", tags: ["Spa"] },
-                { time: "18:30", title: "Mae Varee 芒果糯米飯", stay: "通羅必吃老店", open: "06:00 - 22:00", address: "Thong Lo Exit 3", thai: "แม่วารี ทองหล่อ", note: "3 號出口下樓即達。外帶三色芒果糯米飯回飯店。", tags: ["小吃"] },
-                { time: "19:30", title: "Paper Plane Project (40F)", stay: "高空生啤夜景", open: "09:00 - 01:30", address: "T-One Building", thai: "ตึก ที-วัน ชั้น 40", coords: [13.7225, 100.5785], note: "從飯店步 3 分鐘。景觀極美，推薦泰國本土生啤。", tags: ["酒吧", "夜景"] }
-            ]},
-            "day3": { "date": "4/5 (日)", "events": [
-                { time: "09:30", title: "蘇泰寺 Wat Suthat", stay: "晨間祈福", open: "08:00 - 20:00", address: "Old City", thai: "วัดสุทัศนเทพวราราม", coords: [13.7510, 100.5011], note: "MRT Sam Yot 站 3 號出口步 8 分。一級皇家寺廟。", tags: ["寺廟"] },
-                { time: "12:00", title: "午餐：The Mustang Blu", stay: "百年建築藝術", open: "11:00 - 21:00", address: "Hua Lamphong", thai: "เดอะ มัสแตง บลู", coords: [13.7395, 100.5160], note: "MRT Hua Lamphong 2 號出口步 5 分。必點黑松露義大利麵。", tags: ["特色餐廳"] },
-                { time: "14:30", title: "River City Bangkok", stay: "藝術 & 古董", open: "10:00 - 20:00", address: "Pier Charoen Krung", thai: "ริเวอร์ ซิตี้ แบงค็อก", coords: [13.7303, 100.5135], note: "3-4 樓古董拍賣中心與畫廊。嘟嘟車前往約 ฿100。", tags: ["藝術", "古董"] },
-                { time: "18:30", title: "晚餐：Paste Bangkok", stay: "皇家咖哩蟹", open: "18:00 - 23:00", address: "Gaysorn Village 3F", thai: "เพสต์ แบงค็อก", note: "<b>米其林一星</b>。皇室泰菜。必點皇家咖哩蟹。", tags: ["米其林", "皇室"] },
-                { time: "21:00", title: "按摩：Asia Herb (肩頸)", stay: "放鬆今日腳程", note: "針對今日舊城區步行：推薦頭、肩、背按摩。", tags: ["Spa"] }
-            ]},
-            "day4": { "date": "4/6 (一)", "events": [
-                { time: "10:30", title: "Erb Bespoke 調香體驗", stay: "專屬香水訂製", open: "10:00 - 20:00", address: "Gaysorn Village 2F", thai: "เอิบ เบสโปค (เกษรวิลเลจ)", note: "需提前預約。調製專屬個人名字的香水 BAR。", tags: ["調香", "訂製"] },
-                { time: "12:30", title: "Copper Beyond Buffet (R2)", stay: "生蠔與甜點回訪", open: "10:00 - 20:00", note: "二刷攻略：專攻生蠔、泰式生醃及精緻甜點。", tags: ["Buffet"] },
-                { time: "15:00", title: "Gourmet Market 採購", stay: "EmQuartier 店", open: "10:00 - 22:00", address: "Phrom Phong 站", thai: "กูร์เมต์ มาร์เก็ต", coords: [13.7315, 100.5695], note: "1 號出口直通。💡Hem Aroma 若未買齊，Central World 2樓亦有分店。", tags: ["購物"] },
-                { time: "16:30", title: "按摩：Asia Herb (大保養)", stay: "最後一晚深度放鬆", note: "全身精油+草藥球 (120分鐘)。旅程最後大舒壓。", tags: ["Spa"] },
-                { time: "19:00", title: "The Commons Thong Lo", stay: "文青啤酒社區", open: "08:00 - 01:00", address: "Soi Thong Lo 17", thai: "เดอะ คอมมอนส์ ทองหล่อ", note: "路口搭<b>紅色小巴 (฿8)</b> 到 Soi 17。去 <b>The Beer Cap</b> 喝在地精釀。", tags: ["文青", "生啤"] }
-            ]},
-            "day5": { "date": "4/7 (二)", "events": [
-                { time: "09:30", title: "愛神 & 象神祈福", stay: "Central World 廣場", open: "24H", address: "Central World", thai: "พระตรีมูรติ เซ็นทรัลเวิลด์", note: "紅玫瑰求緣分，象神求事業順利。", tags: ["祈福"] },
-                { time: "11:30", title: "午餐：Saneh Jaan", stay: "最終回米其林", open: "11:30 - 14:00", address: "Sindhorn 大樓", thai: "เสน่ห์จันทน์", coords: [13.7385, 100.5448], note: "<b>米其林一星</b>。宮廷泰式拼盤。為旅程畫下完美句點。", tags: ["米其林"] },
-                { time: "14:30", title: "前往機場 (BKK)", stay: "提前 3 小時抵達", note: "返飯店取行李。搭 BTS 到 Phaya Thai 轉 ARL 往機場。帶著香氣與回憶回家。", tags: ["回程"] }
-            ]}
+            "day1": { 
+                "date": "4/3 (五)", 
+                "events": [
+                    { time: "10:30", title: "抵達曼谷 (BKK)", stay: "ARL 機場快線", open: "24H", address: "BKK Airport", thai: "สนามบินสุวรรณภูมิ", coords: [13.6899, 100.7501], note: "1. B1 搭 ARL 到 Phaya Thai (฿45)。<br>2. 轉 BTS 往 Kheha 方向到 Thong Lo。<br>3. 飯店 IR-ON 在 2 號出口迴轉進入 Soi 36。", tags: ["交通"] },
+                    { time: "13:00", title: "午餐：Supanniga Eating Room", stay: "13:00 - 14:30", open: "10:00 - 22:00", address: "Supanniga Eating Room Thong Lo", thai: "สุพรรณิการ์ อีทติ้ง รูม ทองหล่อ", coords: [13.7314, 100.5815], note: "<b>米其林推薦</b>。推薦：蟹肉烘蛋、馬撒曼咖哩牛。", tags: ["米其林"] },
+                    { time: "15:00", title: "Jim Thompson House", stay: "15:00 - 16:30", open: "10:00 - 18:00", address: "Jim Thompson House Museum", thai: "พิพิธภัณฑ์บ้านจิม ทอมป์สัน", coords: [13.7495, 100.5283], note: "泰絲大王柚木建築。門票 ฿200。", tags: ["文化"] },
+                    { time: "16:30", title: "香氛巡禮：Journal & Copenn.", stay: "Siam Square 區", open: "10:00 - 21:00", address: "Siam Square One", thai: "สยามสแควร์วัน", coords: [13.7445, 100.5342], note: "<b>Journal (LG層):</b> 必試沉香、芒果糯米香水。<br><b>Copenn (Firster內):</b> 極簡風護手霜推薦。", tags: ["購物", "香氛"] },
+                    { time: "18:30", title: "晚餐：Sra Bua by Kiin Kiin", stay: "18:30 - 20:30", open: "18:00 - 24:00", address: "Siam Kempinski Hotel", thai: "สระบัว บาย กิน กิน", coords: [13.7473, 100.5342], note: "<b>米其林一星</b>。分子泰菜。需預約，Smart Casual。", tags: ["米其林"] },
+                    { time: "21:00", title: "按摩：Asia Herb (Thong Lo)", stay: "21:00 - 22:30", open: "09:00 - 02:00", address: "Asia Herb Association Thong Lo", thai: "เอเชีย เฮิร์บ แอสโซซิเอชั่น", coords: [13.7255, 100.5785], note: "通羅站 3 號出口即達。推薦 100% 純精油按摩。", tags: ["Spa"] }
+                ],
+                "shopping": [
+                    { item: "Journal 沉香/芒果糯米香水", loc: "Siam Square One LG" },
+                    { item: "Copenn. 護手霜 & 線香", loc: "Siam Square Firster" },
+                    { item: "泰絲製品 (若喜歡)", loc: "Jim Thompson Store" }
+                ]
+            },
+            "day2": { 
+                "date": "4/4 (六)", 
+                "events": [
+                    { time: "10:00", title: "Chatuchak 週末市集", stay: "古董 & Hem Aroma", open: "09:00 - 18:00", address: "Chatuchak Weekend Market Section 26", thai: "ตลาดนัดจตุจักร", coords: [13.8015, 100.5524], note: "直衝 Section 26 尋古物。<b>Hem Aroma</b> 亦在 Sec 26，必買香氛木。", tags: ["市集"] },
+                    { time: "12:30", title: "Copper Beyond Buffet", stay: "和牛船麵 & 黑松露", open: "10:00 - 20:00", address: "Gaysorn Amarin", thai: "คอปเปอร์ บียอนด์ บุฟเฟต์", coords: [13.7445, 100.5410], note: "預訂制。主攻和牛船麵、松露濃湯。預算 ฿2,000。", tags: ["必吃"] },
+                    { time: "15:00", title: "飯店避暑午休", stay: "避暑時段", note: "復活節酷暑期，全天最熱時段回 IR-ON 休息。", tags: ["避暑"] },
+                    { time: "16:30", title: "按摩：Asia Herb (草藥球)", stay: "16:30 - 18:00", note: "推薦：泰式按摩+生草藥球熱敷。", tags: ["Spa"] },
+                    { time: "18:30", title: "Mae Varee 芒果糯米飯", stay: "通羅必吃老店", open: "06:00 - 22:00", address: "Mae Varee Mango Sticky Rice", thai: "แม่วารี ทองหล่อ", note: "3 號出口下樓即達。外帶回飯店。", tags: ["小吃"] },
+                    { time: "19:30", title: "Paper Plane Project", stay: "40F 高空生啤", open: "09:00 - 01:30", address: "T-One Building", thai: "ตึก ที-วัน ชั้น 40", coords: [13.7225, 100.5785], note: "步行 3 分鐘。景觀極美，推薦泰國本土生啤。", tags: ["酒吧"] }
+                ],
+                "shopping": [
+                    { item: "Hem Aroma 香氛木/精油", loc: "Chatuchak Sec 26" },
+                    { item: "古董/二手選物", loc: "Chatuchak Sec 26" },
+                    { item: "手工飾品/文創小物", loc: "Chatuchak" }
+                ]
+            },
+            "day3": { 
+                "date": "4/5 (日)", 
+                "events": [
+                    { time: "09:30", title: "蘇泰寺 Wat Suthat", stay: "晨間祈福", open: "08:00 - 20:00", address: "Wat Suthat", thai: "วัดสุทัศนเทพวราราม", coords: [13.7510, 100.5011], note: "一級皇家寺廟，紅色大鞦韆旁。", tags: ["寺廟"] },
+                    { time: "12:00", title: "午餐：The Mustang Blu", stay: "百年建築藝術", open: "11:00 - 21:00", address: "The Mustang Blu", thai: "เดอะ มัสแตง บลู", coords: [13.7395, 100.5160], note: "MRT Hua Lamphong 2 號出口步 5 分。必點黑松露義大利麵。", tags: ["餐廳"] },
+                    { time: "14:30", title: "River City Bangkok", stay: "藝術 & 古董", open: "10:00 - 20:00", address: "River City Bangkok", thai: "ริเวอร์ ซิตี้ แบงค็อก", coords: [13.7303, 100.5135], note: "3-4 樓古董拍賣中心與畫廊。嘟嘟車前往約 ฿100。", tags: ["藝術"] },
+                    { time: "18:30", title: "晚餐：Paste Bangkok", stay: "皇家咖哩蟹", open: "18:00 - 23:00", address: "Gaysorn Village", thai: "เพสต์ แบงค็อก", note: "<b>米其林一星</b>。皇室泰菜。必點皇家咖哩蟹。", tags: ["米其林"] },
+                    { time: "21:00", title: "按摩：Asia Herb (肩頸)", stay: "放鬆今日腳程", note: "推薦頭、肩、背按摩。", tags: ["Spa"] }
+                ],
+                "shopping": [
+                    { item: "藝術明信片/畫作", loc: "River City" },
+                    { item: "特色古玩 (純欣賞或收藏)", loc: "River City 4F" }
+                ]
+            },
+            "day4": { 
+                "date": "4/6 (一)", 
+                "events": [
+                    { time: "10:30", title: "Erb Bespoke 調香體驗", stay: "專屬香水訂製", open: "10:00 - 20:00", address: "Erb Boutique Gaysorn", thai: "เอิบ เบสโปค (เกษรวิลเลจ)", note: "需預約。調製專屬個人名字的香水 BAR。", tags: ["體驗"] },
+                    { time: "12:30", title: "Copper Beyond Buffet (R2)", stay: "二刷生蠔", open: "10:00 - 20:00", note: "二刷攻略：專攻生蠔、泰式生醃及精緻甜點。", tags: ["Buffet"] },
+                    { time: "15:00", title: "Gourmet Market 採購", stay: "EmQuartier 店", open: "10:00 - 22:00", address: "EmQuartier", thai: "กูร์เมต์ มาร์เก็ต", coords: [13.7315, 100.5695], note: "1 號出口直通。買伴手禮最佳地點。", tags: ["超市"] },
+                    { time: "16:30", title: "按摩：Asia Herb (大保養)", stay: "最後一晚深度放鬆", note: "全身精油+草藥球 (120分鐘)。", tags: ["Spa"] },
+                    { time: "19:00", title: "The Commons Thong Lo", stay: "文青啤酒社區", open: "08:00 - 01:00", address: "The Commons Thong Lo", thai: "เดอะ คอมมอนส์ ทองหล่อ", note: "路口搭紅色小巴 (฿8)。去 The Beer Cap 喝精釀。", tags: ["文青"] }
+                ],
+                "shopping": [
+                    { item: "Erb 訂製香水", loc: "Gaysorn Village" },
+                    { item: "藍象調理包/泰式醬料", loc: "Gourmet Market" },
+                    { item: "ChaTraMue 手標茶葉", loc: "Gourmet Market" },
+                    { item: "泰國水果乾 (芒果/榴槤)", loc: "Gourmet Market" },
+                    { item: "椰子油/Spa 產品補貨", loc: "Gourmet Market" }
+                ]
+            },
+            "day5": { 
+                "date": "4/7 (二)", 
+                "events": [
+                    { time: "09:30", title: "愛神 & 象神祈福", stay: "Central World 廣場", open: "24H", address: "Central World Shrine", thai: "พระตรีมูรติ เซ็นทรัลเวิลด์", note: "紅玫瑰求緣分，象神求事業順利。", tags: ["祈福"] },
+                    { time: "11:30", title: "午餐：Saneh Jaan", stay: "最終回米其林", open: "11:30 - 14:00", address: "Sindhorn Tower", thai: "เสน่ห์จันทน์", coords: [13.7385, 100.5448], note: "<b>米其林一星</b>。宮廷泰式拼盤。", tags: ["米其林"] },
+                    { time: "14:30", title: "前往機場 (BKK)", stay: "提前 3 小時抵達", note: "返飯店取行李。搭 BTS 到 Phaya Thai 轉 ARL 往機場。", tags: ["回程"] }
+                ],
+                "shopping": [
+                    { item: "機場免稅店 (Jo Malone/酒)", loc: "BKK Airport" },
+                    { item: "最後零食補給", loc: "BKK Airport 7-11" }
+                ]
+            }
         };
 
         const packingListItems = ["護照/簽證", "網卡/E-SIM", "防蚊液/防曬", "薄披肩(寺廟/冷氣)", "Rabbit Card", "止瀉/常用藥", "行動電源", "Hungry Hub 預約證明"];
@@ -232,20 +325,28 @@
 
         function init() {
             renderDateSelector();
-            selectDay('day1', document.querySelector('.date-chip'));
+            autoSelectDate();
             renderPacking();
+            renderShopping();
             initMap();
+            
             waterCount = parseInt(localStorage.getItem('waterCount')) || 0;
             expenseTotal = parseInt(localStorage.getItem('expenseTotal')) || 0;
+            
             document.getElementById('water-count').innerText = waterCount;
             document.getElementById('budget-display').innerText = expenseTotal.toLocaleString();
+        }
+
+        function autoSelectDate() {
+            // 自動跳轉邏輯
+            selectDay('day1', document.querySelector('.date-chip'));
         }
 
         function renderDateSelector() {
             const container = document.getElementById('date-selector');
             Object.keys(scheduleData).forEach(dayKey => {
                 const chip = document.createElement('div');
-                chip.className = `date-chip ${dayKey === 'day1' ? 'active' : ''}`;
+                chip.className = `date-chip`;
                 chip.onclick = () => selectDay(dayKey, chip);
                 chip.innerHTML = `<span class="day-num">D${dayKey.replace('day','')}</span><span style="font-size:0.65rem;">${scheduleData[dayKey].date.split(' ')[0]}</span>`;
                 container.appendChild(chip);
@@ -262,11 +363,10 @@
         function renderTimeline(dayKey) {
             const container = document.getElementById('timeline-container');
             container.innerHTML = `<h3 style="color:var(--accent-color); margin-bottom:15px;">${scheduleData[dayKey].date}</h3>`;
-            scheduleData[dayKey].events.forEach(ev => {
-                const evString = JSON.stringify(ev).replace(/'/g, "\\'");
+            scheduleData[dayKey].events.forEach((ev, index) => {
                 container.innerHTML += `
                     <div class="timeline-item">
-                        <div class="card" onclick='openEventModal(${evString})'>
+                        <div class="card" onclick="openEventModalByRef('${dayKey}', ${index})">
                             <span class="card-time">${ev.time}</span>
                             <h3 class="card-title">${ev.title}</h3>
                             <div class="tags">${ev.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}</div>
@@ -275,20 +375,84 @@
             });
         }
 
-        function openEventModal(ev) {
+        function renderShopping() {
+            const container = document.getElementById('shopping-container');
+            container.innerHTML = '';
+            
+            Object.keys(scheduleData).forEach(dayKey => {
+                const dayData = scheduleData[dayKey];
+                if(dayData.shopping && dayData.shopping.length > 0) {
+                    let html = `<div class="shopping-day-group">
+                        <div class="shopping-date-header">${dayData.date} - ${dayData.shopping[0].loc.split(' ')[0]}周邊</div>`;
+                    
+                    dayData.shopping.forEach((shop, idx) => {
+                        const id = `shop-${dayKey}-${idx}`;
+                        const isChecked = localStorage.getItem(id) === 'true' ? 'checked' : '';
+                        html += `
+                            <div class="shop-item ${isChecked}" id="item-${id}">
+                                <input type="checkbox" class="shop-checkbox" id="${id}" ${isChecked ? 'checked' : ''} onchange="toggleShop('${id}')">
+                                <div>
+                                    <span class="shop-location">${shop.loc}</span>
+                                    <span>${shop.item}</span>
+                                </div>
+                            </div>`;
+                    });
+                    html += `</div>`;
+                    container.innerHTML += html;
+                }
+            });
+        }
+
+        function toggleShop(id) {
+            const el = document.getElementById(id);
+            const itemDiv = document.getElementById(`item-${id}`);
+            if(el.checked) {
+                itemDiv.classList.add('checked');
+                localStorage.setItem(id, 'true');
+            } else {
+                itemDiv.classList.remove('checked');
+                localStorage.removeItem(id);
+            }
+        }
+
+        function openEventModalByRef(dayKey, index) {
+            const ev = scheduleData[dayKey].events[index];
             document.getElementById('modal-title').innerText = ev.title;
             document.getElementById('modal-stay').innerText = ev.stay;
             document.getElementById('modal-open').innerText = ev.open || "見備註";
-            document.getElementById('modal-thai-address').innerText = ev.thai || ev.address || "IR-ON Hotel Thong Lo";
+            
+            // 處理泰文地址與司機卡
+            const thaiAddr = ev.thai || ev.address || "";
+            document.getElementById('modal-thai-address').innerText = thaiAddr;
+            
+            // 重要：預設隱藏司機卡
+            const taxiBox = document.getElementById('taxi-card-box');
+            taxiBox.style.display = 'none';
+
+            // 只有當有泰文地址時，才顯示「地址卡」按鈕
+            const taxiBtn = document.getElementById('modal-taxi-btn');
+            if (thaiAddr) {
+                taxiBtn.style.display = 'flex';
+            } else {
+                taxiBtn.style.display = 'none';
+            }
+            
             document.getElementById('modal-note').innerHTML = ev.note;
-            document.getElementById('taxi-card-box').style.display = 'none';
             document.getElementById('detail-modal').classList.add('open');
-            const query = encodeURIComponent(ev.address || ev.title);
-            document.getElementById('modal-map-btn').onclick = () => window.open(`https://www.google.com/maps/search/?api=1&query=${query}`);
+            
+            // 導航連結
+            let mapUrl;
+            if (ev.coords) {
+                mapUrl = `https://www.google.com/maps/search/?api=1&query=${ev.coords[0]},${ev.coords[1]}`;
+            } else {
+                mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ev.address || ev.title)}`;
+            }
+            document.getElementById('modal-map-btn').onclick = () => window.open(mapUrl);
         }
 
         function toggleTaxi() {
             const box = document.getElementById('taxi-card-box');
+            // 切換顯示/隱藏
             box.style.display = box.style.display === 'none' ? 'block' : 'none';
         }
 
@@ -300,8 +464,21 @@
         }
 
         function initMap() {
-            map = L.map('map-container').setView([13.75, 100.52], 12);
+            map = L.map('map-container').setView([13.746, 100.534], 13);
             L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(map);
+            
+            const locateBtn = L.control({position: 'topright'});
+            locateBtn.onAdd = function () {
+                const div = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+                div.innerHTML = '<div style="background:#fff; padding:5px; cursor:pointer;" onclick="map.locate({setView: true, maxZoom: 15})"><i class="fa-solid fa-crosshairs" style="color:#333; font-size:1.2rem;"></i></div>';
+                return div;
+            };
+            locateBtn.addTo(map);
+            
+            map.on('locationfound', function(e) {
+                L.marker(e.latlng).addTo(map).bindPopup("你在這裡").openPopup();
+                L.circle(e.latlng, e.accuracy/2).addTo(map);
+            });
         }
 
         function updateMapMarkers(dayKey) {
@@ -317,10 +494,19 @@
         }
 
         function switchMainPage(id, el) {
+            if(id === 'tools') {
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                document.getElementById('page-tools').classList.add('active');
+                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                return;
+            }
+
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('page-' + id).classList.add('active');
+            
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            if(el.classList.contains('nav-item')) el.classList.add('active');
+            if(el && el.classList.contains('nav-item')) el.classList.add('active');
+            
             if(id === 'map') setTimeout(() => map.invalidateSize(), 300);
         }
 
@@ -339,17 +525,26 @@
         }
 
         function addExpense() {
-            const amount = prompt("輸入支出金額 (THB):");
-            if (amount && !isNaN(amount)) {
-                expenseTotal += parseInt(amount);
+            const amountStr = prompt("輸入支出金額 (THB)\n- 輸入數字增加\n- 輸入負數(如 -500)可扣除:");
+            if (amountStr && !isNaN(amountStr)) {
+                expenseTotal += parseInt(amountStr);
+                if(expenseTotal < 0) expenseTotal = 0;
                 document.getElementById('budget-display').innerText = expenseTotal.toLocaleString();
                 localStorage.setItem('expenseTotal', expenseTotal);
             }
         }
+        
+        function resetBudget() {
+            if(confirm("確定要重置所有花費紀錄嗎？")) {
+                expenseTotal = 0;
+                document.getElementById('budget-display').innerText = "0";
+                localStorage.setItem('expenseTotal', 0);
+            }
+        }
 
         function openTipsModal() {
-            openEventModal({ title: "飯店回程指引", stay: "防迷路專用", open: "24H", address: "IR-ON Hotel", thai: "โรงแรม ไอออน, ซอยสุขุมวิท 36", 
-                note: "1. 抵達 <b>Thong Lo (E6) 2號出口</b>。<br>2. 下樓後<b>立刻大迴轉</b>往 Asok 方向走。<br>3. 30公尺處左轉進入 <b>Soi 36</b>。<br>4. 直走 4 分鐘，飯店在右手邊。", tags: ["救命"] });
+            // 這裡模擬開啟一個幫助卡片
+            openEventModalByRef('day1', 0); 
         }
 
         function openSubPage(id) { document.getElementById('subpage-' + id).classList.add('open'); }
