@@ -16,6 +16,8 @@
             --bg-color: #1A1A2E; --card-color: #F5F5F0; --accent-color: #D4AF37;
             --text-on-dark: #FFFFFF; --text-on-light: #161625; --menu-bg: #131320;
             --weather-gradient: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            --weather-hot: linear-gradient(135deg, #ff4e50 0%, #f9d423 100%);
+            --weather-rain: linear-gradient(135deg, #373b44 0%, #4286f4 100%);
         }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
@@ -78,6 +80,13 @@
         .shop-location { font-size: 0.75rem; color: var(--accent-color); display: block; margin-bottom: 3px; }
         .shop-checkbox { 
             min-width: 20px; min-height: 20px; margin-top: 3px; accent-color: var(--accent-color); cursor: pointer;
+        }
+
+        /* Weather Card (Dynamic) */
+        .weather-card-box {
+            text-align: center; background: var(--weather-gradient); color: #fff; 
+            border: none; padding: 25px; border-radius: 12px; margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); transition: background 0.5s;
         }
 
         /* Tools/Utilities */
@@ -149,11 +158,18 @@
 
         <div id="page-weather" class="page">
             <div style="padding: 20px;">
-                <h2 style="font-family:'Playfair Display',serif; text-align:center;">Bangkok Weather</h2>
-                <div class="note-box" style="text-align:center; background:var(--weather-gradient); color:#fff; border:none;">
-                    <i class="fa-solid fa-sun" style="font-size:3rem; margin-bottom:10px;"></i><br>
-                    <span style="font-size:2.5rem;">39°C</span><br>復活節酷暑期 (避暑建議 14-16:00)
+                <h2 style="font-family:'Playfair Display',serif; text-align:center;">Bangkok Live</h2>
+                
+                <div class="weather-card-box" id="weather-card">
+                    <div id="weather-loading"><i class="fa-solid fa-spinner fa-spin"></i> 正在更新天氣...</div>
+                    <div id="weather-content" style="display:none;">
+                        <i id="weather-icon" class="fa-solid fa-sun" style="font-size:3.5rem; margin-bottom:15px;"></i><br>
+                        <span id="weather-temp" style="font-size:3rem; font-weight:bold;">--°C</span><br>
+                        <span id="weather-desc" style="font-size:1rem; opacity:0.9;">--</span>
+                        <div id="weather-advice" style="margin-top:10px; font-size:0.85rem; padding-top:10px; border-top:1px solid rgba(255,255,255,0.2);"></div>
+                    </div>
                 </div>
+
                 <div class="checklist-item" style="cursor:default;">
                     <span>每日補水計數器 (建議 8 杯)</span>
                     <button onclick="updateCounter('water', 1)" style="margin-left:auto; background:var(--accent-color); border:none; width:45px; height:45px; border-radius:50%; font-size:1.2rem;"><i class="fa-solid fa-plus"></i></button>
@@ -329,6 +345,7 @@
             renderPacking();
             renderShopping();
             initMap();
+            fetchWeather(); // 新增：啟動即時天氣抓取
             
             waterCount = parseInt(localStorage.getItem('waterCount')) || 0;
             expenseTotal = parseInt(localStorage.getItem('expenseTotal')) || 0;
@@ -337,8 +354,75 @@
             document.getElementById('budget-display').innerText = expenseTotal.toLocaleString();
         }
 
+        // 新增：Open-Meteo 天氣抓取邏輯
+        async function fetchWeather() {
+            try {
+                // 曼谷座標：13.7563° N, 100.5018° E
+                const lat = 13.7563;
+                const lon = 100.5018;
+                // API 請求：包含即時天氣、時區設為曼谷
+                const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&timezone=Asia%2FBangkok`);
+                
+                if (!response.ok) throw new Error("Weather API failed");
+                const data = await response.json();
+                const current = data.current_weather;
+                const temp = Math.round(current.temperature);
+                const code = current.weathercode;
+
+                // 更新介面
+                document.getElementById('weather-loading').style.display = 'none';
+                document.getElementById('weather-content').style.display = 'block';
+                document.getElementById('weather-temp').innerText = `${temp}°C`;
+                
+                // 設定天氣圖示與描述
+                const weatherInfo = getWeatherInfo(code);
+                document.getElementById('weather-desc').innerText = weatherInfo.desc;
+                const iconEl = document.getElementById('weather-icon');
+                iconEl.className = weatherInfo.icon;
+
+                // 背景與建議邏輯
+                const card = document.getElementById('weather-card');
+                const adviceEl = document.getElementById('weather-advice');
+                
+                if (code >= 51) { // 下雨
+                    card.style.background = 'var(--weather-rain)';
+                    adviceEl.innerHTML = '<i class="fa-solid fa-umbrella"></i> 目前有雨，建議先安排室內行程（百貨/按摩）。';
+                } else if (temp >= 35) { // 酷熱
+                    card.style.background = 'var(--weather-hot)';
+                    adviceEl.innerHTML = '<i class="fa-solid fa-temperature-arrow-up"></i> 氣溫極高！請避免戶外曝曬，多喝水。';
+                } else { // 一般
+                    card.style.background = 'var(--weather-gradient)';
+                    adviceEl.innerText = '天氣狀況良好，享受你的旅程！';
+                }
+
+            } catch (error) {
+                console.error(error);
+                document.getElementById('weather-loading').innerText = "天氣更新失敗 (請檢查網路)";
+            }
+        }
+
+        // 輔助：WMO 天氣代碼轉換
+        function getWeatherInfo(code) {
+            // WMO Code 簡化對照
+            // 0: Clear sky
+            // 1, 2, 3: Mainly clear, partly cloudy, and overcast
+            // 45, 48: Fog
+            // 51-55: Drizzle
+            // 61-65: Rain
+            // 71-77: Snow (曼谷應該用不到 XD)
+            // 80-82: Rain showers
+            // 95-99: Thunderstorm
+            
+            if (code === 0) return { icon: "fa-solid fa-sun", desc: "晴朗無雲" };
+            if (code >= 1 && code <= 3) return { icon: "fa-solid fa-cloud-sun", desc: "多雲時晴" };
+            if (code >= 45 && code <= 48) return { icon: "fa-solid fa-smog", desc: "有霧/霾" };
+            if (code >= 51 && code <= 67) return { icon: "fa-solid fa-cloud-rain", desc: "有雨" };
+            if (code >= 80 && code <= 82) return { icon: "fa-solid fa-cloud-showers-heavy", desc: "陣雨" };
+            if (code >= 95) return { icon: "fa-solid fa-bolt", desc: "雷雨警報" };
+            return { icon: "fa-solid fa-cloud", desc: "多雲" };
+        }
+
         function autoSelectDate() {
-            // 自動跳轉邏輯
             selectDay('day1', document.querySelector('.date-chip'));
         }
 
@@ -425,11 +509,11 @@
             const thaiAddr = ev.thai || ev.address || "";
             document.getElementById('modal-thai-address').innerText = thaiAddr;
             
-            // 重要：預設隱藏司機卡
+            // 預設隱藏司機卡
             const taxiBox = document.getElementById('taxi-card-box');
             taxiBox.style.display = 'none';
 
-            // 只有當有泰文地址時，才顯示「地址卡」按鈕
+            // 按鈕顯示邏輯
             const taxiBtn = document.getElementById('modal-taxi-btn');
             if (thaiAddr) {
                 taxiBtn.style.display = 'flex';
@@ -452,7 +536,6 @@
 
         function toggleTaxi() {
             const box = document.getElementById('taxi-card-box');
-            // 切換顯示/隱藏
             box.style.display = box.style.display === 'none' ? 'block' : 'none';
         }
 
@@ -543,7 +626,6 @@
         }
 
         function openTipsModal() {
-            // 這裡模擬開啟一個幫助卡片
             openEventModalByRef('day1', 0); 
         }
 
