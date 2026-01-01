@@ -10,86 +10,92 @@
 
 <style>
 :root {
---bg-body: #F5F5F0;
---bg-card: #FFFFFF;
---text-main: #1A1A2E;
---text-sub: #555555;
---accent: #D4AF37;
---accent-hover: #B5932A;
---border: #E0E0E0;
---header-bg: #1A1A2E;
---header-text: #D4AF37;
---shadow: 0 2px 8px rgba(26, 26, 46, 0.06); /* 陰影變淡，更輕盈 */
---sidebar-width: 320px;
+    --bg-body: #F5F5F0;
+    --bg-card: #FFFFFF; 
+    --text-main: #1A1A2E; 
+    --text-sub: #555555; 
+    --accent: #D4AF37; 
+    --accent-hover: #B5932A;
+    --border: #E0E0E0; 
+    --header-bg: #1A1A2E;
+    --header-text: #D4AF37;
+    --shadow: 0 2px 8px rgba(26, 26, 46, 0.06);
+    --sidebar-width: 320px;
 }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 body {
-font-family: "Noto Serif TC", serif;
-background-color: var(--bg-body);
-color: var(--text-main);
-margin: 0; padding: 0;
-height: 100vh;
-display: flex; flex-direction: column; overflow: hidden;
+    font-family: "Noto Serif TC", serif;
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    margin: 0; padding: 0;
+    height: 100vh;
+    display: flex; flex-direction: column; overflow: hidden;
 }
 
-h1, h2, h3, .weather-temp-lg, .day-num, .phrase-big { font-family: "Playfair Display", serif; }
+h1, h2, h3, .weather-temp-lg, .day-num, .phrase-big, .curr-rate-disp { font-family: "Playfair Display", serif; }
 
 /* --- Header --- */
 header {
-padding: 0 15px;
-background-color: var(--header-bg);
-color: var(--header-text);
-border-bottom: 1px solid var(--accent);
-display: flex; justify-content: space-between; align-items: center;
-height: 55px; flex-shrink: 0; position: relative; z-index: 200;
+    padding: 0 15px;
+    background-color: var(--header-bg);
+    color: var(--header-text);
+    border-bottom: 1px solid var(--accent);
+    display: flex; justify-content: space-between; align-items: center;
+    height: 55px; flex-shrink: 0; position: relative; z-index: 200;
 }
 header h1 { margin: 0; font-size: 1.1rem; font-weight: 700; letter-spacing: 1px; color: var(--accent); }
 .header-actions { display: flex; align-items: center; gap: 5px; }
-.header-btn {
-font-size: 1.1rem; cursor: pointer; color: #FFF;
-border-radius: 50%; width: 40px; height: 40px;
-display: flex; justify-content: center; align-items: center;
+.header-btn { 
+    font-size: 1.1rem; cursor: pointer; color: #FFF; 
+    border-radius: 50%; width: 40px; height: 40px;
+    display: flex; justify-content: center; align-items: center;
 }
 
 /* --- Sidebar --- */
 .sidebar-overlay {
-position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-background: rgba(26, 26, 46, 0.6); z-index: 1000;
-opacity: 0; pointer-events: none; transition: opacity 0.3s;
-backdrop-filter: blur(3px);
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(26, 26, 46, 0.6); z-index: 1000;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+    backdrop-filter: blur(3px);
 }
 .sidebar-overlay.open { opacity: 1; pointer-events: all; }
 
 .sidebar {
-position: fixed; top: 0; right: 0; width: 85%; max-width: var(--sidebar-width); height: 100%;
-background: #FFF; z-index: 1001;
-transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-overflow-y: auto; padding: 25px 20px;
-box-shadow: -5px 0 20px rgba(0,0,0,0.1);
-display: flex; flex-direction: column;
+    position: fixed; top: 0; right: 0; width: 85%; max-width: var(--sidebar-width); height: 100%;
+    background: #FFF; z-index: 1001;
+    transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow-y: auto; padding: 25px 20px;
+    box-shadow: -5px 0 20px rgba(0,0,0,0.1);
+    display: flex; flex-direction: column;
 }
 .sidebar.open { transform: translateX(0); }
-.sidebar-section-title { font-size: 0.75rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; margin-top: 30px; font-weight: 700; border-bottom: 1px solid #EEE; padding-bottom: 5px; }
-.whatsapp-box { background: #F0F4F8; border: 1px solid #D1D9E6; color: var(--text-main); padding: 15px; border-radius: 8px; margin-bottom: 10px; margin-top: 20px; }
-.wa-input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #CCC; border-radius: 4px; font-size: 0.9rem; }
-.wa-btn { width: 100%; background: #25D366; color: white; border: none; padding: 10px; border-radius: 4px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; font-size: 0.9rem; }
+.sidebar-section-title { font-size: 0.75rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; margin-top: 25px; font-weight: 700; border-bottom: 1px solid #EEE; padding-bottom: 5px; }
+
+/* Info Widgets in Sidebar */
+.info-widget { background: #FAFAFA; border: 1px solid #EEE; border-radius: 8px; padding: 15px; margin-bottom: 10px; }
+.info-header { display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; font-size: 0.95rem; }
+.info-content { font-size: 0.85rem; color: #555; margin-bottom: 12px; line-height: 1.4; }
+.info-actions { display: flex; gap: 8px; }
+.btn-sidebar-action { flex: 1; padding: 8px; border: 1px solid #DDD; background: #FFF; border-radius: 4px; color: var(--text-main); font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; font-weight: 500;}
+.btn-sidebar-action:active { background: #EEE; }
+
+.flight-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 0.9rem; border-bottom: 1px dashed #EEE; padding-bottom: 4px; }
+.flight-row:last-child { border-bottom: none; margin-bottom: 0; }
+.flight-label { font-size: 0.7rem; color: var(--accent); font-weight: bold; background: var(--text-main); padding: 2px 6px; border-radius: 3px; margin-right: 8px; width: 25px; text-align: center; display: inline-block;}
 
 /* Tools */
-.nav-launcher { display: flex; align-items: center; gap: 15px; background: #FFF; border: 1px solid #EEE; padding: 12px; border-radius: 8px; margin-bottom: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
-.nav-launcher-icon { font-size: 1.2rem; color: var(--accent); width: 25px; text-align: center;}
-.nav-launcher h3 { margin: 0; font-size: 0.95rem; font-weight: 700; }
-.nav-launcher p { margin: 2px 0 0 0; font-size: 0.75rem; color: #888; }
 .tool-box { background: #FFF; padding: 15px; border-radius: 8px; border: 1px solid #EEE; margin-bottom: 10px; box-shadow: var(--shadow); }
 .currency-grid { display: grid; grid-template-columns: 1fr 30px 1fr; align-items: center; gap: 5px; margin-bottom: 8px; }
 .curr-group { display: flex; flex-direction: column; }
 .curr-label { font-size: 0.7rem; color: var(--accent); font-weight: bold; margin-bottom: 4px; }
 .curr-input { width: 100%; padding: 8px; border: 1px solid #DDD; border-radius: 4px; font-size: 1.1rem; text-align: center; background: #FAFAFA; font-weight: 500; font-family: 'Playfair Display', serif; color: var(--text-main); }
-.curr-icon { text-align: center; color: #CCC; font-size: 0.9rem; margin-top: 15px;}
-.memo-area { width: 100%; height: 100px; padding: 10px; border: 1px solid #DDD; border-radius: 4px; resize: none; background: #FAFAFA; }
+.curr-icon { text-align: center; color: #CCC; font-size: 0.9rem; margin-top: 15px;} 
+.rate-control { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: #888; margin-top: 5px; padding: 0 2px;}
+.edit-rate-btn { color: var(--text-main); cursor: pointer; text-decoration: underline; margin-left: 5px; }
 
-/* --- Common Pages & Weather --- */
+/* --- Common Pages --- */
 .weather-main-card { background: linear-gradient(135deg, #1A1A2E, #303055); color: var(--accent); border-radius: 12px; padding: 20px; margin: 0 15px 15px 15px; box-shadow: 0 10px 25px rgba(26, 26, 46, 0.3); text-align: center; border: 1px solid rgba(212, 175, 55, 0.3); }
 .weather-icon-lg { font-size: 3.5rem; margin: 10px 0; color: #FFF; }
 .weather-temp-lg { font-size: 3rem; font-weight: 400; color: var(--accent); }
@@ -100,7 +106,7 @@ display: flex; flex-direction: column;
 .date-selector { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-bottom: 5px; }
 .date-chip { flex: 1 0 auto; min-width: 65px; padding: 10px 0; border-radius: 4px; cursor: pointer; color: var(--text-sub); display: flex; flex-direction: column; align-items: center; justify-content: center; background: #F5F5F0; border: 1px solid transparent; transition: all 0.2s; }
 .date-chip.active { background: var(--text-main); color: var(--accent); border-color: var(--accent); }
-.day-num { font-weight: 700; font-size: 0.95rem; margin-bottom: 2px;}
+.day-num { font-weight: 700; font-size: 0.95rem; margin-bottom: 2px;} 
 .day-week { font-size: 0.65rem; text-transform: uppercase; }
 
 main { flex: 1; overflow-y: hidden; position: relative; }
@@ -109,14 +115,14 @@ main { flex: 1; overflow-y: hidden; position: relative; }
 
 /* --- Compact Timeline --- */
 .timeline-container { padding: 0 15px; max-width: 800px; margin: 0 auto; }
-.timeline-item { position: relative; padding-left: 24px; padding-bottom: 15px; border-left: 1px solid #CCC; } /* Reduced padding-bottom */
+.timeline-item { position: relative; padding-left: 24px; padding-bottom: 15px; border-left: 1px solid #CCC; } 
 .timeline-item:last-child { border-left: 1px solid transparent; }
 .timeline-item::before { content: ''; position: absolute; left: -5px; top: 18px; width: 9px; height: 9px; background: var(--bg-body); border: 2px solid var(--accent); border-radius: 50%; box-shadow: 0 0 0 3px var(--bg-body); z-index: 2; }
 
-.card {
-background-color: var(--bg-card); border: 1px solid var(--border); border-radius: 6px;
-padding: 12px 15px; /* Compact padding */
-box-shadow: var(--shadow); cursor: pointer; position: relative;
+.card { 
+    background-color: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; 
+    padding: 12px 15px; 
+    box-shadow: var(--shadow); cursor: pointer; position: relative; 
 }
 .card:active { background-color: #FAFAFA; }
 .card-time { font-size: 0.75rem; color: var(--accent); font-weight: 600; margin-bottom: 4px; display: block; }
@@ -130,9 +136,9 @@ box-shadow: var(--shadow); cursor: pointer; position: relative;
 .filter-chip { display: inline-block; padding: 6px 14px; margin-right: 6px; background: #FFF; border: 1px solid #DDD; border-radius: 20px; font-size: 0.8rem; color: #555; cursor: pointer; }
 .filter-chip.active { background: var(--text-main); color: var(--accent); border-color: var(--text-main); }
 .inspiration-grid { padding: 0 15px; display: grid; gap: 10px; }
-.inspire-card {
-background: #FFF; border: 1px solid #E0E0E0; border-radius: 6px; padding: 15px;
-position: relative; display: block; box-shadow: var(--shadow); cursor: pointer;
+.inspire-card { 
+    background: #FFF; border: 1px solid #E0E0E0; border-radius: 6px; padding: 15px; 
+    position: relative; display: block; box-shadow: var(--shadow); cursor: pointer;
 }
 .inspire-card.hidden { display: none; }
 .inspire-badge { background: var(--accent); color: #FFF; padding: 2px 8px; border-radius: 4px; font-size: 0.65rem; font-weight: bold; position: absolute; top: 12px; right: 12px; letter-spacing: 0.5px; }
@@ -141,8 +147,7 @@ position: relative; display: block; box-shadow: var(--shadow); cursor: pointer;
 
 .shop-item { background: #FFF; padding: 12px 15px; border-bottom: 1px solid #EEE; display: flex; align-items: center; gap: 10px; border-radius: 6px; margin-bottom: 8px; box-shadow: var(--shadow); margin: 0 15px 8px 15px; }
 
-/* --- Info & Phrases --- */
-.info-card { background: #FFF; padding: 20px; border-radius: 8px; margin: 0 15px 15px 15px; border: 1px solid var(--border); box-shadow: var(--shadow); }
+/* --- Phrases --- */
 .phrase-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 15px; }
 .phrase-card { background: #FFF; border: 1px solid var(--border); padding: 15px 10px; border-radius: 6px; text-align: center; cursor: pointer; box-shadow: var(--shadow); aspect-ratio: 1.3; display: flex; flex-direction: column; justify-content: center; align-items: center; }
 .phrase-jp { font-weight: 700; font-size: 1rem; margin-bottom: 5px; color: var(--text-main); }
@@ -186,24 +191,50 @@ nav.bottom-nav { position: fixed; bottom: 0; width: 100%; background-color: #FFF
 
 <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
 <div class="sidebar" id="sidebar">
-<div class="whatsapp-box">
-<div style="font-weight:bold; margin-bottom:5px; color:#1B5E20;"><i class="fa-brands fa-whatsapp"></i> 安全 Check-in</div>
-<input type="tel" id="wa-phone" class="wa-input" placeholder="對方電話 (如 85291234567)">
-<button class="wa-btn" id="wa-btn" onclick="sendWhatsApp()"><i class="fa-solid fa-paper-plane"></i> 發送位置</button>
+
+<div class="sidebar-section-title" style="margin-top:0;">實用資訊卡片</div>
+<div class="info-widget">
+    <div class="info-header"><i class="fa-solid fa-hotel"></i> IR-ON Hotel</div>
+    <div class="info-content">10/10 Sukhumvit Soi 36, Bangkok<br><span style="font-size:0.8em; color:#888;">BTS Thong Lo 站</span></div>
+    <div class="info-actions">
+        <div class="btn-sidebar-action" onclick="openMapQuery('IR-ON Hotel Sukhumvit 36')"><i class="fa-solid fa-map-location-dot"></i> 導航</div>
+        <div class="btn-sidebar-action" style="background:var(--text-main); color:var(--accent); border:none;" onclick="showPhrase('ไปโรงแรม IR-ON สุขุมวิท 36', '請載我去 IR-ON Hotel')"><i class="fa-solid fa-taxi"></i> 給司機看</div>
+    </div>
 </div>
-<div class="sidebar-section-title">工具</div>
-<div class="nav-launcher" onclick="navigateTo('phrases')">
-<div class="nav-launcher-icon"><i class="fa-solid fa-comments"></i></div>
-<div class="nav-launcher-text"><h3>手指對話卡</h3><p>含微辣、不加糖等客製需求</p></div>
+
+<div class="info-widget">
+    <div class="info-header"><i class="fa-solid fa-plane"></i> 航班資訊</div>
+    <div class="flight-row">
+        <div><span class="flight-label">去</span> <b>CX755</b></div>
+        <span style="font-size:0.8em; color:#888;">HKG ➔ BKK</span>
+    </div>
+    <div class="flight-row">
+        <div><span class="flight-label">回</span> <b>CX706</b></div>
+        <span style="font-size:0.8em; color:#888;">BKK ➔ HKG</span>
+    </div>
 </div>
+
+<div class="sidebar-section-title">百寶箱</div>
 <div class="tool-box">
-<div style="font-weight:bold; margin-bottom:15px; color:var(--text-main);"><i class="fa-solid fa-coins"></i> 匯率計算 (THB ⇄ HKD)</div>
+<div style="font-weight:bold; margin-bottom:10px; color:var(--text-main); font-size:0.9rem;"><i class="fa-solid fa-coins"></i> 匯率計算 (THB ⇄ HKD)</div>
 <div class="currency-grid">
 <div class="curr-group"><span class="curr-label">THB</span><input type="number" id="curr-thb" class="curr-input" placeholder="0" oninput="convertCurrency()"></div>
 <div class="curr-icon"><i class="fa-solid fa-right-left"></i></div>
 <div class="curr-group"><span class="curr-label">HKD</span><input type="number" id="curr-hkd" class="curr-input" placeholder="0" readonly style="background:#EEE;"></div>
 </div>
+<div class="rate-control">
+    <span id="rate-display-text">載入中...</span>
+    <div onclick="manualRate()" class="edit-rate-btn"><i class="fa-solid fa-pen-to-square"></i> 手動輸入</div>
 </div>
+</div>
+
+<div class="nav-launcher" onclick="navigateTo('phrases')" style="padding:10px; margin-top:5px; cursor:pointer; background:#FAFAFA; border:1px solid #EEE; border-radius:8px;">
+<div style="display:flex; align-items:center; gap:10px;">
+    <div style="color:var(--accent); font-size:1.1rem;"><i class="fa-solid fa-comments"></i></div>
+    <div><div style="font-weight:bold; font-size:0.9rem;">泰語手指卡</div><div style="font-size:0.75rem; color:#888;">微辣、不加糖、交通用語</div></div>
+</div>
+</div>
+
 </div>
 
 <div id="phrase-overlay" class="phrase-overlay" onclick="closePhrase()">
@@ -263,14 +294,6 @@ nav.bottom-nav { position: fixed; bottom: 0; width: 100%; background-color: #FFF
 <div class="phrase-card" onclick="showPhrase('จอดที่นี่', '在此停車 (Jort-tee-nee)')"><div class="phrase-jp">จอดที่นี่</div><div class="phrase-zh">這裡停</div></div>
 </div>
 </div>
-
-<div id="page-info" class="page">
-<div class="info-card">
-<div style="font-weight:bold; margin-bottom:10px;">住宿與緊急</div>
-<div class="info-row"><div style="flex:1;"><span class="info-label">飯店</span><span class="info-value">IR-ON Hotel</span></div><a href="javascript:void(0)" onclick="openMapQuery('IR-ON Hotel Sukhumvit 36')" style="color:var(--accent);"><i class="fa-solid fa-location-arrow"></i></a></div>
-<div class="info-row"><div style="flex:1;"><span class="info-label">旅遊警察</span><span class="info-value">1155 (中文可)</span></div><a href="tel:1155" style="color:var(--text-main);"><i class="fa-solid fa-phone"></i></a></div>
-</div>
-</div>
 </main>
 
 <nav class="bottom-nav">
@@ -304,151 +327,152 @@ nav.bottom-nav { position: fixed; bottom: 0; width: 100%; background-color: #FFF
 <script>
 // --- DATA: BANGKOK 2026 (UPDATED) ---
 const scheduleData = {
-"day1": {
-"date": "2026-04-03", "display": "Apr 03", "weekday": "週五",
-"events": [
-{ time: "10:30", title: "抵達 & IR-ON Hotel", type: "交通/Check-in", price: "฿60", open_hours: "24H", address: "IR-ON Hotel, Sukhumvit 36", coords: [13.7237, 100.5772], note: "ARL 轉 BTS 到 Thong Lo，2號出口下樓後迴轉進 Soi 36。飯店設計感強，適合拍照。", tags: ["移動"] },
-{ time: "13:00", title: "Supanniga Eating Room", type: "米其林泰菜", price: "฿1,500", open_hours: "10-22", address: "Supanniga Eating Room Thong Lo", coords: [13.7314, 100.5816], note: "必點：蟹肉烘蛋 (Khai Jiew Pu)、馬撒曼咖哩牛。午餐時段人較少。", tags: ["美食"] },
-{ time: "15:00", title: "Jim Thompson House", type: "博物館", price: "฿200", open_hours: "10-18", address: "Jim Thompson House Museum", coords: [13.7495, 100.5284], note: "BTS National Stadium 1號出口。泰絲大王的故居，導覽非常專業。", tags: ["文化"] },
-{ time: "16:30", title: "Siam Square (香氛)", type: "購物", price: "-", open_hours: "10-22", address: "Siam Square One", coords: [13.7444, 100.5349], note: "Journal: Siam Square One LG 層\nCopenn.: Firster 賣場內。\n試香好去處。", tags: ["逛街"] },
-{ time: "18:30", title: "Sra Bua by Kiin Kiin", type: "米其林一星", price: "฿3,500+", open_hours: "18-24", address: "Sra Bua by Kiin Kiin", coords: [13.7485, 100.5348], note: "分子料理泰菜，視覺效果極佳。\nDress Code: Smart Casual (勿短褲拖鞋)。", tags: ["Fine Dining"] },
-{ time: "21:00", title: "Asia Herb Association", type: "Spa", price: "฿1,500+", open_hours: "09-02", address: "Asia Herb Association Thong Lo", coords: [13.7258, 100.5783], note: "Thong Lo 站 3 號出口。首日推薦：100% 純精油按摩 (60min)。", tags: ["按摩"] }
-],
-"inspiration": [
-{title:"Let's Relax Onsen", type:"Spa/溫泉", tag:"RELAX", price:"฿750", open_hours:"10-24", address:"Grande Centre Point Sukhumvit 55", coords:[13.7313, 100.5815], note:"如果你不想按摩，這裡有日式溫泉，非常乾淨，冷氣很強，適合避暑。"},
-{title:"Patom Organic Living", type:"Cafe", tag:"RELAX", price:"฿300", open_hours:"09-19", address:"Patom Organic Living", coords:[13.7366, 100.5778], note:"玻璃屋與大花園，在 Thong Lo 裡的綠洲。推薦有機咖啡和泰式傳統點心。"},
-{title:"BACC 藝術中心", type:"展覽", tag:"RAINY", price:"免費", open_hours:"10-20", address:"Bangkok Art and Culture Centre", coords:[13.7467, 100.5303], note:"就在 Siam 區，下雨最佳備案。建築本身的螺旋走道很美，有很多小設計店。"},
-{title:"Tichuca Rooftop Bar", type:"酒吧", tag:"NIGHT", price:"฿500+", open_hours:"17-24", address:"T-One Building 46F", coords:[13.7229, 100.5807], note:"著名的水母酒吧，就在你飯店隔壁棟 (T-One)。人多建議早點去佔位。"}
-],
-"shopping": ["Journal 沉香香水", "Copenn. 護手霜", "Jim Thompson 絲巾"]
+"day1": { 
+    "date": "2026-04-03", "display": "Apr 03", "weekday": "週五", 
+    "events": [ 
+        { time: "10:30", title: "抵達 & IR-ON Hotel", type: "交通/Check-in", price: "฿60", open_hours: "24H", address: "IR-ON Hotel, Sukhumvit 36", coords: [13.7237, 100.5772], note: "ARL 轉 BTS 到 Thong Lo，2號出口下樓後迴轉進 Soi 36。飯店設計感強，適合拍照。", tags: ["移動"] },
+        { time: "13:00", title: "Supanniga Eating Room", type: "米其林泰菜", price: "฿1,500", open_hours: "10-22", address: "Supanniga Eating Room Thong Lo", coords: [13.7314, 100.5816], note: "必點：蟹肉烘蛋 (Khai Jiew Pu)、馬撒曼咖哩牛。午餐時段人較少。", tags: ["美食"] },
+        { time: "15:00", title: "Jim Thompson House", type: "博物館", price: "฿200", open_hours: "10-18", address: "Jim Thompson House Museum", coords: [13.7495, 100.5284], note: "BTS National Stadium 1號出口。泰絲大王的故居，導覽非常專業。", tags: ["文化"] },
+        { time: "16:30", title: "Siam Square (香氛)", type: "購物", price: "-", open_hours: "10-22", address: "Siam Square One", coords: [13.7444, 100.5349], note: "Journal: Siam Square One LG 層\nCopenn.: Firster 賣場內。\n試香好去處。", tags: ["逛街"] },
+        { time: "18:30", title: "Sra Bua by Kiin Kiin", type: "米其林一星", price: "฿3,500+", open_hours: "18-24", address: "Sra Bua by Kiin Kiin", coords: [13.7485, 100.5348], note: "分子料理泰菜，視覺效果極佳。\nDress Code: Smart Casual (勿短褲拖鞋)。", tags: ["Fine Dining"] },
+        { time: "21:00", title: "Asia Herb Association", type: "Spa", price: "฿1,500+", open_hours: "09-02", address: "Asia Herb Association Thong Lo", coords: [13.7258, 100.5783], note: "Thong Lo 站 3 號出口。首日推薦：100% 純精油按摩 (60min)。", tags: ["按摩"] }
+    ], 
+    "inspiration": [
+        {title:"Let's Relax Onsen", type:"Spa/溫泉", tag:"RELAX", price:"฿750", open_hours:"10-24", address:"Grande Centre Point Sukhumvit 55", coords:[13.7313, 100.5815], note:"如果你不想按摩，這裡有日式溫泉，非常乾淨，冷氣很強，適合避暑。"},
+        {title:"Patom Organic Living", type:"Cafe", tag:"RELAX", price:"฿300", open_hours:"09-19", address:"Patom Organic Living", coords:[13.7366, 100.5778], note:"玻璃屋與大花園，在 Thong Lo 裡的綠洲。推薦有機咖啡和泰式傳統點心。"},
+        {title:"BACC 藝術中心", type:"展覽", tag:"RAINY", price:"免費", open_hours:"10-20", address:"Bangkok Art and Culture Centre", coords:[13.7467, 100.5303], note:"就在 Siam 區，下雨最佳備案。建築本身的螺旋走道很美，有很多小設計店。"},
+        {title:"Tichuca Rooftop Bar", type:"酒吧", tag:"NIGHT", price:"฿500+", open_hours:"17-24", address:"T-One Building 46F", coords:[13.7229, 100.5807], note:"著名的水母酒吧，就在你飯店隔壁棟 (T-One)。人多建議早點去佔位。"}
+    ],
+    "shopping": ["Journal 沉香香水", "Copenn. 護手霜", "Jim Thompson 絲巾"] 
 },
-"day2": {
-"date": "2026-04-04", "display": "Apr 04", "weekday": "週六",
-"events": [
-{ time: "10:00", title: "恰圖恰週末市集", type: "市集", price: "-", open_hours: "09-18", address: "Chatuchak Weekend Market", coords: [13.8033, 100.5512], note: "重點攻佔 Section 2-4 (設計師區) 和 Section 26 (古董區)。非常熱，記得帶水。", tags: ["逛街"] },
-{ time: "12:30", title: "Copper Beyond Buffet", type: "自助餐", price: "฿2,000", open_hours: "10-20", address: "Gaysorn Amarin", coords: [13.7443, 100.5414], note: "需提前訂位。必吃：和牛船麵、黑松露濃湯、泰式生蠔。環境極佳。", tags: ["美食"] },
-{ time: "15:00", title: "飯店避暑 / 戰利品整理", type: "休息", price: "-", open_hours: "-", address: "IR-ON Hotel", coords: [13.7237, 100.5772], note: "下午3點曼谷最熱，建議回飯店沖澡、整理上午市集買的東西。", tags: ["休息"] },
-{ time: "16:30", title: "Asia Herb Association", type: "Spa", price: "-", open_hours: "09-02", address: "Asia Herb Association Thong Lo", coords: [13.7258, 100.5783], note: "推薦：泰式按摩 + 生草藥球熱敷 (Herbal Ball)，專門消除走路後的腿痠。", tags: ["按摩"] },
-{ time: "18:30", title: "Mae Varee 芒果糯米", type: "小吃", price: "฿150", open_hours: "06-22", address: "Mae Varee Mango Sticky Rice", coords: [13.7250, 100.5780], note: "Thong Lo 站旁。全曼谷最好吃的三色糯米，買回飯店吃或當宵夜。", tags: ["甜點"] },
-{ time: "19:30", title: "Paper Plane Project", type: "Bar / Coworking", price: "฿500+", open_hours: "09-01", address: "T-One Building", coords: [13.7229, 100.5807], note: "就在飯店旁 T-One 大樓 40F。白天是辦公室，晚上變酒吧，音樂很有品味。", tags: ["Bar"] }
-],
-"inspiration": [
-{title:"Mixt Chatuchak", type:"商場", tag:"RAINY", price:"-", open_hours:"10-20", address:"Mixt Chatuchak", coords:[13.8025, 100.5510], note:"就在恰圖恰市集隔壁的冷氣商場，如果市集太熱或下雨，直接躲進來，這裡也有很多文創攤位。"},
-{title:"Roots at the Commons", type:"Cafe", tag:"RELAX", price:"฿150", open_hours:"08-20", address:"The Commons Thong Lo", coords:[13.7348, 100.5822], note:"曼谷著名的精品咖啡，位於清水模建築 The Commons 內，通風好，氛圍極佳。"},
-{title:"MOCA 當代藝術館", type:"博物館", tag:"RAINY", price:"฿250", open_hours:"10-18", address:"MOCA Bangkok", coords:[13.8523, 100.5627], note:"如果恰圖恰太擁擠，搭車往北一點到 MOCA，建築與光影極美，非常安靜冷門。"},
-{title:"Jodd Fairs Rama 9", type:"夜市", tag:"NIGHT", price:"-", open_hours:"16-24", address:"Jodd Fairs Rama 9", coords:[13.7569, 100.5663], note:"如果晚上想逛夜市，這裡比恰圖恰更有吃的，火山排骨、水果西施都在這。"}
-],
-"shopping": ["Hem Aroma 香氛", "二手古董雜貨", "設計師T恤"]
+"day2": { 
+    "date": "2026-04-04", "display": "Apr 04", "weekday": "週六", 
+    "events": [ 
+        { time: "10:00", title: "恰圖恰週末市集", type: "市集", price: "-", open_hours: "09-18", address: "Chatuchak Weekend Market", coords: [13.8033, 100.5512], note: "重點攻佔 Section 2-4 (設計師區) 和 Section 26 (古董區)。非常熱，記得帶水。", tags: ["逛街"] },
+        { time: "12:30", title: "Copper Beyond Buffet", type: "自助餐", price: "฿2,000", open_hours: "10-20", address: "Gaysorn Amarin", coords: [13.7443, 100.5414], note: "需提前訂位。必吃：和牛船麵、黑松露濃湯、泰式生蠔。環境極佳。", tags: ["美食"] },
+        { time: "15:00", title: "飯店避暑 / 戰利品整理", type: "休息", price: "-", open_hours: "-", address: "IR-ON Hotel", coords: [13.7237, 100.5772], note: "下午3點曼谷最熱，建議回飯店沖澡、整理上午市集買的東西。", tags: ["休息"] },
+        { time: "16:30", title: "Asia Herb Association", type: "Spa", price: "-", open_hours: "09-02", address: "Asia Herb Association Thong Lo", coords: [13.7258, 100.5783], note: "推薦：泰式按摩 + 生草藥球熱敷 (Herbal Ball)，專門消除走路後的腿痠。", tags: ["按摩"] },
+        { time: "18:30", title: "Mae Varee 芒果糯米", type: "小吃", price: "฿150", open_hours: "06-22", address: "Mae Varee Mango Sticky Rice", coords: [13.7250, 100.5780], note: "Thong Lo 站旁。全曼谷最好吃的三色糯米，買回飯店吃或當宵夜。", tags: ["甜點"] },
+        { time: "19:30", title: "Paper Plane Project", type: "Bar / Coworking", price: "฿500+", open_hours: "09-01", address: "T-One Building", coords: [13.7229, 100.5807], note: "就在飯店旁 T-One 大樓 40F。白天是辦公室，晚上變酒吧，音樂很有品味。", tags: ["Bar"] }
+    ], 
+    "inspiration": [
+        {title:"Mixt Chatuchak", type:"商場", tag:"RAINY", price:"-", open_hours:"10-20", address:"Mixt Chatuchak", coords:[13.8025, 100.5510], note:"就在恰圖恰市集隔壁的冷氣商場，如果市集太熱或下雨，直接躲進來，這裡也有很多文創攤位。"},
+        {title:"Roots at the Commons", type:"Cafe", tag:"RELAX", price:"฿150", open_hours:"08-20", address:"The Commons Thong Lo", coords:[13.7348, 100.5822], note:"曼谷著名的精品咖啡，位於清水模建築 The Commons 內，通風好，氛圍極佳。"},
+        {title:"MOCA 當代藝術館", type:"博物館", tag:"RAINY", price:"฿250", open_hours:"10-18", address:"MOCA Bangkok", coords:[13.8523, 100.5627], note:"如果恰圖恰太擁擠，搭車往北一點到 MOCA，建築與光影極美，非常安靜冷門。"},
+        {title:"Jodd Fairs Rama 9", type:"夜市", tag:"NIGHT", price:"-", open_hours:"16-24", address:"Jodd Fairs Rama 9", coords:[13.7569, 100.5663], note:"如果晚上想逛夜市，這裡比恰圖恰更有吃的，火山排骨、水果西施都在這。"}
+    ],
+    "shopping": ["Hem Aroma 香氛", "二手古董雜貨", "設計師T恤"] 
 },
-"day3": {
-"date": "2026-04-05", "display": "Apr 05", "weekday": "週日",
-"events": [
-{ time: "09:30", title: "蘇泰寺 (Wat Suthat)", type: "寺廟/文化", price: "฿100", open_hours: "08:30-21", address: "Wat Suthat Thepwararam", coords: [13.7513, 100.5011], note: "紅色大鞦韆旁。壁畫非常精美，遊客比大皇宮少很多，能安靜欣賞。", tags: ["文化"] },
-{ time: "12:00", title: "The Mustang Blu", type: "餐廳/拍照", price: "฿800", open_hours: "11-21", address: "The Mustang Blu", coords: [13.7397, 100.5146], note: "百年銀行改建的網紅飯店/餐廳。中間的旋轉樓梯與標本裝飾非常獨特。", tags: ["午餐"] },
-{ time: "14:30", title: "River City Bangkok", type: "藝術/古董", price: "-", open_hours: "10-20", address: "River City Bangkok", coords: [13.7299, 100.5132], note: "昭披耶河畔。3-4 樓有很多古董店和現代畫廊，冷氣很強，適合午後散步。", tags: ["逛街"] },
-{ time: "18:30", title: "Paste Bangkok", type: "米其林一星", price: "฿3,000+", open_hours: "18-23", address: "Paste Bangkok", coords: [13.7444, 100.5404], note: "Gaysorn Village 3樓。主廚 Bee Satongun 的傳統宮廷菜復刻，必點咖哩蟹。", tags: ["Fine Dining"] },
-{ time: "21:00", title: "Asia Herb Association", type: "Spa", price: "-", open_hours: "09-02", address: "Asia Herb Association Thong Lo", coords: [13.7258, 100.5783], note: "今晚加強肩頸 (Head & Shoulder)，舒緩白天逛舊城區的疲勞。", tags: ["按摩"] }
-],
-"inspiration": [
-{title:"Hong Sieng Kong", type:"Cafe", tag:"RELAX", price:"฿200", open_hours:"10-20", address:"Hong Sieng Kong", coords:[13.7329, 100.5108], note:"Talad Noi 區的古宅咖啡廳，後院直接臨河，充滿中式古董，非常有味道。"},
-{title:"Museum of Siam", type:"博物館", tag:"RAINY", price:"฿200", open_hours:"10-18", address:"Museum of Siam", coords:[13.7441, 100.4941], note:"互動性很強的博物館，講述「什麼是泰國人」，冷氣開放，就在臥佛寺附近。"},
-{title:"Tep Bar", type:"酒吧", tag:"NIGHT", price:"฿400", open_hours:"18-24", address:"Tep Bar", coords:[13.7394, 100.5131], note:"隱藏在舊城巷弄裡，現場演奏泰國傳統樂器，喝的是泰式藥草調酒 (Ya Dong)。"},
-{title:"Warehouse 30", type:"文創", tag:"RAINY", price:"-", open_hours:"11-20", address:"Warehouse 30", coords:[13.7282, 100.5146], note:"就在 River City 旁邊，二戰舊倉庫改建的藝文空間，有很多設計小店。"}
-],
-"shopping": ["River City 藝術卡片", "舊城區古玩"]
+"day3": { 
+    "date": "2026-04-05", "display": "Apr 05", "weekday": "週日", 
+    "events": [ 
+        { time: "09:30", title: "蘇泰寺 (Wat Suthat)", type: "寺廟/文化", price: "฿100", open_hours: "08:30-21", address: "Wat Suthat Thepwararam", coords: [13.7513, 100.5011], note: "紅色大鞦韆旁。壁畫非常精美，遊客比大皇宮少很多，能安靜欣賞。", tags: ["文化"] },
+        { time: "12:00", title: "The Mustang Blu", type: "餐廳/拍照", price: "฿800", open_hours: "11-21", address: "The Mustang Blu", coords: [13.7397, 100.5146], note: "百年銀行改建的網紅飯店/餐廳。中間的旋轉樓梯與標本裝飾非常獨特。", tags: ["午餐"] },
+        { time: "14:30", title: "River City Bangkok", type: "藝術/古董", price: "-", open_hours: "10-20", address: "River City Bangkok", coords: [13.7299, 100.5132], note: "昭披耶河畔。3-4 樓有很多古董店和現代畫廊，冷氣很強，適合午後散步。", tags: ["逛街"] },
+        { time: "18:30", title: "Paste Bangkok", type: "米其林一星", price: "฿3,000+", open_hours: "18-23", address: "Paste Bangkok", coords: [13.7444, 100.5404], note: "Gaysorn Village 3樓。主廚 Bee Satongun 的傳統宮廷菜復刻，必點咖哩蟹。", tags: ["Fine Dining"] },
+        { time: "21:00", title: "Asia Herb Association", type: "Spa", price: "-", open_hours: "09-02", address: "Asia Herb Association Thong Lo", coords: [13.7258, 100.5783], note: "今晚加強肩頸 (Head & Shoulder)，舒緩白天逛舊城區的疲勞。", tags: ["按摩"] }
+    ], 
+    "inspiration": [
+        {title:"Hong Sieng Kong", type:"Cafe", tag:"RELAX", price:"฿200", open_hours:"10-20", address:"Hong Sieng Kong", coords:[13.7329, 100.5108], note:"Talad Noi 區的古宅咖啡廳，後院直接臨河，充滿中式古董，非常有味道。"},
+        {title:"Museum of Siam", type:"博物館", tag:"RAINY", price:"฿200", open_hours:"10-18", address:"Museum of Siam", coords:[13.7441, 100.4941], note:"互動性很強的博物館，講述「什麼是泰國人」，冷氣開放，就在臥佛寺附近。"},
+        {title:"Tep Bar", type:"酒吧", tag:"NIGHT", price:"฿400", open_hours:"18-24", address:"Tep Bar", coords:[13.7394, 100.5131], note:"隱藏在舊城巷弄裡，現場演奏泰國傳統樂器，喝的是泰式藥草調酒 (Ya Dong)。"},
+        {title:"Warehouse 30", type:"文創", tag:"RAINY", price:"-", open_hours:"11-20", address:"Warehouse 30", coords:[13.7282, 100.5146], note:"就在 River City 旁邊，二戰舊倉庫改建的藝文空間，有很多設計小店。"}
+    ],
+    "shopping": ["River City 藝術卡片", "舊城區古玩"] 
 },
-"day4": {
-"date": "2026-04-06", "display": "Apr 06", "weekday": "週一",
-"events": [
-{ time: "10:30", title: "Erb Bespoke 調香", type: "體驗", price: "฿2,500", open_hours: "10-20", address: "Erb Boutique Gaysorn Village", coords: [13.7444, 100.5404], note: "需預約。專業調香師協助，調製一瓶印有你名字的專屬香水。", tags: ["香氛"] },
-{ time: "12:30", title: "Copper Buffet (二刷)", type: "自助餐", price: "฿2,000", open_hours: "10-20", address: "Gaysorn Amarin", coords: [13.7443, 100.5414], note: "二刷重點：專攻上次沒吃夠的甜點區與澳洲和牛握壽司。", tags: ["美食"] },
-{ time: "15:00", title: "Gourmet Market", type: "超市採買", price: "-", open_hours: "10-22", address: "EmQuartier Gourmet Market", coords: [13.7319, 100.5698], note: "BTS Phrom Phong。這裡的伴手禮區規劃最好，買完可以直接回飯店打包。", tags: ["採買"] },
-{ time: "16:30", title: "Asia Herb (大保養)", type: "Spa", price: "฿2,000+", open_hours: "09-02", address: "Asia Herb Association Thong Lo", coords: [13.7258, 100.5783], note: "最後一晚：120分鐘 全身精油 + 草藥球 (Full Course)。", tags: ["按摩"] },
-{ time: "19:00", title: "The Commons Thong Lo", type: "晚餐/放鬆", price: "-", open_hours: "08-01", address: "The Commons Thong Lo", coords: [13.7348, 100.5822], note: "最後一晚輕鬆點，在 The Beer Cap 喝杯精釀，吃點 Soul Food 炸雞。", tags: ["放鬆"] }
-],
-"inspiration": [
-{title:"EmSphere Mall", type:"商場", tag:"RAINY", price:"-", open_hours:"10-22", address:"EmSphere", coords:[13.7303, 100.5667], note:"曼谷最新潮的商場，IKEA 在三樓，餐飲區非常強大，冷氣很強。"},
-{title:"Open House", type:"書店", tag:"RELAX", price:"-", open_hours:"10-22", address:"Central Embassy Level 6", coords:[13.7437, 100.5463], note:"位於 Central Embassy 6樓，被譽為曼谷最美書店，有很好的視野和座位。"},
-{title:"Yunomori Onsen", type:"溫泉/Spa", tag:"RELAX", price:"฿550+", open_hours:"09-24", address:"Yunomori Onsen & Spa Sukhumvit 26", coords:[13.7252, 100.5705], note:"如果你想換個口味，這是正宗日式溫泉+泰式按摩，環境非常寧靜。"},
-{title:"榮泰米粉湯", type:"小吃", tag:"美食", price:"฿60", open_hours:"08-17", address:"Rung Rueang Pork Noodle", coords:[13.7283, 100.5706], note:"米其林必比登推薦，Phrom Phong 站附近，必吃碎肉冬蔭功口味。"}
-],
-"shopping": ["Erb 訂製香水", "藍象調理包", "手標茶", "Cha Tra Mue"]
+"day4": { 
+    "date": "2026-04-06", "display": "Apr 06", "weekday": "週一", 
+    "events": [ 
+        { time: "10:30", title: "Erb Bespoke 調香", type: "體驗", price: "฿2,500", open_hours: "10-20", address: "Erb Boutique Gaysorn Village", coords: [13.7444, 100.5404], note: "需預約。專業調香師協助，調製一瓶印有你名字的專屬香水。", tags: ["香氛"] },
+        { time: "12:30", title: "Copper Buffet (二刷)", type: "自助餐", price: "฿2,000", open_hours: "10-20", address: "Gaysorn Amarin", coords: [13.7443, 100.5414], note: "二刷重點：專攻上次沒吃夠的甜點區與澳洲和牛握壽司。", tags: ["美食"] },
+        { time: "15:00", title: "Gourmet Market", type: "超市採買", price: "-", open_hours: "10-22", address: "EmQuartier Gourmet Market", coords: [13.7319, 100.5698], note: "BTS Phrom Phong。這裡的伴手禮區規劃最好，買完可以直接回飯店打包。", tags: ["採買"] },
+        { time: "16:30", title: "Asia Herb (大保養)", type: "Spa", price: "฿2,000+", open_hours: "09-02", address: "Asia Herb Association Thong Lo", coords: [13.7258, 100.5783], note: "最後一晚：120分鐘 全身精油 + 草藥球 (Full Course)。", tags: ["按摩"] },
+        { time: "19:00", title: "The Commons Thong Lo", type: "晚餐/放鬆", price: "-", open_hours: "08-01", address: "The Commons Thong Lo", coords: [13.7348, 100.5822], note: "最後一晚輕鬆點，在 The Beer Cap 喝杯精釀，吃點 Soul Food 炸雞。", tags: ["放鬆"] }
+    ], 
+    "inspiration": [
+        {title:"EmSphere Mall", type:"商場", tag:"RAINY", price:"-", open_hours:"10-22", address:"EmSphere", coords:[13.7303, 100.5667], note:"曼谷最新潮的商場，IKEA 在三樓，餐飲區非常強大，冷氣很強。"},
+        {title:"Open House", type:"書店", tag:"RELAX", price:"-", open_hours:"10-22", address:"Central Embassy Level 6", coords:[13.7437, 100.5463], note:"位於 Central Embassy 6樓，被譽為曼谷最美書店，有很好的視野和座位。"},
+        {title:"Yunomori Onsen", type:"溫泉/Spa", tag:"RELAX", price:"฿550+", open_hours:"09-24", address:"Yunomori Onsen & Spa Sukhumvit 26", coords:[13.7252, 100.5705], note:"如果你想換個口味，這是正宗日式溫泉+泰式按摩，環境非常寧靜。"},
+        {title:"榮泰米粉湯", type:"小吃", tag:"美食", price:"฿60", open_hours:"08-17", address:"Rung Rueang Pork Noodle", coords:[13.7283, 100.5706], note:"米其林必比登推薦，Phrom Phong 站附近，必吃碎肉冬蔭功口味。"}
+    ],
+    "shopping": ["Erb 訂製香水", "藍象調理包", "手標茶", "Cha Tra Mue"] 
 },
-"day5": {
-"date": "2026-04-07", "display": "Apr 07", "weekday": "週二",
-"events": [
-{ time: "09:30", title: "愛神 & 象神", type: "祈福", price: "-", open_hours: "24H", address: "Central World Shrine", coords: [13.7466, 100.5393], note: "每週二/四晚上9點最靈，但早上人少。紅玫瑰拜愛神，黃花拜象神。", tags: ["文化"] },
-{ time: "11:30", title: "Saneh Jaan", type: "米其林一星", price: "฿2,000", open_hours: "11:30-14", address: "Saneh Jaan", coords: [13.7388, 100.5457], note: "在 Sindhorn Tower。傳統宮廷泰菜，非常精緻，作為旅程的句點。", tags: ["午餐"] },
-{ time: "14:30", title: "前往機場 (BKK)", type: "交通", price: "-", open_hours: "-", address: "Suvarnabhumi Airport", coords: [13.6900, 100.7501], note: "回 IR-ON 取行李。BTS 到 Phaya Thai 轉 ARL。預留 3 小時以上較保險。", tags: ["回程"] }
-],
-"inspiration": [],
-"shopping": ["機場免稅酒", "Jo Malone"]
+"day5": { 
+    "date": "2026-04-07", "display": "Apr 07", "weekday": "週二", 
+    "events": [ 
+        { time: "09:30", title: "愛神 & 象神", type: "祈福", price: "-", open_hours: "24H", address: "Central World Shrine", coords: [13.7466, 100.5393], note: "每週二/四晚上9點最靈，但早上人少。紅玫瑰拜愛神，黃花拜象神。", tags: ["文化"] },
+        { time: "11:30", title: "Saneh Jaan", type: "米其林一星", price: "฿2,000", open_hours: "11:30-14", address: "Saneh Jaan", coords: [13.7388, 100.5457], note: "在 Sindhorn Tower。傳統宮廷泰菜，非常精緻，作為旅程的句點。", tags: ["午餐"] },
+        { time: "14:30", title: "前往機場 (BKK)", type: "交通", price: "-", open_hours: "-", address: "Suvarnabhumi Airport", coords: [13.6900, 100.7501], note: "回 IR-ON 取行李。BTS 到 Phaya Thai 轉 ARL。預留 3 小時以上較保險。", tags: ["回程"] }
+    ], 
+    "inspiration": [], 
+    "shopping": ["機場免稅酒", "Jo Malone"] 
 }
 };
 
 let currentDay = "day1";
 let modalMap = null;
 let currentEventData = null;
-let exchangeRate = 0.23;
+let exchangeRate = 0.23; // Default fallback
 let weatherCache = null;
 
-function init() {
-renderDateSelector(); selectDay('day1');
-switchMainPage('itinerary', document.querySelector('.nav-item.active'));
-fetchRates(); fetchWeather();
-if(localStorage.getItem('travelMemo')) document.getElementById('quick-memo').value = localStorage.getItem('travelMemo');
+function init() { 
+    renderDateSelector(); selectDay('day1'); 
+    switchMainPage('itinerary', document.querySelector('.nav-item.active'));
+    fetchRates(); fetchWeather();
 }
 
 async function fetchRates(force = false) {
-const cachedRate = localStorage.getItem('cachedRateTHB');
-const cachedTime = localStorage.getItem('cachedRateTimeTHB');
-const now = new Date().getTime();
-if (!force && cachedRate && cachedTime && (now - cachedTime < 12 * 60 * 60 * 1000)) {
-exchangeRate = parseFloat(cachedRate); document.getElementById('curr-hkd').placeholder = `Rate: ${exchangeRate.toFixed(3)}`; return;
+    const rateDisplay = document.getElementById('rate-display-text');
+    // 使用免費的 currency-api (jsDelivr CDN)
+    try {
+        const res = await fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/thb.json');
+        const data = await res.json();
+        if(data.thb && data.thb.hkd) {
+            exchangeRate = data.thb.hkd;
+            rateDisplay.innerHTML = `即時: 1 THB ≈ ${exchangeRate.toFixed(4)} HKD`;
+            convertCurrency();
+        }
+    } catch(e) { 
+        console.error("Rate Fetch Error", e);
+        rateDisplay.innerHTML = `預設: 1 THB = ${exchangeRate} HKD`;
+    }
 }
-try {
-const res = await fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/thb.json');
-const data = await res.json();
-if(data.thb && data.thb.hkd) {
-exchangeRate = data.thb.hkd;
-localStorage.setItem('cachedRateTHB', exchangeRate); localStorage.setItem('cachedRateTimeTHB', now);
-document.getElementById('curr-hkd').placeholder = `Rate: ${exchangeRate.toFixed(3)}`;
-convertCurrency();
-}
-} catch(e) { console.error(e); }
+
+function manualRate() {
+    const r = prompt("請輸入手動匯率 (THB 對 HKD):", exchangeRate);
+    if(r && !isNaN(r)) {
+        exchangeRate = parseFloat(r);
+        document.getElementById('rate-display-text').innerHTML = `手動: 1 THB = ${exchangeRate} HKD`;
+        convertCurrency();
+    }
 }
 
 async function fetchWeather() {
-try {
-const url = `https://api.open-meteo.com/v1/forecast?latitude=13.7563&longitude=100.5018&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max,uv_index_max,sunrise,sunset&timezone=auto&forecast_days=14`;
-const res = await fetch(url); weatherCache = await res.json();
-if(document.getElementById('page-weather').classList.contains('active')) renderWeatherModule();
-} catch(e) { document.getElementById('weather-content').innerHTML = "<div style='text-align:center; padding:30px;'>無法載入天氣</div>"; }
+    try {
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=13.7563&longitude=100.5018&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max,uv_index_max,sunrise,sunset&timezone=auto&forecast_days=14`;
+        const res = await fetch(url); weatherCache = await res.json();
+        if(document.getElementById('page-weather').classList.contains('active')) renderWeatherModule();
+    } catch(e) { document.getElementById('weather-content').innerHTML = "<div style='text-align:center; padding:30px;'>無法載入天氣</div>"; }
 }
 
 function renderWeatherModule() {
-const container = document.getElementById('weather-content');
-const noticeEl = document.getElementById('weather-notice');
-if(!weatherCache || !weatherCache.daily) { container.innerHTML = "<div style='text-align:center; padding:30px;'>無資料</div>"; return; }
-
-// Fallback logic for far future dates
-const d = weatherCache.daily;
-// Mocking logic for demo since API won't have 2026 data yet
-// In real usage close to date, we would match d.time[i]
-
-container.innerHTML = `
-<div class="weather-main-card">
-<div class="weather-date">${scheduleData[currentDay].display} • 曼谷</div>
-<div class="weather-icon-lg" style="color:#f39c12"><i class="fa-solid fa-sun"></i></div>
-<div class="weather-temp-lg">36°</div>
-<div class="weather-desc">晴朗炎熱 / 體感 41°</div>
-</div>
-<div class="weather-grid">
-<div class="weather-stat-card"><i class="fa-solid fa-droplet" style="color:#3498db"></i><span style="font-size:0.7rem">降雨 10%</span></div>
-<div class="weather-stat-card"><i class="fa-solid fa-sun" style="color:orange"></i><span style="font-size:0.7rem">UV 11+</span></div>
-</div>
-`;
-noticeEl.innerHTML = "4月是泰國最熱的月份，請務必定時補充水分並安排室內行程。";
+    const container = document.getElementById('weather-content');
+    const noticeEl = document.getElementById('weather-notice');
+    if(!weatherCache || !weatherCache.daily) { container.innerHTML = "<div style='text-align:center; padding:30px;'>無資料</div>"; return; }
+    
+    container.innerHTML = `
+    <div class="weather-main-card">
+    <div class="weather-date">${scheduleData[currentDay].display} • 曼谷</div>
+    <div class="weather-icon-lg" style="color:#f39c12"><i class="fa-solid fa-sun"></i></div>
+    <div class="weather-temp-lg">36°</div>
+    <div class="weather-desc">晴朗炎熱 / 體感 41°</div>
+    </div>
+    <div class="weather-grid">
+    <div class="weather-stat-card"><i class="fa-solid fa-droplet" style="color:#3498db"></i><span style="font-size:0.7rem">降雨 10%</span></div>
+    <div class="weather-stat-card"><i class="fa-solid fa-sun" style="color:orange"></i><span style="font-size:0.7rem">UV 11+</span></div>
+    </div>
+    `;
+    noticeEl.innerHTML = "4月是泰國最熱的月份，請務必定時補充水分並安排室內行程。";
 }
 
 function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebar-overlay').classList.toggle('open'); }
@@ -456,140 +480,119 @@ function openTranslate() { window.open("https://translate.google.com/?sl=auto&tl
 function navigateTo(pageId) { toggleSidebar(); switchMainPage(pageId); }
 
 function switchMainPage(pageId, navEl) {
-document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-document.getElementById('page-' + pageId).classList.add('active');
-document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-if(navEl) navEl.classList.add('active'); else {
-// Auto highlight bottom nav
-if(pageId=='itinerary') document.querySelectorAll('.nav-item')[0].classList.add('active');
-if(pageId=='inspiration') document.querySelectorAll('.nav-item')[1].classList.add('active');
-if(pageId=='shopping') document.querySelectorAll('.nav-item')[2].classList.add('active');
-if(pageId=='weather') document.querySelectorAll('.nav-item')[3].classList.add('active');
-}
-const ds = document.querySelector('.date-selector-container');
-if(['itinerary','shopping','inspiration','weather'].includes(pageId)) ds.style.display = 'block'; else ds.style.display = 'none';
-if(pageId === 'weather') renderWeatherModule();
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + pageId).classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    if(navEl) navEl.classList.add('active'); else {
+        if(pageId=='itinerary') document.querySelectorAll('.nav-item')[0].classList.add('active');
+        if(pageId=='inspiration') document.querySelectorAll('.nav-item')[1].classList.add('active');
+        if(pageId=='shopping') document.querySelectorAll('.nav-item')[2].classList.add('active');
+        if(pageId=='weather') document.querySelectorAll('.nav-item')[3].classList.add('active');
+    }
+    const ds = document.querySelector('.date-selector-container');
+    if(['itinerary','shopping','inspiration','weather'].includes(pageId)) ds.style.display = 'block'; else ds.style.display = 'none';
+    if(pageId === 'weather') renderWeatherModule();
 }
 
 function convertCurrency() {
-const thb = parseFloat(document.getElementById('curr-thb').value);
-if(!isNaN(thb)) { document.getElementById('curr-hkd').value = (thb * exchangeRate).toFixed(1); } else { document.getElementById('curr-hkd').value = ""; }
-}
-
-function sendWhatsApp() {
-let phone = document.getElementById('wa-phone').value.replace(/\D/g, '');
-if(!phone) { alert("請輸入對方電話號碼"); return; }
-if (navigator.geolocation) {
-navigator.geolocation.getCurrentPosition((pos) => {
-// Fix: Standard Google Maps Query Link
-const mapLink = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
-const text = `我現在在曼谷這裡：\n${mapLink}`;
-window.location.href = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
-}, () => { alert("無法獲取位置"); });
-} else alert("瀏覽器不支援定位");
+    const thb = parseFloat(document.getElementById('curr-thb').value);
+    if(!isNaN(thb)) { document.getElementById('curr-hkd').value = (thb * exchangeRate).toFixed(1); } else { document.getElementById('curr-hkd').value = ""; }
 }
 
 function showPhrase(jp, zh) { document.getElementById('overlay-jp').innerText = jp; document.getElementById('overlay-zh').innerText = zh; document.getElementById('phrase-overlay').classList.add('active'); }
 function closePhrase() { document.getElementById('phrase-overlay').classList.remove('active'); }
 
 function renderDateSelector() {
-const container = document.getElementById('date-selector'); container.innerHTML = '';
-Object.keys(scheduleData).forEach(dayKey => {
-const day = scheduleData[dayKey];
-const chip = document.createElement('div'); chip.className = `date-chip`;
-chip.onclick = () => selectDay(dayKey, chip);
-chip.innerHTML = `<span class="day-num">${day.display}</span><span class="day-week">${day.weekday}</span>`;
-container.appendChild(chip);
-});
-if(container.firstChild) container.firstChild.classList.add('active');
+    const container = document.getElementById('date-selector'); container.innerHTML = '';
+    Object.keys(scheduleData).forEach(dayKey => {
+        const day = scheduleData[dayKey];
+        const chip = document.createElement('div'); chip.className = `date-chip`;
+        chip.onclick = () => selectDay(dayKey, chip);
+        chip.innerHTML = `<span class="day-num">${day.display}</span><span class="day-week">${day.weekday}</span>`;
+        container.appendChild(chip);
+    });
+    if(container.firstChild) container.firstChild.classList.add('active');
 }
 
 function selectDay(dayKey, chipEl) {
-currentDay = dayKey;
-if(chipEl) { document.querySelectorAll('.date-chip').forEach(c => c.classList.remove('active')); chipEl.classList.add('active'); chipEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }); }
-renderTimeline(dayKey); renderInspiration(dayKey); renderShopping(dayKey);
-if(document.getElementById('page-weather').classList.contains('active')) renderWeatherModule();
+    currentDay = dayKey;
+    if(chipEl) { document.querySelectorAll('.date-chip').forEach(c => c.classList.remove('active')); chipEl.classList.add('active'); chipEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }); }
+    renderTimeline(dayKey); renderInspiration(dayKey); renderShopping(dayKey);
+    if(document.getElementById('page-weather').classList.contains('active')) renderWeatherModule();
 }
 
 function renderTimeline(dayKey) {
-const container = document.getElementById('timeline-container'); container.innerHTML = '';
-const events = scheduleData[dayKey].events || [];
-events.forEach(event => {
-const item = document.createElement('div'); item.className = 'timeline-item';
-let tags = event.tags.map(t => `<span class="card-tag">${t}</span>`).join('');
-// Stop propagation on nav button to prevent opening modal
-const navBtn = `<div class="card-nav-btn" onclick="event.stopPropagation(); openMapQuery('${event.address}')"><i class="fa-solid fa-location-arrow"></i></div>`;
-item.innerHTML = `<div class="card" onclick='openModal(${JSON.stringify(event).replace(/'/g, "&#39;")})'>${navBtn}<span class="card-time">${event.time}</span><h3 class="card-title">${event.title}</h3><div class="tags">${tags}</div></div>`;
-container.appendChild(item);
-});
-container.appendChild(document.createElement('div')).style.height = "20px";
+    const container = document.getElementById('timeline-container'); container.innerHTML = '';
+    const events = scheduleData[dayKey].events || [];
+    events.forEach(event => {
+        const item = document.createElement('div'); item.className = 'timeline-item';
+        let tags = event.tags.map(t => `<span class="card-tag">${t}</span>`).join('');
+        const navBtn = `<div class="card-nav-btn" onclick="event.stopPropagation(); openMapQuery('${event.address}')"><i class="fa-solid fa-location-arrow"></i></div>`;
+        item.innerHTML = `<div class="card" onclick='openModal(${JSON.stringify(event).replace(/'/g, "'")})'>${navBtn}<span class="card-time">${event.time}</span><h3 class="card-title">${event.title}</h3><div class="tags">${tags}</div></div>`;
+        container.appendChild(item);
+    });
+    container.appendChild(document.createElement('div')).style.height = "20px";
 }
 
 function renderInspiration(dayKey) {
-const container = document.getElementById('inspiration-container'); container.innerHTML = '';
-document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-document.querySelector('.filter-chip').classList.add('active');
-const items = scheduleData[dayKey].inspiration || [];
-if(items.length === 0) { container.innerHTML = "<div style='padding:20px; text-align:center; color:#999;'>本日行程充實，無需備案</div>"; return;}
-items.forEach(item => {
-// Pass full item object to modal
-container.innerHTML += `<div class="inspire-card" data-tag="${item.tag}" onclick='openModal(${JSON.stringify(item).replace(/'/g, "&#39;")})'><div class="inspire-badge">${item.tag}</div><h3 class="inspire-title">${item.title}</h3><p class="inspire-desc">${item.note}</p></div>`;
-});
+    const container = document.getElementById('inspiration-container'); container.innerHTML = '';
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    document.querySelector('.filter-chip').classList.add('active');
+    const items = scheduleData[dayKey].inspiration || [];
+    if(items.length === 0) { container.innerHTML = "<div style='padding:20px; text-align:center; color:#999;'>本日行程充實，無需備案</div>"; return;}
+    items.forEach(item => {
+        container.innerHTML += `<div class="inspire-card" data-tag="${item.tag}" onclick='openModal(${JSON.stringify(item).replace(/'/g, "'")})'><div class="inspire-badge">${item.tag}</div><h3 class="inspire-title">${item.title}</h3><p class="inspire-desc">${item.note}</p></div>`;
+    });
 }
 
 function filterInspiration(tag, btn) {
-document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active')); btn.classList.add('active');
-document.querySelectorAll('.inspire-card').forEach(card => { if(tag === 'all' || card.getAttribute('data-tag') === tag) card.classList.remove('hidden'); else card.classList.add('hidden'); });
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active')); btn.classList.add('active');
+    document.querySelectorAll('.inspire-card').forEach(card => { if(tag === 'all' || card.getAttribute('data-tag') === tag) card.classList.remove('hidden'); else card.classList.add('hidden'); });
 }
 
 function renderShopping(dayKey) {
-const container = document.getElementById('shopping-container'); container.innerHTML = '';
-(scheduleData[dayKey].shopping || []).forEach((item, idx) => { container.innerHTML += `<div class="shop-item"><input type="checkbox" id="s${idx}"><label for="s${idx}">${item}</label></div>`; });
+    const container = document.getElementById('shopping-container'); container.innerHTML = '';
+    (scheduleData[dayKey].shopping || []).forEach((item, idx) => { container.innerHTML += `<div class="shop-item"><input type="checkbox" id="s${idx}"><label for="s${idx}">${item}</label></div>`; });
 }
 
-function openMapQuery(address) {
-// Fix: Standard Google Maps Query
-window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`, '_blank');
+function openMapQuery(address) { 
+    window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`, '_blank'); 
 }
 
 function openModal(data) {
-currentEventData = data;
-document.getElementById('modal-title').innerText = data.title;
-document.getElementById('modal-type').innerText = data.type || "Event";
-document.getElementById('modal-time').innerText = data.time || "彈性時間";
-document.getElementById('modal-price').innerText = data.price || "-";
-document.getElementById('modal-open-hours').innerText = data.open_hours || "待確認";
-document.getElementById('modal-address-short').innerText = data.address;
-document.getElementById('modal-note').innerText = data.note;
+    currentEventData = data;
+    document.getElementById('modal-title').innerText = data.title;
+    document.getElementById('modal-type').innerText = data.type || "Event";
+    document.getElementById('modal-time').innerText = data.time || "彈性時間";
+    document.getElementById('modal-price').innerText = data.price || "-";
+    document.getElementById('modal-open-hours').innerText = data.open_hours || "待確認";
+    document.getElementById('modal-address-short').innerText = data.address;
+    document.getElementById('modal-note').innerText = data.note;
+    
+    const actionsContainer = document.getElementById('modal-actions');
+    actionsContainer.innerHTML = '';
+    
+    if (data.type.includes('美食') || data.type.includes('餐廳') || data.type.includes('Buffet') || data.type.includes('Spa')) {
+        actionsContainer.innerHTML += `<button class="btn-action btn-black" onclick="window.open('https://mail.google.com/mail/u/0/#search/${encodeURIComponent(data.title)}', '_blank')"><i class="fa-solid fa-envelope"></i> 搜尋預約信 (Gmail)</button>`;
+    }
+    
+    actionsContainer.innerHTML += `<button class="btn-action btn-black" style="background:var(--accent); color:white;" onclick="showPhrase('${data.address}', '請載我去這裡')"><i class="fa-solid fa-taxi"></i> 顯示地址 (給司機看)</button>`;
+    
+    if(data.coords) {
+        const grabLink = `https://grab.onelink.me/2695613898?pid=google-maps&c=ride&is_retargeting=true&af_dp=grab%3A%2F%2Fopen%3FscreenType%3DBOOKING%26dropOffLatitude%3D${data.coords[0]}%26dropOffLongitude%3D${data.coords[1]}`;
+        actionsContainer.innerHTML += `<a href="${grabLink}" class="btn-action btn-grab"><i class="fa-solid fa-car"></i> 叫 Grab (設定終點)</a>`;
+    }
 
-const actionsContainer = document.getElementById('modal-actions');
-actionsContainer.innerHTML = '';
-
-// 1. Gmail Search
-if (data.type.includes('美食') || data.type.includes('餐廳') || data.type.includes('Buffet') || data.type.includes('Spa')) {
-actionsContainer.innerHTML += `<button class="btn-action btn-black" onclick="window.open('https://mail.google.com/mail/u/0/#search/${encodeURIComponent(data.title)}', '_blank')"><i class="fa-solid fa-envelope"></i> 搜尋預約信 (Gmail)</button>`;
-}
-
-// 2. Taxi Card
-actionsContainer.innerHTML += `<button class="btn-action btn-black" style="background:var(--accent); color:white;" onclick="showPhrase('${data.address}', '請載我去這裡')"><i class="fa-solid fa-taxi"></i> 顯示地址 (給司機看)</button>`;
-
-// 3. Grab Deep Link (New!)
-if(data.coords) {
-// Deep link format for Grab
-const grabLink = `https://grab.onelink.me/2695613898?pid=google-maps&c=ride&is_retargeting=true&af_dp=grab%3A%2F%2Fopen%3FscreenType%3DBOOKING%26dropOffLatitude%3D${data.coords[0]}%26dropOffLongitude%3D${data.coords[1]}`;
-actionsContainer.innerHTML += `<a href="${grabLink}" class="btn-action btn-grab"><i class="fa-solid fa-car"></i> 叫 Grab (設定終點)</a>`;
-}
-
-document.getElementById('detail-modal').classList.add('open');
-setTimeout(() => {
-if(modalMap) modalMap.remove();
-if(data.coords) {
-modalMap = L.map('modal-mini-map', {zoomControl:false, dragging:false}).setView(data.coords, 15);
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(modalMap);
-L.marker(data.coords, {icon: L.divIcon({className:'custom-div-icon',html:"<div style='background:#D4AF37;width:14px;height:14px;border-radius:50%;border:2px solid white;box-shadow:0 2px 5px rgba(0,0,0,0.3);'></div>",iconSize:[14,14]})}).addTo(modalMap);
-modalMap.invalidateSize();
-}
-}, 100);
+    document.getElementById('detail-modal').classList.add('open');
+    setTimeout(() => { 
+        if(modalMap) modalMap.remove(); 
+        if(data.coords) {
+            modalMap = L.map('modal-mini-map', {zoomControl:false, dragging:false}).setView(data.coords, 15); 
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(modalMap); 
+            L.marker(data.coords, {icon: L.divIcon({className:'custom-div-icon',html:"<div style='background:#D4AF37;width:14px;height:14px;border-radius:50%;border:2px solid white;box-shadow:0 2px 5px rgba(0,0,0,0.3);'></div>",iconSize:[14,14]})}).addTo(modalMap); 
+            modalMap.invalidateSize(); 
+        }
+    }, 100);
 }
 
 function closeModal() { document.getElementById('detail-modal').classList.remove('open'); }
