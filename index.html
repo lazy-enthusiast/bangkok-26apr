@@ -170,250 +170,259 @@ nav.bottom-nav { position: fixed; bottom: 0; width: 100%; background-color: var(
 <script id="USER_DATA_CONFIG">
 // 1. 🎨 主題顏色 (Deep Ocean & Champagne - 納金水)
 const THEME_CONFIG = {
-accentColor: "#C5A059",        // 香檳金
-accentText: "#0F172A",         // 深海藍底金字
-backgroundColor: "#0F172A",    // 深海藍
-cardColor: "#1E293B",          // 石板藍
-textColor: "#F1F5F9",          // 浪花白
-textSubColor: "#94A3B8",       // 霧灰
-borderColor: "#334155",
-googleFontsUrl: "https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;500;700&family=Playfair+Display:wght@400;700&display=swap",
-fontHeading: '"Playfair Display", serif',
-fontBody: '"Noto Serif TC", serif'
+    accentColor: "#C5A059",        // 香檳金
+    accentText: "#0F172A",         // 深海藍底金字
+    backgroundColor: "#0F172A",    // 深海藍
+    cardColor: "#1E293B",          // 石板藍
+    textColor: "#F1F5F9",          // 浪花白
+    textSubColor: "#94A3B8",       // 霧灰
+    borderColor: "#334155",
+    googleFontsUrl: "https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;500;700&family=Playfair+Display:wght@400;700&display=swap",
+    fontHeading: '"Playfair Display", serif',
+    fontBody: '"Noto Serif TC", serif'
 };
 
 // 2. 🗓️ 旅程設定
 const CONFIG = {
-ui: {
-browserTitle: "BKK Private Trip",
-headerTitle: "BANGKOK <span>LUXURY</span>",
-homeTimezone: "Asia/Hong_Kong",
-homeTimeLabel: "HKG"
-},
-startDate: "2026-04-03", // 週五出發
-duration: 5
+    ui: {
+        browserTitle: "曼谷金水涅槃之旅",
+        headerTitle: "曼谷金水涅槃之旅",
+        homeTimezone: "Asia/Hong_Kong",
+        homeTimeLabel: "HKG"
+    },
+    startDate: "2026-04-03", // 週五出發
+    duration: 5
 };
 
 // 3. 📍 目的地 (曼谷)
 const DESTINATION = {
-name: "曼谷 Bangkok",
-lat: 13.7563,
-lon: 100.5018,
-timezone: "Asia/Bangkok",
-currency: "thb",
-currencyLabel: "THB",
-baseCurrency: "HKD"
+    name: "曼谷 Bangkok",
+    lat: 13.7563,
+    lon: 100.5018,
+    timezone: "Asia/Bangkok",
+    currency: "thb",
+    currencyLabel: "THB",
+    baseCurrency: "HKD"
 };
 
 // 4. ✈️ 航班與住宿
 const TRIP_INFO = {
-visa: {
-type: "香港護照 (免簽)",
-number: "Passport Check",
-note: "有效期需超過 6 個月"
-},
-flights: [
-{
-type: "去程", flight: "CX755", date: "04/03",
-dep: "HKG 09:25", arr: "BKK 11:30",
-note: "T1 登機 / 素萬那普機場", bookingRef: "CX-BKK-01"
-},
-{
-type: "回程", flight: "CX706", date: "04/07",
-dep: "BKK 16:25", arr: "HKG 20:25",
-note: "13:50 前抵達櫃檯", bookingRef: "CX-BKK-01"
-}
-],
-hotels: [
-{
-name: "IR-ON Hotel",
-address: "10/10 Sukhumvit 36, Bangkok",
-phone: "+6620740806"
-}
-],
-emergency: [
-{ name: "旅遊警察", phone: "1155" },
-{ name: "救護車", phone: "1669" },
-{ name: "外交部急難救助", phone: "+66-81-666-4006" }
-]
+    visa: {
+        type: "香港護照 (免簽)",
+        number: "Passport Check",
+        note: "有效期需超過 6 個月"
+    },
+    flights: [
+        {
+            type: "去程", flight: "CX755", date: "04/03",
+            dep: "HKG 09:25", arr: "BKK 11:30",
+            note: "T1 登機 / 素萬那普機場", bookingRef: "CX-BKK-01"
+        },
+        {
+            type: "回程", flight: "CX706", date: "04/07",
+            dep: "BKK 16:25", arr: "HKG 20:25",
+            note: "13:50 前抵達櫃檯", bookingRef: "CX-BKK-01"
+        }
+    ],
+    hotels: [
+        {
+            name: "IR-ON Hotel",
+            address: "10/10 Sukhumvit 36, Bangkok",
+            phone: "+6620740806"
+        }
+    ],
+    emergency: [
+        { name: "旅遊警察", phone: "1155" },
+        { name: "救護車", phone: "1669" },
+        { name: "外交部急難救助", phone: "+66-81-666-4006" }
+    ]
 };
 
-// 5. 🗺️ 行程細節 (已優化公共交通與開放時間)
+// 5. 🗺️ 行程細節 (五行調候優化版)
 const USER_ITINERARY = {
-"day1": {
-"events": [
-{
-"time": "12:30", "title": "午餐: Supanniga (Thong Lo)", "type": "美食",
-"address": "160/11 Soi Sukhumvit 55", "address_local": "ทองหล่อ ซอย 6 ร้านสุพรรณิการ์",
-"tags": ["米其林推薦", "泰菜"], "moodColor": "#C5A059",
-"note": "【交通】BTS Thong Lo 站 3 號出口，巷口搭紅色小巴或摩托車至 Soi 6。\n【攻略】必點蟹肉烘蛋，環境精緻。"
-},
-{
-"time": "14:30", "title": "按摩: Asia Herb (Thong Lo)", "type": "SPA",
-"address": "BTS Thong Lo Exit 3", "tags": ["精油", "避暑"], "moodColor": "#10B981",
-"note": "【攻略】預約 2 小時精油按摩+熱草藥球。陽光最熱烈時進行修復，潤澤命格。"
-},
-{
-"time": "17:00", "title": "Jim Thompson House", "type": "文化",
-"address": "National Stadium Exit 1", "address_local": "พิพิธภัณฑ์จิม ทอมป์สัน",
-"open_hours": "09:00 - 18:00", "tags": ["泰絲", "採金"], "moodColor": "#8E44AD",
-"note": "【交通】BTS Siam 轉深綠線。欣賞絲綢金屬光澤，夕陽下園林最涼爽。"
-},
-{
-"time": "19:30", "title": "晚餐: Nusara (河景泰菜)", "type": "晚餐",
-"address": "MRT Sanam Chai Exit 1", "address_local": "ร้านนุสรา (ท่าเตียน)",
-"tags": ["米其林", "鄭王廟"], "moodColor": "#C5A059",
-"note": "【交通】地鐵 Sanam Chai 站步行 5 分鐘。\n【體驗】看著鄭王廟夜景與大河水能量用餐。"
-}
-],
-"inspiration": [
-{ "title": "Vesper Cocktail Bar", "tag": "微醺", "note": "地鐵 Si Lom 站。英倫金屬風酒吧，適合獨酌。", "type": "備案" }
-],
-"shopping": ["氣泡水", "Mae Varee 芒果糯米"]
-},
-"day2": {
-"events": [
-{
-"time": "09:30", "title": "MOCA 當代藝術館", "type": "藝術",
-"address": "SRT Bang Khen Exit 2", "address_local": "พิพิธภัณฑ์ศิลปะไทยร่วมสมัย (MOCA)",
-"open_hours": "10:00 - 18:00", "tags": ["強金冷療", "避暑"], "moodColor": "#F1F5F9",
-"note": "【交通】BTS 轉紅色線至 Bang Khen 站。\n【攻略】清晨採氣，在大理石建築中吸納金能。"
-},
-{
-"time": "13:30", "title": "午餐: Sra Bua by Kiin Kiin", "type": "美食",
-"address": "BTS Siam Exit 3/5", "tags": ["分子料理", "米其林"], "moodColor": "#C5A059",
-"note": "【交通】穿過 Siam Paragon 名店街後門。\n【體驗】優雅清涼的分子料理體驗。"
-},
-{
-"time": "15:30", "title": "Iconsiam 室內水上市集", "type": "奢華",
-"address": "Saphan Taksin Exit 2", "tags": ["納水", "冷氣房"], "moodColor": "#0EA5E9",
-"note": "【交通】碼頭搭乘商場免費接駁船。\n【攻略】在金屬與噴泉圍繞的冷氣房內納水氣。"
-},
-{
-"time": "19:30", "title": "晚餐: Canvas (藝術料理)", "type": "晚餐",
-"address": "Thong Lo Soi 5", "address_local": "ร้าน Canvas (ทองหล่อ)",
-"tags": ["米其林一星", "就在飯店旁"], "moodColor": "#C5A059",
-"note": "【交通】BTS Thong Lo 站 3 號出口。\n【動線】吃完步行即達飯店，安全首選。"
-}
-],
-"inspiration": [
-{ "title": "Sea Life 海洋世界", "tag": "極水", "note": "Siam Paragon B1。深海能量，午後避暑聖地。", "type": "備案" }
-],
-"shopping": ["MOCA 藝術明信片", "Iconsiam 伴手禮"]
-},
-"day3": {
-"events": [
-{
-"time": "10:30", "title": "二哥豐廟 (警局財神)", "type": "祈福",
-"address": "MRT Wat Mangkon Exit 1", "address_local": "สถานีตำรวจพลับพลาไชย (ชั้น 4)",
-"tags": ["偏財", "肅殺之金"], "moodColor": "#C5A059",
-"note": "【交通】出站步行 8 分鐘至警察局，上 4 樓。\n【攻略】供品備黑咖啡。利官威，鎮劫財。"
-},
-{
-"time": "12:30", "title": "午間輕食: The Mustang Blu", "type": "美食",
-"address": "MRT Hua Lamphong Exit 1", "tags": ["老銀行", "避暑"], "moodColor": "#334155",
-"note": "【交通】步行 10 分鐘。老建築之金能散火熱。"
-},
-{
-"time": "14:30", "title": "義德善堂 (捐棺積福)", "type": "積福",
-"address": "MRT Sam Yan Exit 1", "address_local": "มูลนิธิร่วมกตัญญู (วัดหัวลำโพง)",
-"tags": ["功德水", "轉運"], "moodColor": "#F39C12",
-"note": "【交通】一出站即達。轉化能量，解燥土之氣。"
-},
-{
-"time": "16:30", "title": "泰國占星 Ging Astro", "type": "靈性",
-"address": "IR-ON Hotel Lobby", "tags": ["師傅上門", "主場優勢"], "moodColor": "#6366F1",
-"note": "【攻略】師傅到飯店大廳，避開地表熱氣，靜心接收指引。"
-},
-{
-"time": "19:00", "title": "晚餐: North (泰北料理)", "type": "晚餐",
-"address": "Phrom Phong Exit 5", "tags": ["洋房", "米其林推薦"], "moodColor": "#C5A059",
-"note": "【交通】BTS 搭至 Phrom Phong 站步行 8 分鐘。\n【體驗】安靜雅致的洋房環境，避免老城擁擠。"
-}
-],
-"inspiration": [
-{ "title": "Tep Bar", "tag": "水木", "note": "唐人街老宅內聽泰式音樂納水能量。", "type": "備案" }
-],
-"shopping": ["唐人街百年餅乾"]
-},
-"day4": {
-"events": [
-{
-"time": "11:00", "title": "Erb Bespoke 調香體驗", "type": "體驗",
-"address": "Gaysorn Village 2F", "tags": ["金水", "開運香氣"], "moodColor": "#D946EF",
-"note": "【交通】BTS Chit Lom 6 號出口 Skywalk 直通。"
-},
-{
-"time": "13:00", "title": "Copper Beyond Buffet", "type": "美食",
-"address": "Gaysorn Amarin 2F", "tags": ["頂級自助", "納金能量"], "moodColor": "#C5A059",
-"note": "【交通】調香旁。必吃和牛船麵與松露湯。"
-},
-{
-"time": "15:30", "title": "Theta State Float (漂浮)", "type": "SPA",
-"address": "Phrom Phong Exit 4", "tags": ["極限補水", "感官剝離"], "moodColor": "#0EA5E9",
-"note": "【交通】步行 8 分鐘至 Sukhumvit 24。\n【攻略】極水能量消融燥熱。請帶放空的心。"
-},
-{
-"time": "19:00", "title": "爵士: The Bamboo Bar", "type": "微醺",
-"address": "Saphan Taksin Exit 2", "address_local": "เดอะ แบมบู บาร์",
-"tags": ["爵士樂", "老錢金"], "moodColor": "#C5A059",
-"note": "【交通】碼頭搭飯店免費船。享受水氣與優雅律動。"
-},
-{
-"time": "20:30", "title": "晚餐: Lord Jim's (海鮮)", "type": "晚餐",
-"address": "Mandarin Oriental Hotel", "tags": ["極水", "尊貴安全"], "moodColor": "#0F172A",
-"note": "【動線】酒吧隔壁，無需再移動。"
-}
-],
-"inspiration": [
-{ "title": "Sindhorn Kempinski", "tag": "納氣", "note": "全曼谷最開闊的金水 Lobby，適合靜坐休息。", "type": "備案" }
-],
-"shopping": ["Erb 香水", "Hunter's 松露洋芋片"]
-},
-"day5": {
-"events": [
-{
-"time": "09:30", "title": "愛神 & 象神", "type": "祈福",
-"address": "BTS Chit Lom Exit 6", "tags": ["謝神", "活水能量"], "moodColor": "#E11D48",
-"note": "【交通】天橋步行。感謝旅程平安。"
-},
-{
-"time": "11:30", "title": "午餐: R-Haan (皇家泰菜)", "type": "美食",
-"address": "Thong Lo Exit 3", "address_local": "ทองหล่อ ซอย 9 ร้านอาหาร",
-"tags": ["米其林二星", "皇家規矩"], "moodColor": "#C5A059",
-"note": "【交通】摩托車 3 分鐘。皇家規矩屬金，精緻謝幕。"
-},
-{
-"time": "13:50", "title": "前往機場 (BKK)", "type": "交通",
-"address": "Hotel", "tags": ["回程", "平安"], "moodColor": "#0F172A",
-"note": "【交通】BTS 至 Phaya Thai 轉 ARL 機場快線。"
-}
-],
-"inspiration": [
-{ "title": "Central Embassy", "tag": "避暑", "note": "若不想拜神，來吹曼谷最涼的冷氣逛書店。", "type": "備案" }
-],
-"shopping": ["機場 Jo Malone", "伴手禮"]
-}
+    "day1": {
+        "events": [
+            {
+                "time": "12:30", "title": "午餐: Supanniga (Thong Lo)", "type": "美食",
+                "address": "160/11 Soi Sukhumvit 55", "address_local": "ทองหล่อ ซอย 6 ร้านสุพรรณิการ์",
+                "open_hours": "11:30 - 22:00", "tags": ["米其林推薦", "泰菜"], "moodColor": "#C5A059",
+                "note": "【交通】BTS Thong Lo 站 3 號出口，巷口搭紅色小巴或摩托車至 Soi 6。\n【攻略】必點蟹肉烘蛋。環境優雅，第一餐先補水氣。"
+            },
+            {
+                "time": "14:30", "title": "按摩: Asia Herb (Thong Lo)", "type": "SPA",
+                "address": "BTS Thong Lo Exit 3", "tags": ["精油", "避暑"], "moodColor": "#10B981",
+                "open_hours": "09:00 - 02:00",
+                "note": "【攻略】預約 2 小時精油按摩+熱草藥球。陽光最烈時進入精油氣場，潤澤火土燥氣。"
+            },
+            {
+                "time": "17:00", "title": "Jim Thompson House", "type": "文化",
+                "address": "National Stadium Exit 1", "address_local": "พิพิธภัณฑ์จิม ทอมป์สัน",
+                "open_hours": "09:00 - 18:00", "tags": ["泰絲", "採金"], "moodColor": "#8E44AD",
+                "note": "【交通】BTS Siam 轉深綠線。絲綢光澤屬金，觸感屬水。黃昏園林漫步最適宜。"
+            },
+            {
+                "time": "19:30", "title": "晚餐: Nusara (米其林)", "type": "晚餐",
+                "address": "MRT Sanam Chai Exit 1", "address_local": "ร้านนุสรา (ท่าเตียน)",
+                "open_hours": "17:30 - 23:00", "tags": ["河景", "Fine Dining"], "moodColor": "#C5A059",
+                "note": "【交通】地鐵 Sanam Chai 站步行 5 分鐘。正對鄭王廟，吸收昭披耶河入夜最強水能量。"
+            }
+        ],
+        "inspiration": [
+            { "title": "備案: Vesper Cocktail Bar", "tag": "微醺", "note": "地鐵 Si Lom 站。英倫金屬風酒吧，適合獨酌補金水。", "type": "休息" }
+        ],
+        "shopping": ["氣泡水", "Mae Varee 芒果糯米"]
+    },
+    "day2": {
+        "events": [
+            {
+                "time": "09:30", "title": "MOCA 當代藝術館", "type": "藝術",
+                "address": "SRT Bang Khen Exit 2", "address_local": "พิพิธภัณฑ์ศิลปะไทยร่วมสมัย (MOCA)",
+                "open_hours": "10:00 - 18:00", "tags": ["強金冷療", "避暑"], "moodColor": "#F1F5F9",
+                "note": "【交通】BTS Ha Yaek Lat Phrao 轉紅色線至 Bang Khen 站。\n【攻略】清晨採氣。白色大理石建築五行屬強金，修剪火燥。"
+            },
+            {
+                "time": "13:30", "title": "午餐: Sra Bua by Kiin Kiin", "type": "美食",
+                "address": "BTS Siam Exit 3/5", "tags": ["分子料理", "米其林"], "moodColor": "#C5A059",
+                "open_hours": "12:00 - 15:00",
+                "note": "【交通】穿過 Siam Paragon 名店街後門進入飯店。感官與精緻美學的結合。"
+            },
+            {
+                "time": "15:30", "title": "Iconsiam 室內水上市集", "type": "奢華",
+                "address": "Saphan Taksin Exit 2", "tags": ["納水", "冷氣房"], "moodColor": "#0EA5E9",
+                "open_hours": "10:00 - 22:00",
+                "note": "【交通】碼頭搭乘商場免費接駁船。在金色與噴泉圍繞的空間內納水氣。7F看日落。"
+            },
+            {
+                "time": "19:30", "title": "晚餐: Canvas (藝術料理)", "type": "晚餐",
+                "address": "Thong Lo Soi 5", "address_local": "ร้าน Canvas (ทองหล่อ)",
+                "open_hours": "18:00 - 22:00", "tags": ["米其林一星", "飯店旁"], "moodColor": "#C5A059",
+                "note": "【交通】Thong Lo 站 3 號出口。動線最順，吃完回飯店早起準備明天行程。"
+            }
+        ],
+        "inspiration": [
+            { "title": "備案: Sea Life 海洋世界", "tag": "極水", "note": "Siam Paragon B1。極致水能量，午後避暑聖地。", "type": "景點" }
+        ],
+        "shopping": ["MOCA 藝術明信片", "Iconsiam 伴手禮"]
+    },
+    "day3": {
+        "events": [
+            {
+                "time": "10:30", "title": "二哥豐廟 (警局財神)", "type": "祈福",
+                "address": "MRT Wat Mangkon Exit 1", "address_local": "สถานีตำรวจพลับพลาไชย (ชั้น 4)",
+                "tags": ["偏財", "肅殺金"], "moodColor": "#C5A059",
+                "note": "【交通】出站步行 8 分鐘至警局。警局肃杀之氣屬金，備黑咖啡求財，利事業。"
+            },
+            {
+                "time": "12:30", "title": "輕食: The Mustang Blu", "type": "美食",
+                "address": "MRT Hua Lamphong Exit 1", "tags": ["老銀行", "避暑"], "moodColor": "#334155",
+                "open_hours": "11:00 - 21:00",
+                "note": "【交通】步行 10 分鐘。高挑老建築利於散熱，視覺吸金平衡土氣。"
+            },
+            {
+                "time": "14:30", "title": "義德善堂 (捐棺)", "type": "積福",
+                "address": "MRT Sam Yan Exit 1", "address_local": "มูลนิธิร่วมกตัญญู",
+                "tags": ["功德水", "轉運"], "moodColor": "#F39C12",
+                "note": "【交通】一出站即達。積累「功德水」化解停滯運勢，24小時開放。"
+            },
+            {
+                "time": "16:30", "title": "泰國占星 Ging Astro", "type": "靈性",
+                "address": "IR-ON Hotel Lobby", "tags": ["師傅上門", "主場"], "moodColor": "#6366F1",
+                "note": "【攻略】回飯店大廳等候。避開地表熱氣，冷氣房內安靜接收開運指引。"
+            },
+            {
+                "time": "19:00", "title": "晚餐: North (泰北料理)", "type": "晚餐",
+                "address": "Sukhumvit 33", "tags": ["洋房", "高級感"], "moodColor": "#C5A059",
+                "open_hours": "18:00 - 23:00",
+                "note": "【交通】BTS 至 Phrom Phong 站 5 號出口。安靜洋房環境，完美避開鬧區擁擠。"
+            }
+        ],
+        "inspiration": [
+            { "title": "備案: Tep Bar", "tag": "水木", "note": "唐人街巷內聽泰式音樂納水能量，氛圍神秘安全。", "type": "休息" }
+        ],
+        "shopping": ["唐人街老牌餅乾"]
+    },
+    "day4": {
+        "events": [
+            {
+                "time": "11:00", "title": "Erb Bespoke 調香", "type": "體驗",
+                "address": "Gaysorn Village 2F", "tags": ["金水開運", "香氣"], "moodColor": "#D946EF",
+                "open_hours": "10:00 - 20:00",
+                "note": "【交通】BTS Chit Lom 6 號出口天橋直達。訂製專屬液體金水香水。"
+            },
+            {
+                "time": "13:00", "title": "Copper Beyond Buffet", "type": "美食",
+                "address": "Gaysorn Amarin 2F", "tags": ["頂級自助", "補運"], "moodColor": "#C5A059",
+                "open_hours": "10:00 - 21:00",
+                "note": "【交通】就在 Erb 隔壁棟。海鮮水能量與精緻餐飲金能量全開。"
+            },
+            {
+                "time": "15:30", "title": "Theta State Float (漂浮)", "type": "SPA",
+                "address": "Phrom Phong Exit 4", "tags": ["極限補水", "感官剝離"], "moodColor": "#0EA5E9",
+                "open_hours": "10:00 - 22:00",
+                "note": "【交通】步行 8 分鐘至 Soi 24。感官完全靜止，消融燥熱土氣。*需預約。"
+            },
+            {
+                "time": "19:00", "title": "爵士: The Bamboo Bar", "type": "微醺",
+                "address": "Mandarin Oriental", "tags": ["爵士之水", "老錢金"], "moodColor": "#C5A059",
+                "open_hours": "17:00 - 01:00",
+                "note": "【交通】BTS 至 Saphan Taksin 站碼頭搭飯店船。河畔水氣與節奏療癒心神。"
+            },
+            {
+                "time": "20:30", "title": "晚餐: Lord Jim's (海鮮)", "type": "晚餐",
+                "address": "Mandarin Oriental Hotel", "tags": ["極水", "尊貴安全"], "moodColor": "#0F172A",
+                "note": "【動線】爵士樂後直接在飯店內用餐。頂級海鮮屬極水能量。"
+            }
+        ],
+        "inspiration": [
+            { "title": "備案: Sindhorn Kempinski", "tag": "納氣", "note": "全曼谷最開闊的金水 Lobby，適合在大空間中靜心散熱。", "type": "休息" }
+        ],
+        "shopping": ["Hunter's 松露洋芋片", "Panpuri 精油"]
+    },
+    "day5": {
+        "events": [
+            {
+                "time": "09:30", "title": "愛神 & 象神", "type": "祈福",
+                "address": "BTS Chit Lom Exit 6", "tags": ["謝神", "活水"], "moodColor": "#E11D48",
+                "note": "【交通】沿天橋步行。感謝神明保佑，求智慧與人緣，吸收商圈人氣活水。"
+            },
+            {
+                "time": "11:30", "title": "謝幕午餐: R-Haan", "type": "美食",
+                "address": "Sukhumvit 53", "address_local": "ทองหล่อ ซอย 9 ร้านอาหาร",
+                "tags": ["皇家二星", "規矩"], "moodColor": "#C5A059",
+                "open_hours": "11:30 - 23:00",
+                "note": "【交通】Thong Lo 出口 3 摩托車 3 分。規矩森嚴屬金。吃完迅速回房取行李。"
+            },
+            {
+                "time": "13:50", "title": "前往機場 (BKK)", "type": "交通",
+                "address": "BKK Airport", "tags": ["回程", "收官"], "moodColor": "#0F172A",
+                "note": "【交通】BTS 至 Phaya Thai 轉 ARL 機場快線。平安歸港，大吉大利。"
+            }
+        ],
+        "inspiration": [
+            { "title": "備案: Central Embassy", "tag": "避暑", "note": "最涼快冷氣逛書店。如果不想拜神，來此靜默告別曼谷。", "type": "休息" }
+        ],
+        "shopping": ["機場 Jo Malone", "伴手禮"]
+    }
 };
 
-// 6. 🗣️ 常用短語 (泰語溝通卡)
+// 6. 🗣️ 常用短語 (金水涅槃版)
 const PHRASE_DATA = [
-{
-category: "飲食禁忌",
-items: [
-{ term_primary: "ไม่เอาผักชี", term_secondary: "不要香菜！", term_pronounce: "Mai Ao Phak Chi" },
-{ term_primary: "ไม่เผ็ด", term_secondary: "不要辣", term_pronounce: "Mai Phet" },
-{ term_primary: "ไม่เอาหวาน", term_secondary: "不要糖/走甜", term_pronounce: "Mai Ao Wan" }
-]
-},
-{
-category: "公共交通",
-items: [
-{ term_primary: "ไปที่นี่ครับ/ค่ะ", term_secondary: "請載我去這裡 (指圖)", term_pronounce: "Pai Tee Nee" },
-{ term_primary: "ช่วยเปิดมิเตอร์", term_secondary: "請跳表 (計程車)", term_pronounce: "Poet Meter" },
-{ term_primary: "จอดที่นี่ครับ/ค่ะ", term_secondary: "請停在這裡", term_pronounce: "Jod Tee Nee" }
-]
-}
+    {
+        category: "飲食禁忌 (飲食潤燥)",
+        items: [
+            { term_primary: "ไม่เอาผักชี", term_secondary: "不要香菜！", term_pronounce: "Mai Ao Phak Chi" },
+            { term_primary: "ไม่เผ็ด", term_secondary: "不要辣", term_pronounce: "Mai Phet" },
+            { term_primary: "ไม่เอาหวาน", term_secondary: "不要糖 (走甜)", term_pronounce: "Mai Ao Wan" }
+        ]
+    },
+    {
+        category: "公共交通 (點對點安全)",
+        items: [
+            { term_primary: "ไปที่นี่ครับ/ค่ะ", term_secondary: "請載我去這裡 (指圖)", term_pronounce: "Pai Tee Nee" },
+            { term_primary: "ช่วยเปิดมิเตอร์", term_secondary: "請跳表 (跳標)", term_pronounce: "Chaui Poet Meter" },
+            { term_primary: "จอดที่นี่ครับ/ค่ะ", term_secondary: "請停在這裡", term_pronounce: "Jod Tee Nee" }
+        ]
+    }
 ];
 </script>
 
