@@ -195,12 +195,12 @@ nav.bottom-nav { position: fixed; bottom: 0; width: 100%; background-color: var(
 <script id="USER_DATA_CONFIG">
 // 1. 🎨 主題顏色 (深海藍與香檳金 - 納金水能量)
 const THEME_CONFIG = {
-  accentColor: "#C5A059",        // 香檳金
-  accentText: "#0F172A",         // 深海藍底金字
-  backgroundColor: "#0F172A",    // 深海藍 (水能量)
-  cardColor: "#1E293B",          // 石板藍 (穩重土生金)
-  textColor: "#F1F5F9",          // 浪花白
-  textSubColor: "#94A3B8",       // 霧灰
+  accentColor: "#C5A059",
+  accentText: "#0F172A",
+  backgroundColor: "#0F172A",
+  cardColor: "#1E293B",
+  textColor: "#F1F5F9",
+  textSubColor: "#94A3B8",
   borderColor: "#334155",
   googleFontsUrl: "https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;500;700&family=Playfair+Display:wght@400;700&display=swap",
   fontHeading: '"Playfair Display", "Noto Serif TC", serif',
@@ -232,198 +232,204 @@ const DESTINATION = {
 
 // 4. ✈️ 航班與住宿
 const TRIP_INFO = {
-  visa: {
-    type: "香港護照 (免簽)",
-    number: "N/A",
-    note: "有效期需超過 6 個月"
-  },
   flights: [
-    {
-      type: "去程", flight: "CX755", date: "04/03",
-      dep: "HKG 09:25", arr: "BKK 11:30",
-      note: "國泰航空 T1 登機", bookingRef: "CX-BKK-01"
-    },
-    {
-      type: "回程", flight: "CX706", date: "04/07",
-      dep: "BKK 16:25", arr: "HKG 20:25",
-      note: "建議 13:50 抵達機場", bookingRef: "CX-BKK-01"
-    }
+    { type: "去程", flight: "CX755", date: "04/03", dep: "HKG 09:25", arr: "BKK 11:30", note: "國泰 T1", bookingRef: "CX-BKK" },
+    { type: "回程", flight: "CX706", date: "04/07", dep: "BKK 16:25", arr: "HKG 20:25", note: "建議 13:50 抵達機場", bookingRef: "CX-BKK" }
   ],
-  hotels: [
-    {
-      name: "IR-ON Hotel (Thong Lo)",
-      address: "10/10 Sukhumvit 36, Khlong Tan, Khlong Toei, Bangkok",
-      phone: "+6620740806"
-    }
-  ],
-  emergency: [
-    { name: "旅遊警察", phone: "1155" },
-    { name: "醫院 (Samitivej)", phone: "+6620222222" },
-    { name: "外交部救援", phone: "+66-81-666-4006" }
-  ]
+  hotels: [{ name: "IR-ON Hotel", address: "10/10 Sukhumvit 36, Khlong Tan, Khlong Toei, Bangkok", phone: "+6620740806" }],
+  emergency: [{ name: "旅遊警察", phone: "1155" }, { name: "外交部救援", phone: "+66-81-666-4006" }]
 };
 
-// 5. 🗺️ 行程細節 (精確整合點到點交通與氣場指令)
+// 5. 🗺️ 行程細節 (精確公共交通與地址補完版)
 const USER_ITINERARY = {
   "day1": {
     "events": [
       {
         "time": "12:30", "title": "午餐: Supanniga (Thong Lo)", "type": "美食",
-        "address": "160/11 Sukhumvit 55 (Soi 6)", "tags": ["結構泰菜", "潤燥"], "moodColor": "#C5A059",
-        "note": "點冰鎮氣泡水液化燥土。練習資源分配，為首日行程定下沈穩基調。"
+        "address": "160/11 Sukhumvit 55, Khlong Tan Nuea, Watthana, Bangkok 10110", 
+        "tags": ["結構泰菜", "潤燥"], "moodColor": "#C5A059",
+        "transport": "🚶 步行: 飯店出發往 Sukhumvit 路方向，過馬路進入 Soi 55，步行約 12 分鐘或在巷口搭乘「紅色小巴士 (7泰銖)」於 Soi 6 下車。",
+        "note": "點冰鎮氣泡水液化燥土。建立首日秩序，為下午舊城區採購蓄能。"
       },
       {
-        "time": "14:30", "title": "調香: Craftfeteria (Centralworld)", "type": "體驗",
-        "address": "999/9 Rama I Rd, Pathum Wan (5F)", "coords": [13.7466, 100.5393],
-        "tags": ["Siam區", "結構建立"], "moodColor": "#F1F5F9",
-        "note": "【交通: BTS Thong Lo -> Chit Lom】挑選代表政策執行力的基底。避開甜膩，追求冷冽秩序。"
+        "time": "14:30", "title": "採購 I: Hong Huat (ฮงฮวด)", "type": "採購",
+        "address": "32 Chakrawat Rd, Sam Yaek, Samphanthawong, Bangkok 10100", 
+        "tags": ["傳統批發", "原精"], "moodColor": "#F1F5F9",
+        "transport": "🚈 捷運: 步行至 BTS Thong Lo ➝ 搭乘綠線至 Asok (15分鐘) ➝ 轉乘 MRT 藍線 (往 Lak Song 方向) ➝ 至 Wat Mangkon 站下車 (1號出口) ➝ 沿 Chakrawat Rd 步行 8 分鐘。",
+        "note": "【重點產品】小茉莉原精、沉香油。觀察傳統大宗貿易的強金氣場。"
       },
       {
         "time": "16:30", "title": "SPA: Asia Herb (Thong Lo)", "type": "放鬆",
-        "address": "598-600 Sukhumvit Rd", "coords": [13.7303, 100.5786],
+        "address": "598-600 Sukhumvit Rd, Khlong Toei, Bangkok 10110", 
         "tags": ["按摩 I", "洗塵"], "moodColor": "#10B981",
-        "note": "回飯店附近按摩。液化飛行後的燥氣，讓身體進入接收模式。"
+        "transport": "🚇 捷運: MRT Wat Mangkon ➝ 搭乘藍線至 Sukhumvit 站 ➝ 轉乘 BTS Asok ➝ 至 BTS Thong Lo 站 (2號出口) ➝ 步行 5 分鐘即達。",
+        "note": "二度補水。洗去舊城區採購後的煙塵氣，重新歸位。"
       },
       {
         "time": "19:30", "title": "晚餐: R-Haan (米其林二星)", "type": "晚餐",
-        "address": "131 Sukhumvit 53", "tags": ["皇家秩序", "強金"], "moodColor": "#C5A059",
-        "note": "就在 Thong Lo。享受精確到毫釐的皇家規矩，避免橫跨曼谷的能量損耗。"
+        "address": "131 Sukhumvit 53, Khlong Tan Nuea, Watthana, Bangkok 10110", 
+        "tags": ["皇家秩序", "強金"], "moodColor": "#C5A059",
+        "transport": "🚶 步行: SPA 結束後沿 Sukhumvit 路往 53 巷方向步行 8-10 分鐘即達。",
+        "note": "就在飯店與 SPA 的半徑內。在皇家規矩中，消化下午的物質能量。"
       }
-    ],
-    "inspiration": [
-      { "title": "EmSphere 購物觀摩", "tag": "PHOTO", "note": "若 Centralworld 擁擠，改往 EmSphere。觀察其強烈金屬感結構。", "type": "景點" }
-    ],
-    "shopping": ["高品質氣泡水", "泰國設計師品牌衣物"]
+    ]
   },
   "day2": {
     "events": [
       {
-        "time": "10:00", "title": "調香: Erb Bespoke (Gaysorn)", "type": "體驗",
-        "address": "2F, Gaysorn Village, Ploenchit Rd", "tags": ["皇室級", "權威"], "moodColor": "#C5A059",
-        "note": "【交通: BTS Thong Lo -> Chit Lom】確立第二層嗅覺結界。推薦：岩蘭草與檀香基底。"
+        "time": "10:00", "title": "採購 II: Tropicalife (Ekkamai)", "type": "採購",
+        "address": "111/1 Soi Sukhumvit 63, Khlong Tan Nuea, Watthana, Bangkok 10110", 
+        "tags": ["數據精確", "GC/MS"], "moodColor": "#F1F5F9",
+        "transport": "🚶 步行: 飯店出發沿 Sukhumvit 路往 Ekkamai 方向步行約 12-15 分鐘，或搭乘 BTS 一站至 Ekkamai 站 (1號出口) 進入 63 巷。",
+        "note": "【重點產品】泰國生薑、青檸皮精油。留意其分析報告是否符合監管邏輯。"
+      },
+      {
+        "time": "11:30", "title": "採購 III: Botany Essence", "type": "採購",
+        "address": "Phra Ram 9, Huai Khwang, Bangkok 10310 (鄰近 G Tower)", 
+        "tags": ["CO2萃取", "實驗室"], "moodColor": "#F1F5F9",
+        "transport": "🚈 捷運: 步行回 BTS Ekkamai ➝ Asok (轉乘) ➝ MRT 藍線 ➝ 至 Phra Ram 9 站下車 (3號出口) ➝ 步行 5 分鐘。",
+        "note": "【重點產品】黑薑 CO2 萃取。體驗高階技術對物質本質的完整保留。"
       },
       {
         "time": "13:00", "title": "午餐: Copper Beyond Buffet", "type": "美食",
-        "address": "2F, Gaysorn Amarin", "tags": ["資產儲備", "社交定力"], "moodColor": "#C5A059",
-        "note": "就在 Erb 隔壁。主攻頂級蛋白質，在熱鬧環境中持守進食節奏與風度。"
+        "address": "2F, Gaysorn Amarin, Ploenchit Rd, Pathum Wan, Bangkok 10330", 
+        "tags": ["資產儲備", "社交定力"], "moodColor": "#C5A059",
+        "transport": "🚈 捷運: MRT Phra Ram 9 ➝ Sukhumvit 站 ➝ 轉乘 BTS Asok ➝ 至 Chit Lom 站下車 ➝ 經 Skywalk 直接進入 Gaysorn Amarin 二樓。",
+        "note": "就在調香區隔壁。主攻頂級蛋白質，在熱鬧中持守進食節奏與風度。"
       },
       {
-        "time": "15:00", "title": "算命: Ging Astro (酒店大堂)", "type": "靈性",
-        "address": "IR-ON Hotel Lobby", "tags": ["主場優勢", "風險報告"], "moodColor": "#6366F1",
-        "note": "諮詢 7 月職涯戰略。視為宏觀風險評估報告。"
+        "time": "15:00", "title": "算命: Ging Astro (飯店進行)", "type": "靈性",
+        "address": "IR-ON Hotel Lobby, Sukhumvit 36", 
+        "tags": ["風險評估", "職涯戰略"], "moodColor": "#6366F1",
+        "transport": "🚈 捷運: BTS Chit Lom ➝ 搭乘綠線返回 BTS Thong Lo 站 (2號出口) ➝ 步行 5 分鐘回飯店。",
+        "note": "酒店大堂進行。針對 7 月面試進行諮詢。沈澱上午採購的化學數據感。"
       },
       {
         "time": "19:30", "title": "晚餐: Canvas (藝術料理)", "type": "晚餐",
-        "address": "113/9-10 Sukhumvit 55", "tags": ["視覺金", "秩序感"], "moodColor": "#C5A059",
-        "note": "Thong Lo 主路旁。在畫作般的料理中找尋邏輯。餐後步行回飯店。"
+        "address": "113/9-10 Sukhumvit 55, Khlong Tan Nuea, Watthana, Bangkok 10110", 
+        "tags": ["視覺金", "秩序"], "moodColor": "#C5A059",
+        "transport": "🚶 步行: 飯店出發沿 Sukhumvit 36 巷口過馬路至 55 巷，步行約 5 分鐘即可抵達。",
+        "note": "在畫作般的料理中找尋邏輯。餐後步行回飯店鎖住氣場。"
       }
-    ],
-    "inspiration": [
-      { "title": "Jim Thompson House", "tag": "TIRED", "note": "若有餘力可前往參觀泰絲藝術。", "type": "文化" }
-    ],
-    "shopping": ["Erb 客製香水", "Canvas 周邊藝術卡"]
+    ]
   },
   "day3": {
     "events": [
       {
         "time": "10:30", "title": "二哥豐廟 (警局頂樓)", "type": "祈福",
-        "address": "4F, Phlap Phla Chai Police Station", "tags": ["肅殺金", "求職官運"], "moodColor": "#334155",
-        "note": "【交通: MRT Wat Mangkon】宣告目標。練習在複雜環境中直擊核心。"
+        "address": "4F, Phlap Phla Chai Police Station, Pom Prap Sattru Phai, Bangkok 10100", 
+        "tags": ["肅殺金", "求職官運"],
+        "transport": "🚇 捷運: BTS Thong Lo ➝ Asok 轉 MRT 藍線 ➝ 至 Wat Mangkon 站 (1號出口) ➝ 步行 8 分鐘至警局，搭電梯至頂樓。",
+        "note": "宣告目標。練習在肅穆且複雜的環境中直擊核心。"
       },
       {
         "time": "12:30", "title": "午餐: POTONG (普通大藥房)", "type": "美食",
-        "address": "422 Vanich 1 Rd, Samphanthawong", "tags": ["精準監管", "五行平衡"], "moodColor": "#FF2D55",
-        "note": "練習將行政素材提煉成決策藥方。*需提前預約。"
+        "address": "422 Vanich 1 Rd, Samphanthawong, Bangkok 10100", 
+        "tags": ["二星", "五行平衡"], "moodColor": "#FF2D55",
+        "transport": "🚶 步行: 從警局出發沿唐人街小巷步行約 6 分鐘即可抵達。",
+        "note": "百年藥房改建。體驗藥材轉化為決策藥方的過程。*需預約。"
       },
       {
         "time": "14:30", "title": "積福: 義德善堂 (捐棺)", "type": "積福",
-        "address": "Rama IV Rd (MRT Sam Yan)", "tags": ["功德水", "轉運"], "moodColor": "#F39C12",
+        "address": "Rama IV Rd, Si Phraya, Bang Rak, Bangkok 10500", 
+        "tags": ["功德水", "轉運"], "moodColor": "#F39C12",
+        "transport": "🚇 捷運: 從 MRT Wat Mangkon 站搭乘藍線 ➝ 至 Sam Yan 站下車 (1號出口) ➝ 出站即達。",
         "note": "積累功德水以化解命格淤塞。面試前的隱形資產累積。"
       },
       {
         "time": "16:00", "title": "SPA: Asia Herb (Thong Lo)", "type": "放鬆",
-        "address": "Sukhumvit 36 巷口附近", "tags": ["按摩 II", "預熱漂浮"], "moodColor": "#10B981",
-        "note": "為明日漂浮排毒。保持身體柔軟與彈性。"
+        "address": "Thong Lo Shop", "tags": ["按摩 II", "預熱"], "moodColor": "#10B981",
+        "transport": "🚇 捷運: MRT Sam Yan ➝ Sukhumvit 轉 BTS Asok ➝ 至 Thong Lo 站下車。",
+        "note": "二度補水。為明日的漂浮體驗排毒與預熱身心。"
+      },
+      {
+        "time": "19:30", "title": "晚餐: North (泰北料理)", "type": "晚餐",
+        "address": "8 Sukhumvit 33 Alley, Khlong Tan Nuea, Watthana, Bangkok 10110", 
+        "tags": ["別墅環境", "沈穩定力"], "moodColor": "#C5A059",
+        "transport": "🚈 捷運: BTS Thong Lo ➝ 搭乘綠線一站至 Phrom Phong 站下車 (5號出口) ➝ 沿 Sukhumvit 33 巷步行 8 分鐘即達。",
+        "note": "【週日晚餐補完】在安靜別墅享用晚宴，展現高級主管的沈穩氣場。"
       }
-    ],
-    "inspiration": [
-      { "title": "Blue Whale Cafe", "tag": "PHOTO", "note": "舊城區全藍色空間，強化水能量。", "type": "咖啡" }
-    ],
-    "shopping": ["功德收據", "POTONG 秘製辣醬"]
+    ]
   },
   "day4": {
     "events": [
       {
-        "time": "10:00", "title": "MOCA 當代藝術館 (研讀)", "type": "藝術",
-        "address": "499 Kamphaeng Phet 6 Rd", "tags": ["強金架構", "面試演習"], "moodColor": "#F1F5F9",
-        "note": "【交通: BTS -> Mo Chit -> 轉乘】在白色純淨空間研讀 HKMA 政策文件。"
+        "time": "10:00", "title": "戰略研讀: Open House (空中圖書館)", "type": "學習",
+        "address": "L6, Central Embassy, Ploenchit Rd, Pathum Wan, Bangkok 10330", 
+        "tags": ["強金架構", "面試演習"], "moodColor": "#F1F5F9",
+        "transport": "🚈 捷運: BTS Thong Lo ➝ 搭乘綠線至 Phloen Chit 站下車 ➝ 經連通橋步行進入 Central Embassy 六樓。",
+        "note": "代替公休的 MOCA。在幾何光影中研讀 HKMA 文件。將框架刻入靈魂。"
       },
       {
-        "time": "13:00", "title": "河畔學習: Iconsiam 7F", "type": "學習",
-        "address": "299 Charoen Nakhon Rd", "tags": ["水能內化", "輕食"], "moodColor": "#0EA5E9",
-        "note": "看著大河學習，保持腹部空靈。為漂浮保持身心透明感。"
+        "time": "14:30", "title": "採購 IV: Phaitawan (Iconsiam)", "type": "採購",
+        "address": "299 Charoen Nakhon Rd (Iconsiam SookSiam Area)", 
+        "tags": ["傳統藥草", "普萊精油"], "moodColor": "#F1F5F9",
+        "transport": "🛳️ 船/捷運: BTS Phloen Chit ➝ 至 Saphan Taksin 站 ➝ 搭乘免費接駁船至 Iconsiam ➝ 進入 G 層 SookSiam 區域。",
+        "note": "【重點產品】Plai Oil (普萊)、特級岩蘭草。體驗傳統按摩的靈魂。"
       },
       {
         "time": "15:30", "title": "Theta State Float (漂浮)", "type": "放鬆",
-        "address": "88/1 Sukhumvit 24", "tags": ["靈魂重塑", "涅槃"], "moodColor": "#5856D6",
-        "note": "【交通: BTS Phrom Phong】在鹽水中徹底釋放行政壓力，完成蜕變。"
+        "address": "88/1 Soi Sukhumvit 24, Khlong Tan, Khlong Toei, Bangkok 10110", 
+        "tags": ["靈魂重塑", "真空涅槃"], "moodColor": "#5856D6",
+        "transport": "🛳️ 船/捷運: Iconsiam 搭船回 Saphan Taksin ➝ BTS 至 Phrom Phong 站 (4號出口) ➝ 步行 5 分鐘即達。",
+        "note": "在鹽水中徹底釋放行政壓力，完成從執行官到架構師的蛻變。"
       },
       {
-        "time": "19:00", "title": "晚餐: Nusara (河畔加冕)", "type": "晚餐",
-        "address": "336 Maha Rat Rd", "tags": ["鄭王廟", "水之巔峰"], "moodColor": "#C5A059",
-        "note": "漂浮後直視大河能量。體悟權威與流動的真諦。"
+        "time": "19:00", "title": "晚餐: Nusara (河岸加冕)", "type": "晚餐",
+        "address": "336 Maha Rat Rd, Phra Borom Maha Ratchawang, Bangkok 10200", 
+        "tags": ["鄭王廟", "水之巔峰"], "moodColor": "#C5A059",
+        "transport": "🚇 捷運: BTS Phrom Phong ➝ Asok 轉 MRT 藍線 ➝ 至 Sanam Chai 站下車 (1號出口) ➝ 步行 5 分鐘。",
+        "note": "【加冕時刻】漂浮後直視大河能量。體悟權威與流動的真諦。"
       }
     ],
-    "inspiration": [
-      { "title": "The Bamboo Bar", "tag": "TIRED", "note": "就在河邊，聽爵士樂練習權威眼神。", "type": "小酌" }
-    ],
-    "shopping": ["香氛精油", "Iconsiam 限定商品"]
+    "inspiration": [{ "title": "The Bamboo Bar (MO)", "tag": "TIRED", "address": "48 Oriental Ave", "note": "在老錢氛圍中建立沈默威懾力。步行至河岸搭船即達。" }]
   },
   "day5": {
     "events": [
       {
-        "time": "09:30", "title": "SPA: Asia Herb (最終回潤)", "type": "放鬆",
-        "address": "Thong Lo 分店", "tags": ["按摩 III", "水能護盾"], "moodColor": "#10B981",
-        "note": "【收官指令】出發前的最後補水。建議足部按摩。液化潛在焦慮。"
+        "time": "09:00", "title": "採購 V: Chemipan (Nawamin/Ekkamai代理)", "type": "採購",
+        "address": "4 Soi Nawamin 111, Nawamin, Bangkok 10230", 
+        "tags": ["工業批發", "蓮花原精"], "moodColor": "#F1F5F9",
+        "transport": "🚌 公交: 此處位置偏遠，若堅持不搭 Grab，建議於飯店取行李後，搭乘 BTS 至 Ekkamai 轉乘市區巴士 (71或501路) 往 Nawamin 方向。耗時約 60 分鐘。",
+        "note": "【重點產品】蓮花原精、白茶精華。觀察曼谷化工產業的廣度。*此點交通最難。"
       },
       {
-        "time": "11:30", "title": "謝幕午餐: GAA (Thong Lo)", "type": "美食",
-        "address": "53 Sukhumvit 53", "tags": ["重新定義", "強金結構"], "moodColor": "#C5A059",
-        "note": "二星印度菜。帶著「定義規則」的氣場回港。吃完回飯店取行李。"
+        "time": "11:30", "title": "謝幕午餐: Paste (Gaysorn)", "type": "美食",
+        "address": "3F, Gaysorn Village, Ploenchit Rd", 
+        "tags": ["精準比例", "米其林一星"], "moodColor": "#C5A059",
+        "transport": "🚈 捷運: 搭乘巴士返回 BTS Ekkamai ➝ 搭乘綠線至 Chit Lom 站 ➝ 經 Skywalk 進入 Gaysorn Village 三樓。",
+        "note": "主廚以化學級比例重構古法泰菜，完美謝幕。帶著「定義規則」的氣場回港。"
       },
       {
-        "time": "14:15", "title": "搭乘機場快線 / 接駁", "type": "交通",
-        "address": "BKK Airport", "tags": ["歸港"], "moodColor": "#000",
-        "note": "帶著清冷、精確、涅槃後的絕對氣場，奪權就職。"
+        "time": "14:15", "title": "前往機場 (平安歸港)", "type": "交通",
+        "address": "Suvarnabhumi Airport (BKK)", "tags": ["歸港"], "moodColor": "#000",
+        "transport": "🚈 捷運: 飯店領取行李 ➝ BTS Thong Lo ➝ Phaya Thai 站轉乘 ARL 機場快線 ➝ 抵達機場。",
+        "note": "您的氣場已由曼谷重新鍛造。七月，金管局見。"
       }
-    ],
-    "inspiration": [
-      { "title": "Masatake 皮革手作", "tag": "TIRED", "note": "若有餘力可觀察職人封邊工藝。", "type": "職人" }
-    ],
-    "shopping": ["免稅店高品質零食"]
+    ]
   }
 };
 
-// 6. 🗣️ 常用短語 (首長版)
+// 6. 🗣️ 常用短語 (首長採購版)
 const PHRASE_DATA = [
   {
-    category: "飲食需求 (潤燥)",
+    category: "採購與專業",
     items: [
-      { term_primary: "ไม่เอาผักชี", term_secondary: "不要香草！", term_pronounce: "Mai Ao Phak Chi" },
-      { term_primary: "ไม่เผ็ด", term_secondary: "不要辣", term_pronounce: "Mai Phet" },
-      { term_primary: "น้ำเปล่าเย็นๆ", term_secondary: "冰純淨水", term_pronounce: "Nam Plao Yen Yen" }
+      { term_primary: "ขอใบรับรอง COA", term_secondary: "請提供分析證書 (COA)", term_pronounce: "Khor Bai Rub Rong" },
+      { term_primary: "สกัดแบบ CO2", term_secondary: "這是 CO2 萃取的嗎？", term_pronounce: "Sagat baep CO2?" },
+      { term_primary: "น้ำมันหอมระเหยแท้", term_secondary: "100% 純精油", term_pronounce: "Nam-man Hom Ra-hoei" }
     ]
   },
   {
-    category: "交通與服務",
+    category: "交通指南",
     items: [
-      { term_primary: "ไปที่นี่ครับ/ค่ะ", term_secondary: "請載我去這裡", term_pronounce: "Pai Tee Nee" },
-      { term_primary: "เบาๆ หน่อย", term_secondary: "輕一點 (按摩)", term_pronounce: "Bao Bao Noi" },
-      { term_primary: "ขอใบเสร็จด้วย", term_secondary: "請給我收據", term_pronounce: "Khor Bai Set Duay" }
+      { term_primary: "สถานีรถไฟฟ้า", term_secondary: "捷運站在哪裡？", term_pronounce: "Sa-tha-nee Rot-fai-fa?" },
+      { term_primary: "ทางออกที่เท่าไหร่", term_secondary: "在哪一個出口？", term_pronounce: "Thang-ok tee-tao-rai?" }
     ]
   }
 ];
-</script>    
+</script>
+    
     <div id="toast"><i class="fa-solid fa-circle-check"></i> <span id="toast-msg">Action Completed</span></div>
 <header>
 <div>
